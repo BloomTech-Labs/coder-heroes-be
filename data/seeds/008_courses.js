@@ -1,28 +1,22 @@
 exports.seed = function (knex) {
-  // Deletes ALL existing entries
-  return knex('courses')
-    .del()
-    .then(function () {
-      // Inserts seed entries
       return knex('courses').insert([
         {
-          size: 5,
-          description: 'lorem ipsup',
-          subject: 'CS191',
-          prereq: '0',
+          size: 8,
+          description: 'Computer Science fundamentals.',
+          subject: 'CS101',
+          prereq: null,
         },
         {
-          size: 5,
-          descri8tion: 'lorem ipsup',
-          subject: 'lorem ipsum',
-          prereq: '0',
+          size: 15,
+          description: 'For those who mastered the fundamentals.',
+          subject: 'Intermediate JavaScript',
+          prereq: 1,
         },
         {
-          size: 5,
-          descri1ption: 'lorem ipsup',
-          subject: 'lorem ipsum',
-          prereq: '0',
+          size: 12,
+          description: 'Welcome to Python!',
+          subject: 'Intro to Python',
+          prereq: null,
         },
       ]);
-    });
 };
