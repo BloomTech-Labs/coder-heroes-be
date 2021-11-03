@@ -1,25 +1,19 @@
 exports.seed = function (knex) {
-  // Deletes ALL existing entries
-  return knex('resources')
-    .del()
-    .then(function () {
-      // Inserts seed entries
       return knex('resources').insert([
         {
-          il_id: 2,
+          il_id: 1,
           resource:
-            'The Waystone Inn lay in silence, and it was a silence of three parts.',
+            'https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics',
         },
         {
-          il_id: 5,
+          il_id: 4,
           resource:
-            'The man in black fled across the desert, and the gunslinger followed.',
+            'https://www.tutorialspoint.com/data_structures_algorithms/algorithms_basics.htm',
         },
         {
-          il_id: 9,
+          il_id: 3,
           resource:
-            'We should start back, Gared urged as the woods began to grow dark around them.',
+            'https://codewizardshq.com/coding-for-kids-free/',
         },
       ]);
-    });
 };
