@@ -17,6 +17,15 @@ exports.up = (knex) => {
       table.string('location').notNullable();
 
       table
+        .integer('instructor_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('instructors')
+        .onDelete('RESTRICT')
+        .onUpdate('RESTRICT');
+
+      table
         .integer('course_id')
         .unsigned()
         .notNullable()
