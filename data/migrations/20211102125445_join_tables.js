@@ -23,13 +23,22 @@ exports.up = function (knex) {
 
     .createTable('instructor_list', (table) => {
       table.increments('id');
-      table.integer('course_id').notNullable();
+
       table
         .integer('instructor_id')
         .unsigned()
         .notNullable()
         .references('id')
         .inTable('instructors')
+        .onDelete('RESTRICT')
+        .onUpdate('RESTRICT');
+    
+       table
+        .integer('course_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('courses')
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT');
     })
