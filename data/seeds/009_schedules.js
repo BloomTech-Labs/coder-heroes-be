@@ -1,13 +1,34 @@
-
-exports.seed = function(knex) {
+exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex('table_name').del()
+  return knex('schedules')
+    .del()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+      return knex('schedules').insert([
+        {
+          course_id: 0,
+          start_time: '5:00pm',
+          start_date: '10-10-2010',
+          end_date: '10-10-2010',
+          end_time: '6:00pm',
+          location: 'Alabamma',
+        },
+        {
+          course_id: 1,
+          start_time: '6:00pm',
+          start_date: '10-10-2010',
+          end_date: '10-10-2010',
+          end_time: '7:00pm',
+          location: 'Alabamma',
+        },
+        {
+          course_id: 2,
+          start_time: '7:00pm',
+          start_date: '10-10-2010',
+          end_date: '10-10-2010',
+          end_time: '8:00pm',
+          location: 'Alabamma',
+        },
       ]);
     });
 };

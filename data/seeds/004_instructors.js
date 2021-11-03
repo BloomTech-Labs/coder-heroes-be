@@ -1,13 +1,7 @@
-
 exports.seed = function(knex) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
-};
+    return knex('instructors').insert([
+      {user_id: 1, rating: 2, bio: 'I love spaghetti and code, but not the two together.', approved: false, approved_by: ,},
+      {user_id: 2, rating: 5, bio: 'Coding is life.', approved: true, approved_by: 1,},
+      {user_id: 3, rating: 3, bio: 'I love making content for people to enjoy!', approved: true, approved_by: 1,}
+    ]);
+  };
