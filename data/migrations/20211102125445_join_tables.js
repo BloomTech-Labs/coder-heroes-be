@@ -3,6 +3,7 @@ exports.up = function (knex) {
     .createTable('enrollments', (table) => {
       table.increments('id');
       table.boolean('completed').defaultTo(false);
+
       table
         .integer('child_id')
         .unsigned()
@@ -11,6 +12,7 @@ exports.up = function (knex) {
         .inTable('children')
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT');
+
       table
         .integer('course_id')
         .unsigned()
@@ -32,8 +34,8 @@ exports.up = function (knex) {
         .inTable('instructors')
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT');
-    
-       table
+
+      table
         .integer('course_id')
         .unsigned()
         .notNullable()
@@ -46,6 +48,7 @@ exports.up = function (knex) {
     .createTable('resources', (table) => {
       table.increments('id');
       table.string('resource').notNullable();
+
       table
         .integer('il_id')
         .notNullable()

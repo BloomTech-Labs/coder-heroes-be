@@ -1,5 +1,18 @@
 exports.up = (knex) => {
   return knex.schema
+    .createTable('admins', function (table) {
+      table.increments('id');
+
+      table
+        .integer('user_id')
+        .unsigned()
+        .notNullable()
+        .references('key')
+        .inTable('profiles')
+        .onDelete('RESTRICT')
+        .onUpdate('RESTRICT')
+    })
+
     .createTable('parents', function (table) {
       table.increments('id');
 
@@ -10,7 +23,7 @@ exports.up = (knex) => {
         .references('key')
         .inTable('profiles')
         .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onUpdate('RESTRICT')
     })
 
     .createTable('children', function (table) {
@@ -25,7 +38,7 @@ exports.up = (knex) => {
         .references('id')
         .inTable('parents')
         .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onUpdate('RESTRICT')
 
       table
         .integer('user_id')
@@ -34,7 +47,7 @@ exports.up = (knex) => {
         .references('key')
         .inTable('profiles')
         .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onUpdate('RESTRICT')
     })
 
     .createTable('instructors', function (table) {
@@ -55,31 +68,16 @@ exports.up = (knex) => {
       table
         .integer('approved_by')
         .unsigned()
-        .notNullable()
-        .references('key')
-        .inTable('profiles')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .references('id')
+        .inTable('admins')
+        .onDelete('RESTRICT');
     })
-
-    .createTable('admins', function (table) {
-      table.increments('id');
-
-      table
-        .integer('user_id')
-        .unsigned()
-        .notNullable()
-        .references('key')
-        .inTable('profiles')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
-    });
 };
 
 exports.down = (knex) => {
   return knex.schema
+    .dropTableIfExists('instructors')
     .dropTableIfExists('children')
     .dropTableIfExists('parents')
-    .dropTableIfExists('instructors')
     .dropTableIfExists('admins');
 };

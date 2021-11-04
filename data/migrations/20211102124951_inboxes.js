@@ -15,7 +15,7 @@ exports.up = (knex) => {
 
     .createTable('messages', function (table) {
       table.increments('id');
-      table.timestamp('created_at').defaultTo(knex.fn.now());
+      table.timestamp('sent_at').defaultTo(knex.fn.now());
       table.string('title').notNullable();
       table.boolean('read').defaultTo(false);
       table.text('message').notNullable();

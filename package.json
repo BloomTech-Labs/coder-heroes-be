@@ -6,7 +6,7 @@
   "repository": "github:Lambda-School-Labs/labs-api-starter",
   "scripts": {
     "start": "node server.js",
-    "migrate": "knex run:migrate",
+    "migrate": "knex migrate:latest",
     "rollback": "knex run:rollback",
     "watch:dev": "nodemon",
     "lint": "npx eslint .",
