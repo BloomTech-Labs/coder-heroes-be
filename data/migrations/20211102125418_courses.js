@@ -5,7 +5,7 @@ exports.up = (knex) => {
       table.integer('size').notNullable();
       table.text('description').notNullable();
       table.string('subject').notNullable();
-      table.integer('prereq');
+      table.integer('prereq').defaultTo(null);
     })
 
     .createTable('schedules', (table) => {

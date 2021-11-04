@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "migrate": "knex migrate:latest",
-    "rollback": "knex run:rollback",
+    "rollback": "knex migrate:rollback",
     "watch:dev": "nodemon",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",

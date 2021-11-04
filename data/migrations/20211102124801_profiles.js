@@ -67,6 +67,7 @@ exports.up = (knex) => {
 
       table
         .integer('approved_by')
+        .defaultTo(null)
         .unsigned()
         .references('id')
         .inTable('admins')
