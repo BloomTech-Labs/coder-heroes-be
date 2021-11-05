@@ -5,7 +5,7 @@ exports.up = (knex) => {
       table.increments('key');
       table.string('email');
       table.string('name');
-      table.string('okta');
+      table.string('id');
       table.string('avatarUrl');
     });
 };
