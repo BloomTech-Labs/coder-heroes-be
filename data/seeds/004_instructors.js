@@ -9,15 +9,11 @@ exports.seed = function (knex) {
       user_id: 8,
       rating: 5,
       bio: 'Coding is life.',
-      approved: true,
-      approved_by: 1,
     },
     {
       user_id: 9,
       rating: 3,
       bio: 'I love making content for people to enjoy!',
-      approved: true,
-      approved_by: 2,
     },
   ]);
 };

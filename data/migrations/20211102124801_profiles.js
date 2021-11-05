@@ -29,7 +29,7 @@ exports.up = (knex) => {
     .createTable('children', function (table) {
       table.increments('id');
       table.string('username').notNullable();
-      table.string('age').notNullable();
+      table.integer('age').notNullable();
 
       table
         .integer('parent_id')
@@ -54,7 +54,6 @@ exports.up = (knex) => {
       table.increments('id');
       table.string('rating').notNullable();
       table.string('bio').notNullable();
-      table.boolean('approved').defaultTo(false);
 
       table
         .integer('user_id')
@@ -64,14 +63,6 @@ exports.up = (knex) => {
         .inTable('profiles')
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT');
-
-      table
-        .integer('approved_by')
-        .defaultTo(null)
-        .unsigned()
-        .references('id')
-        .inTable('admins')
-        .onDelete('RESTRICT');
     })
 };
 

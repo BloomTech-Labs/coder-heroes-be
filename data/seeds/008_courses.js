@@ -9,7 +9,6 @@ exports.seed = function (knex) {
       size: 15,
       subject: 'Intermediate JavaScript',
       description: 'For those who mastered the fundamentals.',
-      prereq: 1,
     },
     {
       size: 12,
@@ -21,7 +20,6 @@ exports.seed = function (knex) {
       subject: 'Advanced Python',
       description:
         'For students who want to learn more deeply into the Python world.',
-      prereq: 3,
     },
   ]);
 };
