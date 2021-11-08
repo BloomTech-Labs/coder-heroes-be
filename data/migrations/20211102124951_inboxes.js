@@ -19,7 +19,6 @@ exports.up = (knex) => {
       table.string('title').notNullable();
       table.boolean('read').defaultTo(false);
       table.text('message').notNullable();
-      2;
 
       table
         .integer('inbox_id')
