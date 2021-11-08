@@ -58,7 +58,7 @@ exports.up = function (knex) {
     .createTable('resources', (table) => {
       table.increments('id');
       table.string('resource').notNullable();
-      table.string('description')
+      table.string('description');
       table.boolean('task').notNullable();
 
       table

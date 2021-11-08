@@ -18,7 +18,8 @@ exports.up = (knex) => {
       table.timestamp('sent_at').defaultTo(knex.fn.now());
       table.string('title').notNullable();
       table.boolean('read').defaultTo(false);
-      table.text('message').notNullable();2
+      table.text('message').notNullable();
+      2;
 
       table
         .integer('inbox_id')
