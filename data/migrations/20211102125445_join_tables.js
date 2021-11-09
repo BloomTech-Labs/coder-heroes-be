@@ -2,7 +2,6 @@ exports.up = function (knex) {
   return knex.schema
     .createTable('enrollments', (table) => {
       table.increments('id');
-      table.specificType('greetings', 'json ARRAY');
       table.boolean('completed').defaultTo(false);
 
       table
@@ -11,17 +10,15 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('children')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
 
       table
-        .integer('course_id')
+        .integer('schedule_id')
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('courses')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .inTable('schedules')
+        .onDelete('CASCADE')
     })
 
     .createTable('instructor_list', (table) => {
@@ -34,8 +31,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('instructors')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
 
       table
         .integer('course_id')
@@ -43,8 +39,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('courses')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
 
       table
         .integer('approved_by')
@@ -52,7 +47,7 @@ exports.up = function (knex) {
         .unsigned()
         .references('id')
         .inTable('admins')
-        .onDelete('RESTRICT');
+        .onDelete('CASCADE');
     })
 
     .createTable('resources', (table) => {
@@ -66,8 +61,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('instructor_list')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
     });
 };
 
