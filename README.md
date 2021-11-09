@@ -164,7 +164,7 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
 
 | Method   | URL                 | Description                                                                                                    |
 | ------   | --------------      | ---------------------------------------------------------------------------------------------------------      |
-| [POST]   | /api/course/        | Requires `size`, `description`, `subject`, and  `prereq`. Returns the event object with the specified `subject`.                                               |
+| [POST]   | /api/course/        | Contains fields: `description`, `subject`, and  `prereq`. Returns the event object with the specified `subject`.                                               |
 | [GET]    | /api/course/        | Returns an array filled with event objects.                                                                    |
 | [GET]    | /api/course/:name     | Returns the event object with the specified `subject`.                                                        |
 | [DELETE] | /api/course/:name     | Removes the event with the specified `subject` and returns the deleted event.                                 |
