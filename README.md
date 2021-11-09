@@ -171,4 +171,3 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
 | [PUT]    | /api/course/     | Updates the event with the specified `subject` using data from the `request body`. Returns the modified event |
 
 <br />
-<p style="padding: 0; margin: 0; font-size: 2rem; text-align: center; font-family: 
