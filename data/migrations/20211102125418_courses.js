@@ -2,35 +2,14 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('courses', function (table) {
       table.increments('id');
-      table.integer('size').notNullable();
       table.text('description').notNullable();
-      table.string('subject').notNullable();
-    })
-
-    .createTable('prereqs', function (table) {
-      table.increments('id');
-
-      table
-        .integer('course_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('courses')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
-
-      table
-        .integer('precourse_id')
-        .unsigned()
-        .notNullable()
-        .references('id')
-        .inTable('courses')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+      table.string('subject').notNullable().unique();
+      table.specificType('prereqs', 'text ARRAY');
     })
 
     .createTable('schedules', (table) => {
       table.increments('id');
+      table.integer('size').notNullable();
 
       table
         .integer('instructor_id')
@@ -73,7 +52,6 @@ exports.up = (knex) => {
 exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists('sessions')
-    .dropTableIfExists('prereqs')
     .dropTableIfExists('schedules')
     .dropTableIfExists('courses');
 };

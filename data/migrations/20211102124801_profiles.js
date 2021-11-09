@@ -10,7 +10,7 @@ exports.up = (knex) => {
         .references('key')
         .inTable('profiles')
         .onDelete('RESTRICT')
-        .onUpdate('RESTRICT')
+        .onUpdate('RESTRICT');
     })
 
     .createTable('parents', function (table) {
@@ -23,7 +23,7 @@ exports.up = (knex) => {
         .references('key')
         .inTable('profiles')
         .onDelete('RESTRICT')
-        .onUpdate('RESTRICT')
+        .onUpdate('RESTRICT');
     })
 
     .createTable('children', function (table) {
@@ -38,22 +38,7 @@ exports.up = (knex) => {
         .references('id')
         .inTable('parents')
         .onDelete('RESTRICT')
-        .onUpdate('RESTRICT')
-
-      table
-        .integer('user_id')
-        .unsigned()
-        .notNullable()
-        .references('key')
-        .inTable('profiles')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT')
-    })
-
-    .createTable('instructors', function (table) {
-      table.increments('id');
-      table.string('rating').notNullable();
-      table.string('bio').notNullable();
+        .onUpdate('RESTRICT');
 
       table
         .integer('user_id')
@@ -64,6 +49,21 @@ exports.up = (knex) => {
         .onDelete('RESTRICT')
         .onUpdate('RESTRICT');
     })
+
+    .createTable('instructors', function (table) {
+      table.increments('id');
+      table.integer('rating').notNullable();
+      table.string('bio').notNullable();
+
+      table
+        .integer('user_id')
+        .unsigned()
+        .notNullable()
+        .references('key')
+        .inTable('profiles')
+        .onDelete('RESTRICT')
+        .onUpdate('RESTRICT');
+    });
 };
 
 exports.down = (knex) => {

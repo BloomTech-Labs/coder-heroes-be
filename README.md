@@ -4,8 +4,6 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
 <img src="https://user-images.githubusercontent.com/65091914/139889762-1616d68b-d31b-4898-ac77-ecd000daabd0.png">
 Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-484c-a12f-151cb4aec1b2
 
-**NOTE: !!!! indicates to be changed after approval.**
-
 <h1>Profiles</h1>
 
 ````
@@ -54,10 +52,8 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
 {
   id: INCREMENT,
   user_id: INTEGER,
-  approved: BOOLEAN,!!!!
-  approved_by: INTEGER,!!!!
   bio: STRING,
-  rating: INTEGER,!!!!
+  rating: INTEGER
 }
 ```` 
 
@@ -89,10 +85,9 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
 ````
 {
   id: INCREMENT,
-  size: INTEGER,
   description: STRING,
   subject: STRING,
-  prereq: INTEGER!!!!
+  prereq: TEXT ARRAY,
 }
 ```` 
 
@@ -103,13 +98,21 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
   id: INCREMENT,
   course_id: INTEGER,
   instructor_id: INTEGER,
+  size: INTEGER,
+}
+```` 
+
+<h1>Sessions</h1>
+
+````
+{
   start_time: TIME,
   end_time: TIME,
   start_date: DATE,
   end_date: DATE,
   location: STRING,
 }
-```` 
+````
 
 <h1>Enrollments</h1>
 
@@ -128,6 +131,8 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
   id: INCREMENT,
   instructor_id: INTEGER,
   course_id: INTEGER,
+  approved: BOOLEAN,
+  approved_by: INTEGER,
 }
 ```` 
 
@@ -138,6 +143,7 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
   id: INCREMENT,
   il_id: INTEGER,
   resource: STRING,
+  task: BOOLEAN,
 }
 ```` 
 

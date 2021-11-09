@@ -1,25 +1,33 @@
 exports.seed = function (knex) {
   return knex('courses').insert([
     {
-      size: 8,
       subject: 'CS101',
       description: 'Computer Science fundamentals.',
     },
     {
-      size: 15,
-      subject: 'Intermediate JavaScript',
+      subject: 'JavaScriptA',
       description: 'For those who mastered the fundamentals.',
     },
     {
-      size: 12,
-      subject: 'Intro to Python',
-      description: 'Welcome to Python!',
+      subject: 'JavaScriptB',
+      description: 'Intermediate JavaScript.',
+      prereqs: ['JavaScriptA'],
     },
     {
-      size: 1,
-      subject: 'Advanced Python',
+      subject: 'PythonA',
+      description: 'Welcome to Python!',
+      prereqs: ['CS101'],
+    },
+    {
+      subject: 'PythonB',
+      description: 'Intermediate Python.',
+      prereqs: ['PythonA'],
+    },
+    {
+      subject: 'PythonC',
       description:
-        'For students who want to learn more deeply into the Python world.',
+        'For students who want to dive deeper into the Python world.',
+      prereqs: ['PythonA', 'PythonB'],
     },
   ]);
 };
