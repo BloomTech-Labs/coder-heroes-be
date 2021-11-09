@@ -108,9 +108,11 @@ router.get('/', authRequired, function (req, res) {
  *      404:
  *        description: 'Profile not found'
  */
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
-  Profiles.findById(id)
+
+//2
+router.get('/:okta', authRequired, function (req, res) {
+  const okta = String(req.params.okta);
+  Profiles.findById(okta)
     .then((profile) => {
       if (profile) {
         res.status(200).json(profile);
@@ -162,9 +164,9 @@ router.get('/:id', authRequired, function (req, res) {
 router.post('/', authRequired, async (req, res) => {
   const profile = req.body;
   if (profile) {
-    const id = profile.id || 0;
+    const okta = profile.okta || 0;
     try {
-      await Profiles.findById(id).then(async (pf) => {
+      await Profiles.findById(okta).then(async (pf) => {
         if (pf == undefined) {
           //profile not found so lets insert it
           await Profiles.create(profile).then((profile) =>
@@ -218,13 +220,15 @@ router.post('/', authRequired, async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.put('/', authRequired, (req, res) => {
+
+//4
+router.put('/', (req, res) => {
   const profile = req.body;
   if (profile) {
-    const id = profile.id || 0;
-    Profiles.findById(id)
+    const okta = profile.okta || 0;
+    Profiles.findById(okta)
       .then(
-        Profiles.update(id, profile)
+        Profiles.update(okta, profile)
           .then((updated) => {
             res
               .status(200)
@@ -232,14 +236,14 @@ router.put('/', authRequired, (req, res) => {
           })
           .catch((err) => {
             res.status(500).json({
-              message: `Could not update profile '${id}'`,
+              message: `Could not update profile '${okta}'`,
               error: err.message,
             });
           })
       )
       .catch((err) => {
         res.status(404).json({
-          message: `Could not find profile '${id}'`,
+          message: `Could not find profile '${okta}'`,
           error: err.message,
         });
       });
@@ -275,19 +279,20 @@ router.put('/', authRequired, (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
+router.delete('/:okta', (req, res) => {
+  const okta = req.params.okta;
   try {
-    Profiles.findById(id).then((profile) => {
-      Profiles.remove(profile.id).then(() => {
-        res
-          .status(200)
-          .json({ message: `Profile '${id}' was deleted.`, profile: profile });
+    Profiles.findById(okta).then((profile) => {
+      Profiles.remove(profile.okta).then(() => {
+        res.status(200).json({
+          message: `Profile '${okta}' was deleted.`,
+          profile: profile,
+        });
       });
     });
   } catch (err) {
     res.status(500).json({
-      message: `Could not delete profile with ID: ${id}`,
+      message: `Could not delete profile with ID: ${okta}`,
       error: err.message,
     });
   }
