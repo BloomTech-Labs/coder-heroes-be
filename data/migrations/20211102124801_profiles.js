@@ -21,7 +21,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('key')
         .inTable('profiles')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
     })
 
     .createTable('children', function (table) {
@@ -35,7 +35,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('id')
         .inTable('parents')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
 
       table
         .integer('user_id')
@@ -43,7 +43,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('key')
         .inTable('profiles')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
     })
 
     .createTable('instructors', function (table) {
@@ -57,7 +57,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('key')
         .inTable('profiles')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
     });
 };
 
