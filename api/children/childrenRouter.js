@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// router.put('/', (req, res) => {
+// router.put('/:id', (req, res) => {
 //   console.log('is it secret? is it safe?');
 // });
 

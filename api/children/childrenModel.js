@@ -4,8 +4,8 @@ const getChildren = async () => {
   return await db('children');
 };
 
-const findById = async (user_id) => {
-  return db('children').where('user_id', user_id);
+const findById = async (id) => {
+  return db('children').where({ id });
 };
 
 const addChildren = async (children) => {
@@ -16,9 +16,14 @@ const removeChildren = async (children) => {
   return await db('children').where({ children }).del();
 };
 
+const updateChildren = (id, children) => {
+  return db('children').where({ id }).first().update(children).returning('*');
+};
+
 module.exports = {
   getChildren,
   findById,
   addChildren,
   removeChildren,
+  updateChildren,
 };
