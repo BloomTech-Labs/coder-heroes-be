@@ -158,3 +158,22 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
   posted_at: TIMESTAMP,
 }
 ````
+
+#### Authentication:
+
+| Method   | URL                | Description                                                                                                |
+| ------   | --------------     | ---------------------------------------------------------------------------------------------------------- |
+| [POST]   | /api/auth/register | Requires a username, password, name, and email. Registers a new user.                                      |
+| [POST]   | /api/auth/login    | Requires a username and password. Logs the user in.                                                        |
+
+#### Courses:
+
+| Method   | URL                 | Description                                                                                                    |
+| ------   | --------------      | ---------------------------------------------------------------------------------------------------------      |
+| [POST]   | /api/course/        | Contains fields: `description`, `subject`, and  `prereq`. Returns the event object with the specified `subject`.                                               |
+| [GET]    | /api/course/        | Returns an array filled with event objects.                                                                    |
+| [GET]    | /api/course/:name     | Returns the event object with the specified `subject`.                                                        |
+| [DELETE] | /api/course/:name     | Removes the event with the specified `subject` and returns the deleted event.                                 |
+| [PUT]    | /api/course/     | Updates the event with the specified `subject` using data from the `request body`. Returns the modified event |
+
+<br />
