@@ -9,8 +9,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('key')
         .inTable('profiles')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
     })
 
     .createTable('messages', function (table) {
@@ -26,8 +25,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('id')
         .inTable('inboxes')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
 
       table
         .integer('sender_id')
@@ -35,8 +33,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('key')
         .inTable('profiles')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
     });
 };
 

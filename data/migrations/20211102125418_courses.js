@@ -17,8 +17,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('id')
         .inTable('instructors')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
 
       table
         .integer('course_id')
@@ -26,8 +25,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('id')
         .inTable('courses')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
     })
 
     .createTable('sessions', (table) => {
@@ -44,8 +42,7 @@ exports.up = (knex) => {
         .notNullable()
         .references('id')
         .inTable('schedules')
-        .onDelete('RESTRICT')
-        .onUpdate('RESTRICT');
+        .onDelete('CASCADE')
     });
 };
 
