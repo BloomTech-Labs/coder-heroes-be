@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
       res.status(500).json({ message: e.message });
     }
   } else {
-    res.status(404).json({ message: 'Instructor details missing.' });
+    res.status(404).json({ message: 'Admin details missing.' });
   }
 });
 
@@ -63,7 +63,7 @@ router.put('/', (req, res) => {
         Admins.updateAdmin(id, admin)
           .then((updated) => {
             res.status(200).json({
-              message: `Instructor with id: ${id} updated`,
+              message: `Admin with id: ${id} updated`,
               admin: updated[0],
             });
           })
