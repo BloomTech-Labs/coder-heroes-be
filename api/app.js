@@ -28,6 +28,7 @@ const instructorRouter = require('./instructor/instructorRouter');
 const courseRouter = require('./course/courseRouter');
 const dsRouter = require('./dsService/dsRouter');
 const childrenRouter = require('./children/childrenRouter');
+const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
 app.use(['/course', '/courses'], courseRouter);
 app.use(['/children', '/child'], childrenRouter);
+app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 
 // catch 404 and forward to error handler
