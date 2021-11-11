@@ -10,7 +10,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('children')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
 
       table
         .integer('schedule_id')
@@ -18,7 +18,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('schedules')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
     })
 
     .createTable('instructor_list', (table) => {
@@ -31,7 +31,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('instructors')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
 
       table
         .integer('course_id')
@@ -39,7 +39,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('courses')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
 
       table
         .integer('approved_by')
@@ -61,7 +61,7 @@ exports.up = function (knex) {
         .notNullable()
         .references('id')
         .inTable('instructor_list')
-        .onDelete('CASCADE')
+        .onDelete('CASCADE');
     });
 };
 
