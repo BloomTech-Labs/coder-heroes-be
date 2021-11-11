@@ -5,8 +5,11 @@ exports.up = (knex) => {
       table.increments('key');
       table.string('email');
       table.string('name');
-      table.string('id');
-      table.string('avatarUrl');
+      table.string('okta');
+      table.integer('type').notNullable();
+      table
+        .string('avatarUrl')
+        .defaultTo('https://i.stack.imgur.com/frlIf.png');
     });
 };
 
