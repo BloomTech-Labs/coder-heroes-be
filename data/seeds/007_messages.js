@@ -43,7 +43,7 @@ exports.seed = function (knex) {
       title: 'Where is my achievement?',
       message: "my achievement didn't pop up when I did class.",
       inbox_id: 9,
-      sender_id: 'Marvin',
+      sent_by: 'Marvin',
     },
   ]);
 };

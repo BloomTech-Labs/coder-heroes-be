@@ -3,12 +3,12 @@ const db = require('../../data/db-config');
 const getInboxes = async () => {
   return await db('inboxes')
     .leftJoin('profiles', 'inboxes.user_id', 'profiles.key')
-    .leftJoin('messages', 'inboxes.id', 'messages.inbox_id');
+    .innerJoin('messages', 'inboxes.id', 'messages.inbox_id');
 };
 
 const findByUserId = async (user_id) => {
   return db('inboxes')
-    .leftJoin('messages', 'inboxes.id', 'messages.inbox_id')
+    .innerJoin('messages', 'inboxes.id', 'messages.inbox_id')
     .where({ user_id });
 };
 
