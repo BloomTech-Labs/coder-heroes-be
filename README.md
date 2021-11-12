@@ -163,17 +163,106 @@ Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-48
 
 | Method   | URL                | Description                                                                                                |
 | ------   | --------------     | ---------------------------------------------------------------------------------------------------------- |
-| [POST]   | /api/auth/register | Requires a username, password, name, and email. Registers a new user.                                      |
-| [POST]   | /api/auth/login    | Requires a username and password. Logs the user in.                                                        |
+| [POST]   | /api/auth/register |                                       |
+| [POST]   | /api/auth/login    |                                       |
 
-#### Courses:
+#### Profile:
 
-| Method   | URL                 | Description                                                                                                    |
-| ------   | --------------      | ---------------------------------------------------------------------------------------------------------      |
-| [POST]   | /api/course/        | Contains fields: `description`, `subject`, and  `prereq`. Returns the event object with the specified `subject`.                                               |
-| [GET]    | /api/course/        | Returns an array filled with event objects.                                                                    |
-| [GET]    | /api/course/:name     | Returns the event object with the specified `subject`.                                                        |
-| [DELETE] | /api/course/:name     | Removes the event with the specified `subject` and returns the deleted event.                                 |
-| [PUT]    | /api/course/     | Updates the event with the specified `subject` using data from the `request body`. Returns the modified event |
+| Method   | URL             | Description                                                                                                |
+| ------   | --------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /profile/       | Requires a username, password, name, and email. Registers a new user.                                      |
+| [GET]    | /profile/:okta  | Requires a username and password. Logs the user in.                                                        |
+| [POST]   | /profile/       |                                       |
+| [PUT]    | /profile/       |                                       |
+| [DELETE] | /profile/:okta  |                                       |
+
+#### Admin:
+
+| Method   | URL             | Description                                                                                                |
+| ------   | --------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /admin/         | Returns an array filled with event objects.                                                                |
+| [GET]    | /admin/:id      | Returns an event object with the specified `id`.                                                           |
+| [POST]   | /admin/         |                                                            |
+| [PUT]    | /admin/         |                                                            |
+| [DELETE] | /admin/:id      |                                                            |
+
+#### Parent:
+
+| Method   | URL                    | Description                                                                                              |
+| ------   | ---------------------  | -------------------------------------------------------------------------------------------------------- |
+| [GET]    | /parent/               | Returns an array filled with event objects.                                                              |
+| [GET]    | /parent/:id            | Returns an event object with the specified `id`.                                                         |
+| [GET]    | /parent/:id/children/  |                                                            |
+| [GET]    | /parent/:id/schedules/ |                                                            |
+| [POST]   | /parent/               |                                                            |
+| [PUT]    | /parent/               |                                                            |
+| [DELETE] | /parent/:id            |                                                            |
+
+#### Instructor:
+
+| Method   | URL                      | Description                                                                                                |
+| ------   | -----------------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /instructor/             |                                       |
+| [GET]    | /instructor/:id          |                                       |
+| [GET]    | /instructor/:id/courses  |                                       |
+| [POST]   | /instructor/             |                                       |
+| [PUT]    | /instructor/             |                                       |
+| [DELETE] | /instructor/:id          |                                       |
+
+#### User:
+
+| Method   | URL             | Description                                                                                                |
+| ------   | --------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /user/          |                                       |
+
+#### Course:
+
+| Method   | URL             | Description                                                                                                         |
+| ------   | --------------  | ------------------------------------------------------------------------------------------------------------------- |
+| [GET]    | /course/        | Returns an array filled with event objects.                                                                         |
+| [GET]    | /course/:name   | Returns the event object with the specified `subject`.                                                              |
+| [POST]   | /course/        | Contains fields: `description`, `subject`, and  `prereq`. Returns the event object with the specified `subject`.    |
+| [PUT]    | /course/        | Updates the event with the specified `subject` using data from the `request body`. Returns the modified event       |
+| [DELETE] | /course/:name   | Removes the event with the specified `subject` and returns the deleted event.                                       |
+
+#### Schedule:
+
+| Method   | URL                | Description                                                                                                |
+| ------   | -----------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /schedule/         |                                       |
+| [GET]    | /schedule/:id      |                                       |
+| [POST]   | /schedule/         |                                       |
+| [POST]   | /schedule/sessions |                                       |
+| [PUT]    | /schedule/         |                                       |
+| [DELETE] | /schedule/:id      |                                       |
+
+#### Children:
+
+| Method   | URL                       | Description                                                                                                |
+| ------   | ------------------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /children/                |                                       |
+| [GET]    | /children/:id             |                                       |
+| [GET]    | /children/:id/enrollments |                                       |
+| [POST]   | /children/:id/enrollments |                                       |
+| [POST]   | /children/                |                                       |
+| [PUT]    | /children/                |                                       |
+| [DELETE] | /children/enrollments/:id |                                       |
+
+#### Newsfeed:
+
+| Method   | URL           | Description                                                                                                |
+| ------   | ------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /newsfeed/    |                                       |
+| [GET]    | /newsfeed/:id |                                       |
+| [POST]   | /newsfeed/    |                                       |
+| [PUT]    | /newsfeed/    |                                       |
+| [DELETE] | /newsfeed/    |                                       |
+
+#### Data:
+
+| Method   | URL      | Description                                                                                                |
+| ------   | -------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /data/   |                                       |
+
 
 <br />
