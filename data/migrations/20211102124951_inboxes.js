@@ -18,6 +18,7 @@ exports.up = (knex) => {
       table.string('title').notNullable();
       table.boolean('read').defaultTo(false);
       table.text('message').notNullable();
+      table.text('sent_by').notNullable();
 
       table
         .integer('inbox_id')
@@ -25,14 +26,6 @@ exports.up = (knex) => {
         .notNullable()
         .references('id')
         .inTable('inboxes')
-        .onDelete('CASCADE');
-
-      table
-        .integer('sender_id')
-        .unsigned()
-        .notNullable()
-        .references('key')
-        .inTable('profiles')
         .onDelete('CASCADE');
     });
 };
