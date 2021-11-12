@@ -47,6 +47,25 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/sessions', async (req, res) => {
+  const sessions = req.body;
+  console.log(sessions);
+  if (sessions) {
+    try {
+      await Schedules.addSessions(sessions).then((inserted) => {
+        res
+          .status(200)
+          .json({ message: 'A new session was added', sessions: inserted[0] });
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: err.message });
+    }
+  } else {
+    res.status(404).json({ message: 'Sessions details missing' });
+  }
+});
+
 router.put('/', (req, res) => {
   const schedule = req.body;
   if (schedule) {
