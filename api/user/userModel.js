@@ -2,17 +2,21 @@ const db = require('../../data/db-config');
 
 const findUserData = async (type, id) => {
   if (type === 1) {
-    return db('profiles').leftJoin('admins', `${id}`, 'admins.user_id');
+    return db('profiles')
+      .leftJoin('admins', 'profiles.okta', 'admins.user_id')
+      .where('okta', id);
   } else if (type === 2) {
-    return db('profiles').leftJoin('parents', `${id}`, 'parents.user_id');
+    return db('profiles')
+      .leftJoin('parents', 'profiles.okta', 'parents.user_id')
+      .where('okta', id);
   } else if (type === 3) {
-    return db('profiles').leftJoin(
-      'instructors',
-      `${id}`,
-      'instructors.user_id'
-    );
+    return db('profiles')
+      .leftJoin('instructors', 'profiles.okta', 'instructors.user_id')
+      .where('okta', id);
   } else if (type === 4) {
-    return db('profiles').leftJoin('children', `${id}`, 'children.user_id');
+    return db('profiles')
+      .leftJoin('children', 'profiles.okta', 'children.user_id')
+      .where('okta', id);
   }
 };
 
@@ -33,11 +37,7 @@ const getSchedule = (okta) => {
 };
 
 const updateUserData = (id, profile) => {
-  return db('profiles')
-    .where({ id: id })
-    .first()
-    .update(profile)
-    .returning('*');
+  return db('profiles').where('okta', id).update(profile).returning('*');
 };
 
 module.exports = {

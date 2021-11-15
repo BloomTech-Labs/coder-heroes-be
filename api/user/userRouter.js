@@ -47,4 +47,19 @@ router.get('/schedules', authRequired, function (req, res) {
   });
 });
 
+router.put('/', authRequired, function (req, res) {
+  const { okta } = req.profile;
+  Profiles.findById(okta).then((profile) => {
+    const { id } = profile;
+    User.updateUserData(id, profile)
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+      });
+  });
+});
+
 module.exports = router;
