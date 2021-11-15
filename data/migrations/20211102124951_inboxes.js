@@ -5,6 +5,7 @@ exports.up = (knex) => {
 
       table
         .string('user_id')
+        .unique()
         .notNullable()
         .references('okta')
         .inTable('profiles')
