@@ -1,8 +1,9 @@
 const express = require('express');
 const Inboxes = require('./inboxModel');
 const router = express.Router();
+const authRequired = require('../middleware/authRequired');
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Inboxes.getInboxes()
     .then((inboxList) => {
       res.status(200).json(inboxList);
@@ -13,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:okta', function (req, res) {
+router.get('/:okta', authRequired, function (req, res) {
   const okta = req.params.okta;
   Inboxes.findByUserId(okta)
     .then((inbox) => {
@@ -56,7 +57,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/messages', async (req, res) => {
+router.post('/messages', authRequired, async (req, res) => {
   const message = req.body;
   if (message) {
     const { inbox_id } = message;
@@ -82,7 +83,7 @@ router.post('/messages', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const { user_id } = req.body;
   Inboxes.findByUserId(user_id)
     .then((inbox) => {

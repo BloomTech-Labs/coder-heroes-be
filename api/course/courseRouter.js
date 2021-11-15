@@ -1,8 +1,9 @@
 const express = require('express');
 const Courses = require('./courseModel');
+const authRequired = require('../middleware/authRequired');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Courses.getCourses()
     .then((courses) => {
       res.status(200).json(courses);
@@ -13,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:name', function (req, res) {
+router.get('/:name', authRequired, function (req, res) {
   const name = String(req.params.name);
   Courses.findByName(name)
     .then((course) => {
@@ -28,7 +29,7 @@ router.get('/:name', function (req, res) {
     });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authRequired, async (req, res) => {
   const course = req.body;
   if (course) {
     const subject = course.subject;
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const { subject } = req.body;
   Courses.findByName(subject)
     .then((course) => {
@@ -80,7 +81,7 @@ router.put('/', (req, res) => {
     });
 });
 
-router.delete('/:name', (req, res) => {
+router.delete('/:name', authRequired, (req, res) => {
   const name = req.params.name;
   try {
     Courses.findByName(name).then((course) => {

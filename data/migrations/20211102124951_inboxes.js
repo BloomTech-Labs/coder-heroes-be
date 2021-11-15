@@ -4,10 +4,10 @@ exports.up = (knex) => {
       table.increments('id');
 
       table
-        .integer('user_id')
+        .string('user_id')
         .unsigned()
         .notNullable()
-        .references('key')
+        .references('okta')
         .inTable('profiles')
         .onDelete('CASCADE');
     })

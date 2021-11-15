@@ -1,9 +1,9 @@
 const express = require('express');
-// const authRequired = require('../middleware/authRequired');
+const authRequired = require('../middleware/authRequired');
 const Parents = require('./parentModel');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Parents.getParents()
     .then((parentlist) => {
       res.status(200).json(parentlist);
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
   Parents.findByParentId(id)
     .then((parent) => {
@@ -29,7 +29,7 @@ router.get('/:id', function (req, res) {
     });
 });
 
-router.get('/:id/children', function (req, res) {
+router.get('/:id/children', authRequired, function (req, res) {
   const id = req.params.id;
   Parents.getParentChildren(id)
     .then((children) => {
@@ -44,7 +44,7 @@ router.get('/:id/children', function (req, res) {
     });
 });
 
-router.get('/:id/schedules', function (req, res) {
+router.get('/:id/schedules', authRequired, function (req, res) {
   const { id } = req.params;
   Parents.getChildSchedules(id)
     .then((schedules) => {
@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
   if (parent) {
     const { user_id } = parent;
     try {
-      await Parents.findByUserId(user_id).then(async (user) => {
+      await Parents.findByOkta(user_id).then(async (user) => {
         if (user.length === 0) {
           await Parents.addParent(parent).then((inserted) =>
             res
@@ -84,11 +84,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const parent = req.body;
   if (parent) {
     const { user_id } = parent;
-    Parents.findByUserId(user_id)
+    Parents.findByOkta(user_id)
       .then(
         Parents.updateParent(user_id, parent)
           .then((updated) => {
@@ -114,7 +114,7 @@ router.put('/', (req, res) => {
 });
 
 //admin permissions
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authRequired, (req, res) => {
   const id = req.params.id;
   try {
     Parents.findByParentId(id).then((parent) => {
