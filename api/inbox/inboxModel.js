@@ -2,7 +2,7 @@ const db = require('../../data/db-config');
 
 const getInboxes = async () => {
   return await db('inboxes')
-    .leftJoin('profiles', 'inboxes.user_id', 'profiles.key')
+    .leftJoin('profiles', 'inboxes.user_id', 'profiles.okta')
     .innerJoin('messages', 'inboxes.id', 'messages.inbox_id');
 };
 

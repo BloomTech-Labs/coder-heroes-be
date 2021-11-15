@@ -1,9 +1,9 @@
 const express = require('express');
-// const authRequired = require('../middleware/authRequired');
+const authRequired = require('../middleware/authRequired');
 const Newsfeed = require('./newsfeedModel');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Newsfeed.getNewsfeed()
     .then((newsfeedList) => {
       res.status(200).json(newsfeedList);
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
   Newsfeed.findByNewsfeedId(id)
     .then((newsfeed) => {
@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const newsfeed = req.body;
   if (newsfeed) {
     const { id } = newsfeed;

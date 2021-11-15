@@ -1,8 +1,9 @@
 const express = require('express');
 const Children = require('./childrenModel');
+const authRequired = require('../middleware/authRequired');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Children.getChildren()
     .then((child) => {
       res.status(200).json(child);
@@ -13,12 +14,11 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', authRequired, function (req, res) {
   const id = req.params.id;
   Children.findByChildId(id)
     .then((child) => {
       if (child && Object.keys(child).length !== 0) {
-        //need to return this way because the array will always return something and never not exist
         res.status(200).json(child);
       } else {
         res.status(404).json({ error: 'Child not found' });
@@ -29,7 +29,7 @@ router.get('/:id', function (req, res) {
     });
 });
 
-router.get('/:id/enrollments', function (req, res) {
+router.get('/:id/enrollments', authRequired, function (req, res) {
   const { id } = req.params;
   Children.getEnrolledCourses(id)
     .then((schedules) => {
@@ -44,7 +44,7 @@ router.get('/:id/enrollments', function (req, res) {
     });
 });
 
-router.post('/:id/enrollments', async (req, res) => {
+router.post('/:id/enrollments', authRequired, async (req, res) => {
   const course = req.body;
   if (course) {
     const { child_id, schedule_id } = course;
@@ -79,7 +79,7 @@ router.post('/', async (req, res) => {
   if (child) {
     const { user_id } = child;
     try {
-      await Children.findByUserId(user_id).then(async (exists) => {
+      await Children.findByOkta(user_id).then(async (exists) => {
         if (exists.length === 0) {
           await Children.addChild(child).then((added) =>
             res.status(200).json({
@@ -100,7 +100,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const child = req.body;
   if (child) {
     const { id } = child;
@@ -129,7 +129,7 @@ router.put('/', (req, res) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authRequired, (req, res) => {
   const id = req.params.id;
   try {
     Children.findByChildId(id).then((child) => {
@@ -148,7 +148,7 @@ router.delete('/:id', (req, res) => {
   }
 });
 
-router.put('/enrollments', (req, res) => {
+router.put('/enrollments', authRequired, (req, res) => {
   const enrollment = req.body;
   if (enrollment) {
     const { id } = enrollment;
@@ -175,7 +175,7 @@ router.put('/enrollments', (req, res) => {
   }
 });
 
-router.delete('/enrollments/:id', function (req, res) {
+router.delete('/enrollments/:id', authRequired, function (req, res) {
   const { id } = req.params;
   try {
     Children.checkEnrolledExists(id).then((course) => {

@@ -4,20 +4,20 @@ const getInstructors = async () => {
   return await db('instructors').leftJoin(
     'profiles',
     'instructors.user_id',
-    'profiles.key'
+    'profiles.okta'
   );
 };
 
 const findByInstructorId = async (id) => {
   return db('instructors')
-    .leftJoin('profiles', 'instructors.user_id', 'profiles.key')
+    .leftJoin('profiles', 'instructors.user_id', 'profiles.okta')
     .where('instructors.id', id);
 };
 
-const findByUserId = async (id) => {
+const findByOkta = async (okta) => {
   return db('instructors')
-    .leftJoin('profiles', 'instructors.user_id', 'profiles.key')
-    .where('instructors.user_id', id);
+    .leftJoin('profiles', 'instructors.user_id', 'profiles.okta')
+    .where('instructors.user_id', okta);
 };
 
 const findInstructorCourses = async (id) => {
@@ -42,7 +42,7 @@ const removeInstructor = async (id) => {
 module.exports = {
   getInstructors,
   findByInstructorId,
-  findByUserId,
+  findByOkta,
   findInstructorCourses,
   addInstructor,
   updateInstructor,

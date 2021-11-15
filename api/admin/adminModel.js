@@ -4,20 +4,20 @@ const getAdmins = async () => {
   return await db('admins').leftJoin(
     'profiles',
     'admins.user_id',
-    'profiles.key'
+    'profiles.okta'
   );
 };
 
 const findByAdminId = async (id) => {
   return db('admins')
-    .leftJoin('profiles', 'admins.user_id', 'profiles.key')
+    .leftJoin('profiles', 'admins.user_id', 'profiles.okta')
     .where('admins.id', id);
 };
 
-const findByUserId = async (id) => {
+const findByOkta = async (okta) => {
   return db('admins')
-    .leftJoin('profiles', 'admins.user_id', 'profiles.key')
-    .where('admins.user_id', id);
+    .leftJoin('profiles', 'admins.user_id', 'profiles.okta')
+    .where('admins.user_id', okta);
 };
 
 const addAdmin = async (admin) => {
@@ -35,7 +35,7 @@ const removeAdmin = async (id) => {
 module.exports = {
   getAdmins,
   findByAdminId,
-  findByUserId,
+  findByOkta,
   addAdmin,
   updateAdmin,
   removeAdmin,

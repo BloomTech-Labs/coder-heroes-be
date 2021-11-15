@@ -1,9 +1,9 @@
 const express = require('express');
-// const authRequired = require('../middleware/authRequired');
+const authRequired = require('../middleware/authRequired');
 const Instructors = require('./instructorModel');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Instructors.getInstructors()
     .then((instructorlist) => {
       res.status(200).json(instructorlist);
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
   Instructors.findByInstructorId(id)
     .then((instructor) => {
@@ -29,7 +29,7 @@ router.get('/:id', function (req, res) {
     });
 });
 
-router.get('/:id/courses', function (req, res) {
+router.get('/:id/courses', authRequired, function (req, res) {
   const id = String(req.params.id);
   Instructors.findInstructorCourses(id)
     .then((courses) => {
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
   if (instructor) {
     const { user_id } = instructor;
     try {
-      await Instructors.findByUserId(user_id).then(async (user) => {
+      await Instructors.findByOkta(user_id).then(async (user) => {
         if (user.length === 0) {
           await Instructors.addInstructor(instructor).then((inserted) =>
             res
@@ -69,7 +69,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const instructor = req.body;
   if (instructor) {
     const { id } = instructor;

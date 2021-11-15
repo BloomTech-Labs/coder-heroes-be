@@ -1,9 +1,9 @@
 const express = require('express');
-// const authRequired = require('../middleware/authRequired');
+const authRequired = require('../middleware/authRequired');
 const Admins = require('./adminModel');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Admins.getAdmins()
     .then((adminList) => {
       res.status(200).json(adminList);
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
   Admins.findByAdminId(id)
     .then((admin) => {
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   if (admin) {
     const { user_id } = admin;
     try {
-      await Admins.findByUserId(user_id).then(async (user) => {
+      await Admins.findByOkta(user_id).then(async (user) => {
         if (user.length === 0) {
           await Admins.addAdmin(admin).then((inserted) =>
             res
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const admin = req.body;
   if (admin) {
     const { id } = admin;
@@ -83,7 +83,7 @@ router.put('/', (req, res) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authRequired, (req, res) => {
   const id = req.params.id;
   try {
     Admins.findByAdminId(id).then((admin) => {
