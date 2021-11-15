@@ -45,6 +45,13 @@ const updateChild = async (id, child) => {
   return await db('children').where({ id }).update(child).returning('*');
 };
 
+const updateEnrollment = async (id, enrollment) => {
+  return await db('enrollments')
+    .where({ id })
+    .update(enrollment)
+    .returning('*');
+};
+
 const removeChild = async (id) => {
   return await db('children').where({ id }).del();
 };
@@ -65,4 +72,5 @@ module.exports = {
   removeCourse,
   updateChild,
   removeChild,
+  updateEnrollment,
 };

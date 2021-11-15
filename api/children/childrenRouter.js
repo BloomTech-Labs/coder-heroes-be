@@ -148,6 +148,33 @@ router.delete('/:id', (req, res) => {
   }
 });
 
+router.put('/enrollments', (req, res) => {
+  const enrollment = req.body;
+  if (enrollment) {
+    const { id } = enrollment;
+    Children.updateEnrollment(id, enrollment)
+      .then((updated) => {
+        res.status(200).json({
+          message: `Enrollment with id: ${id} updated`,
+          enrollment: updated[0],
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          message: `Could not update enrollment '${id}'`,
+          error: err.message,
+        });
+      })
+
+      .catch((err) => {
+        res.status(404).json({
+          message: `Could not find enrollment '${id}'`,
+          error: err.message,
+        });
+      });
+  }
+});
+
 router.delete('/enrollments/:id', function (req, res) {
   const { id } = req.params;
   try {
