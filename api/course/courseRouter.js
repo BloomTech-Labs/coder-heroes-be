@@ -35,6 +35,7 @@ router.post('/', authRequired, async (req, res) => {
     const subject = course.subject;
     try {
       await Courses.findByName(subject).then(async (exists) => {
+        console.log(exists);
         if (exists.length === 0) {
           await Courses.addCourse(course).then((inserted) =>
             res.status(200).json({

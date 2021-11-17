@@ -103,7 +103,7 @@ router.put('/', authRequired, (req, res) => {
     })
     .catch((err) => {
       res.status(404).json({
-        message: `Could not find course: '${user_id}'`,
+        message: `Could not find user: '${user_id}'`,
         error: err.message,
       });
     });

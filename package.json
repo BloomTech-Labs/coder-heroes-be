@@ -6,8 +6,8 @@
   "repository": "github:Lambda-School-Labs/labs-api-starter",
   "scripts": {
     "start": "node server.js",
-    "migrate": "knex migrate:latest",
-    "rollback": "knex migrate:rollback",
+    "migrate": "knex migrate:latest --knexfile config/knexfile.js",
+    "rollback": "knex migrate:rollback --knexfile config/knexfile.js",
     "watch:dev": "nodemon",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
@@ -15,7 +15,11 @@
     "knex": "npx knex --knexfile config/knexfile.js",
     "tests": "npx jest",
     "coverage": "CI=true npx jest --coverage --detectOpenHandles --forceExit",
-    "seed": "knex seed:run"
+    "seed": "knex seed:run",
+    "migrateh": "heroku run knex migrate:latest -a coder-heroes-api --knexfile config/knexfile.js",
+    "rollbackh": "heroku run knex migrate:rollback -a coder-heroes-api --knexfile config/knexfile.js",
+    "databaseh": "heroku pg:psql -a coder-heroes-api",
+    "deploy": "git push heroku main"
   },
   "lint-staged": {
     "api/**/*.js": [
