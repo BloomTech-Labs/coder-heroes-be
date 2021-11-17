@@ -1,9 +1,9 @@
 const express = require('express');
-// const authRequired = require('../middleware/authRequired');
+const authRequired = require('../middleware/authRequired');
 const Schedules = require('./scheduleModel');
 const router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/', authRequired, function (req, res) {
   Schedules.getSchedules()
     .then((scheduleList) => {
       res.status(200).json(scheduleList);
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
   Schedules.findByScheduleId(id)
     .then((schedule) => {
@@ -66,7 +66,7 @@ router.post('/sessions', async (req, res) => {
   }
 });
 
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const schedule = req.body;
   if (schedule) {
     const { id } = schedule;

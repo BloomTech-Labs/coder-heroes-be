@@ -6,14 +6,14 @@ const getChildren = async () => {
 
 const findByChildId = async (id) => {
   return db('children')
-    .leftJoin('profiles', 'children.user_id', 'profiles.key')
+    .leftJoin('profiles', 'children.user_id', 'profiles.okta')
     .where('children.id', id);
 };
 
-const findByUserId = async (id) => {
+const findByOkta = async (okta) => {
   return db('children')
-    .leftJoin('profiles', 'children.user_id', 'profiles.key')
-    .where('children.user_id', id);
+    .leftJoin('profiles', 'children.user_id', 'profiles.okta')
+    .where('children.user_id', okta);
 };
 
 const checkEnrolled = async (child_id, schedule_id) => {
@@ -67,7 +67,7 @@ module.exports = {
   checkEnrolledExists,
   checkEnrolled,
   findByChildId,
-  findByUserId,
+  findByOkta,
   addChild,
   removeCourse,
   updateChild,

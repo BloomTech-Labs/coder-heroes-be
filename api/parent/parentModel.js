@@ -4,20 +4,20 @@ const getParents = async () => {
   return await db('parents').leftJoin(
     'profiles',
     'parents.user_id',
-    'profiles.key'
+    'profiles.okta'
   );
 };
 
 const findByParentId = async (id) => {
   return db('parents')
-    .leftJoin('profiles', 'parents.user_id', 'profiles.key')
+    .leftJoin('profiles', 'parents.user_id', 'profiles.okta')
     .where('parents.id', id);
 };
 
-const findByUserId = async (id) => {
+const findByOkta = async (okta) => {
   return db('parents')
-    .leftJoin('profiles', 'parents.user_id', 'profiles.key')
-    .where('parents.user_id', id);
+    .leftJoin('profiles', 'parents.user_id', 'profiles.okta')
+    .where('parents.user_id', okta);
 };
 
 const getParentChildren = async (id) => {
@@ -49,7 +49,7 @@ const removeParent = async (id) => {
 module.exports = {
   getParents,
   findByParentId,
-  findByUserId,
+  findByOkta,
   getParentChildren,
   getChildSchedules,
   addParent,

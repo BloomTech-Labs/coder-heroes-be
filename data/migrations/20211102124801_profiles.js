@@ -4,10 +4,10 @@ exports.up = (knex) => {
       table.increments('id');
 
       table
-        .integer('user_id')
-        .unsigned()
+        .string('user_id')
+        .unique()
         .notNullable()
-        .references('key')
+        .references('okta')
         .inTable('profiles')
         .onDelete('CASCADE');
     })
@@ -16,10 +16,10 @@ exports.up = (knex) => {
       table.increments('id');
 
       table
-        .integer('user_id')
-        .unsigned()
+        .string('user_id')
+        .unique()
         .notNullable()
-        .references('key')
+        .references('okta')
         .inTable('profiles')
         .onDelete('CASCADE');
     })
@@ -38,10 +38,10 @@ exports.up = (knex) => {
         .onDelete('CASCADE');
 
       table
-        .integer('user_id')
-        .unsigned()
+        .string('user_id')
+        .unique()
         .notNullable()
-        .references('key')
+        .references('okta')
         .inTable('profiles')
         .onDelete('CASCADE');
     })
@@ -52,10 +52,10 @@ exports.up = (knex) => {
       table.string('bio').notNullable();
 
       table
-        .integer('user_id')
-        .unsigned()
+        .string('user_id')
+        .unique()
         .notNullable()
-        .references('key')
+        .references('okta')
         .inTable('profiles')
         .onDelete('CASCADE');
     });

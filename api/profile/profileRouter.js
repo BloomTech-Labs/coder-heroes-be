@@ -109,8 +109,7 @@ router.get('/', authRequired, function (req, res) {
  *        description: 'Profile not found'
  */
 
-//2
-router.get('/:okta', function (req, res) {
+router.get('/:okta', authRequired, function (req, res) {
   const okta = String(req.params.okta);
   Profiles.findById(okta)
     .then((profile) => {
@@ -220,9 +219,7 @@ router.post('/', async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-
-//4
-router.put('/', (req, res) => {
+router.put('/', authRequired, (req, res) => {
   const profile = req.body;
   if (profile) {
     const okta = profile.okta || 0;
