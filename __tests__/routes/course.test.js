@@ -51,10 +51,10 @@ describe('courses router endpoints', () => {
   describe('POST /course', () => {
     it('Should return 200 when course is added', async () => {
       const course = {
-        subject: 'ukgjyftydrjchuhbh',
+        subject: 'CS101BA',
         description: 'New Test Course',
       };
-      Courses.findByName.mockResolvedValue();
+      Courses.findByName.mockResolvedValue([]);
       Courses.addCourse.mockResolvedValue([course]);
 
       const res = await request(server).post('/courses').send(course);
