@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
   Instructors.getInstructors()
-    .then((instructorlist) => {
-      res.status(200).json(instructorlist);
+    .then((instructorList) => {
+      res.status(200).json(instructorList);
     })
     .catch((err) => {
       console.log(err);

@@ -167,7 +167,6 @@ router.post('/', async (req, res) => {
     try {
       await Profiles.findById(okta).then(async (pf) => {
         if (pf == undefined) {
-          //profile not found so lets insert it
           await Profiles.create(profile).then((profile) =>
             res
               .status(200)

@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
   Parents.getParents()
-    .then((parentlist) => {
-      res.status(200).json(parentlist);
+    .then((parentList) => {
+      res.status(200).json(parentList);
     })
     .catch((err) => {
       console.log(err);
@@ -113,7 +113,6 @@ router.put('/', authRequired, (req, res) => {
   }
 });
 
-//admin permissions
 router.delete('/:id', authRequired, (req, res) => {
   const id = req.params.id;
   try {
