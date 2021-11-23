@@ -1,8 +1,4 @@
 const db = require('../../data/db-config');
-// id:
-// title:
-// link:
-// description:
 
 const getNewsfeed = async () => {
   return await db('newsfeed');
