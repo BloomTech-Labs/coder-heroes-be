@@ -1,5 +1,7 @@
 <img src="https://user-images.githubusercontent.com/65091914/142253036-074f454e-62ab-445d-a30c-26e371e76e0a.png">
-Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-484c-a12f-151cb4aec1b2
+Source: https://app.dbdesigner.net/designer/schema/0-codeheroes-99ad6258-244f-484c-a12f-151cb4aec1b2  ===> `old table`
+
+Updated table Source: https://app.dbdesigner.net/designer/schema/480102
 
 [Loom Video PT1](https://www.loom.com/share/4543abe4659540698c327058362f90f3)
 [Loom Video PT2](https://www.loom.com/share/c4e8c8f38cb14fdb8ac43e6a2342f159)
