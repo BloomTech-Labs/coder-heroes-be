@@ -1,6 +1,5 @@
 const roleAuthentication = (...args) => (req, res, next) => {
   // role type is inside req.profile.body
-  //const { type } = req.profile
   const { type } = req.profile;
   let userType;
   if (type === 1) {
