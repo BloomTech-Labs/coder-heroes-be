@@ -1,13 +1,13 @@
 const db = require('../../data/db-config');
 
 const getSessions = async () => {
-  const joinedTabkes = await db('sessions as se')
+  const fullSessionInformation = await db('sessions as se')
     .join('schedules as sc', 'se.schedule_id', '=', 'sc.id')
     .join('courses as co', 'co.id', '=', 'sc.course_id')
     .join('instructors as ins', 'sc.instructor_id', '=', 'ins.id')
     .join('profiles as p', 'p.okta', '=', 'ins.user_id');
   const res = [];
-  joinedTabkes.forEach((item) => {
+  fullSessionInformation.forEach((item) => {
     res.push({
       session_id: item.id,
       course_id: item.course_id,
