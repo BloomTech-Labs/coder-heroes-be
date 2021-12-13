@@ -3,8 +3,9 @@ const db = require('../../data/db-config');
 const getAdmins = async () => {
   return await db('admins').leftJoin(
     'profiles',
-    'admins.admin_id',
-    'profiles.okta_id'
+    'admins.profile_id',
+    '=',
+    'profiles.profile_id'
   );
 };
 
