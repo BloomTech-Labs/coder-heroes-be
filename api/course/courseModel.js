@@ -1,29 +1,33 @@
 const db = require('../../data/db-config');
 
-const getCourses = async () => {
-  return await db('courses');
+const getAllCourseTypes = async () => {
+  return await db('course_types');
 };
 
-const findByName = async (subject) => {
-  return db('courses').where('subject', 'ilike', subject);
+const findBySubject = async (subject) => {
+  return db('course_types').where('subject', 'ilike', subject);
 };
 
-const addCourse = async (course) => {
-  return db('courses').insert(course).returning('*');
+const addCourseType = async (course_object) => {
+  return db('course_types').insert(course_object).returning('*');
 };
 
-const updateCourse = (subject, course) => {
-  return db('courses').where({ subject }).first().update(course).returning('*');
+const updateCourseType = (subject, course) => {
+  return db('course_types')
+    .where({ subject })
+    .first()
+    .update(course)
+    .returning('*');
 };
 
-const removeCourse = async (subject) => {
+const removeCourseType = async (subject) => {
   return await db('courses').where({ subject }).del();
 };
 
 module.exports = {
-  getCourses,
-  findByName,
-  addCourse,
-  updateCourse,
-  removeCourse,
+  getAllCourseTypes,
+  findBySubject,
+  addCourseType,
+  updateCourseType,
+  removeCourseType,
 };

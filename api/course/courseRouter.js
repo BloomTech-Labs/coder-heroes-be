@@ -4,7 +4,7 @@ const authRequired = require('../middleware/authRequired');
 const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
-  Courses.getCourses()
+  Courses.getAllCourseTypes()
     .then((courses) => {
       res.status(200).json(courses);
     })
@@ -14,14 +14,14 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:name', authRequired, function (req, res) {
+router.get('/:subject', authRequired, function (req, res) {
   const name = String(req.params.name);
-  Courses.findByName(name)
+  Courses.findBySubject(name)
     .then((course) => {
       if (course && Object.keys(course).length !== 0) {
         res.status(200).json(course);
       } else {
-        res.status(404).json({ error: 'CourseNotFound' });
+        res.status(404).json({ error: 'SubjectNotFound' });
       }
     })
     .catch((err) => {
@@ -34,10 +34,10 @@ router.post('/', authRequired, async (req, res) => {
   if (course) {
     const subject = course.subject;
     try {
-      await Courses.findByName(subject).then(async (exists) => {
+      await Courses.findBySubject(subject).then(async (exists) => {
         console.log(exists);
         if (exists.length === 0) {
-          await Courses.addCourse(course).then((inserted) =>
+          await Courses.addCourseType(course).then((inserted) =>
             res.status(200).json({
               message: 'Course created successfully!',
               course: inserted[0],
@@ -58,9 +58,9 @@ router.post('/', authRequired, async (req, res) => {
 
 router.put('/', authRequired, (req, res) => {
   const { subject } = req.body;
-  Courses.findByName(subject)
+  Courses.findBySubject(subject)
     .then((course) => {
-      Courses.updateCourse(course[0].subject, req.body)
+      Courses.updateCourseType(course[0].subject, req.body)
         .then((updated) => {
           res.status(200).json({
             message: 'Course updated successfully.',
@@ -82,11 +82,11 @@ router.put('/', authRequired, (req, res) => {
     });
 });
 
-router.delete('/:name', authRequired, (req, res) => {
+router.delete('/:subject', authRequired, (req, res) => {
   const name = req.params.name;
   try {
-    Courses.findByName(name).then((course) => {
-      Courses.removeCourse(course[0].subject).then(() => {
+    Courses.findBySubject(name).then((course) => {
+      Courses.removeCourseType(course[0].subject).then(() => {
         res.status(200).json({
           message: `course '${course[0].subject}' was deleted.`,
           course: course,
