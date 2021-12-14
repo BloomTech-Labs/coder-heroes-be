@@ -14,9 +14,9 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
-  Newsfeed.findByNewsfeedId(id)
+router.get('/:newsfeed_id', authRequired, function (req, res) {
+  const newsfeed_id = String(req.params.newsfeed_id);
+  Newsfeed.findByNewsfeedId(newsfeed_id)
     .then((newsfeed) => {
       if (newsfeed) {
         res.status(200).json(newsfeed);
@@ -50,46 +50,46 @@ router.post('/', async (req, res) => {
 router.put('/', authRequired, (req, res) => {
   const newsfeed = req.body;
   if (newsfeed) {
-    const { id } = newsfeed;
-    Newsfeed.findByNewsfeedId(id)
+    const { newsfeed_id } = newsfeed;
+    Newsfeed.findByNewsfeedId(newsfeed_id)
       .then(
-        Newsfeed.updateNewsfeed(id, newsfeed)
+        Newsfeed.updateNewsfeed(newsfeed_id, newsfeed)
           .then((updated) => {
             res.status(200).json({
-              message: `Newsfeed with id: ${id} updated`,
+              message: `Newsfeed with id: ${newsfeed_id} updated`,
               newsfeed: updated[0],
             });
           })
           .catch((err) => {
             res.status(500).json({
-              message: `Could not update Newsfeed '${id}'`,
+              message: `Could not update Newsfeed '${newsfeed_id}'`,
               error: err.message,
             });
           })
       )
       .catch((err) => {
         res.status(404).json({
-          message: `Could not find Newsfeed '${id}'`,
+          message: `Could not find Newsfeed '${newsfeed_id}'`,
           error: err.message,
         });
       });
   }
 });
 
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
+router.delete('/:newsfeed_id', (req, res) => {
+  const newsfeed_id = req.params.newsfeed_id;
   try {
-    Newsfeed.findByNewsfeedId(id).then((newsfeed) => {
-      Newsfeed.removeNewsfeed(newsfeed[0].id).then(() => {
+    Newsfeed.findByNewsfeedId(newsfeed_id).then((newsfeed) => {
+      Newsfeed.removeNewsfeed(newsfeed[0].newsfeed_id).then(() => {
         res.status(200).json({
-          message: `Newsfeed with id:'${id}' was deleted.`,
+          message: `Newsfeed with id:'${newsfeed_id}' was deleted.`,
           newsfeed: newsfeed[0],
         });
       });
     });
   } catch (err) {
     res.status(500).json({
-      message: `Could not delete Newsfeed with ID: ${id}`,
+      message: `Could not delete Newsfeed with ID: ${newsfeed_id}`,
       error: err.message,
     });
   }

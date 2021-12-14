@@ -4,20 +4,20 @@ const getNewsfeed = async () => {
   return await db('newsfeed');
 };
 
-const findByNewsfeedId = async (id) => {
-  return db('newsfeed').where({ id });
+const findByNewsfeedId = async (newsfeed_id) => {
+  return db('newsfeed').where({ newsfeed_id });
 };
 
 const addNewsfeed = async (newsfeed) => {
   return await db('newsfeed').insert(newsfeed).returning('*');
 };
 
-const updateNewsfeed = async (id, newsfeed) => {
-  return await db('newsfeed').where({ id }).update(newsfeed);
+const updateNewsfeed = async (newsfeed_id, newsfeed) => {
+  return await db('newsfeed').where({ newsfeed_id }).update(newsfeed);
 };
 
-const removeNewsfeed = async (id) => {
-  return await db('newsfeed').where({ id }).del();
+const removeNewsfeed = async (newsfeed_id) => {
+  return await db('newsfeed').where({ newsfeed_id }).del();
 };
 
 module.exports = {
