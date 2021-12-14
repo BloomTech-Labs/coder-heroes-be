@@ -18,60 +18,66 @@
 */
 const profiles = [
   {
-  email: 'Test001@maildrop.cc',
-  name: 'Test001 User',
-  okta_id: '00ulthapbErVUwVJy4x1',
-  roles: 'super_admin',
+    email: 'Test001@maildrop.cc',
+    name: 'Test001 User',
+    okta_id: '00ulthapbErVUwVJy4x1',
+    role: 'super_admin',
   },
   {
     email: 'Test002@maildrop.cc',
     name: 'Test002 User',
     okta_id: '00ulthapbErVUwVJy4x2',
-    roles: 'admin',
+    role: 'admin',
   },
   {
     email: 'Test003@maildrop.cc',
     name: 'Test003 User',
     okta_id: '00ulthapbErVUwVJy4x3',
-    roles: 'instructor',
+    role: 'instructor',
   },
   {
     email: 'Test004@maildrop.cc',
     name: 'Test004 User',
     okta_id: '00ulthapbErVUwVJy4x4',
-    roles: 'parent',
+    role: 'parent',
   },
   {
     email: 'Test005@maildrop.cc',
     name: 'Test005 User',
     okta_id: '00ulthapbErVUwVJy4x5',
-    roles: 'child',
+    role: 'child',
   },
-   {
-  email: 'Test006@maildrop.cc',
-  name: 'Test006 User',
-  okta_id: '00ulthapbErVUwVJy4x6',
-  roles: 'super_admin',
+  {
+    email: 'Test006@maildrop.cc',
+    name: 'Test006 User',
+    okta_id: '00ulthapbErVUwVJy4x6',
+    role: 'super_admin',
   },
   {
     email: 'Test007@maildrop.cc',
     name: 'Test007 User',
     okta_id: '00ulthapbErVUwVJy4x7',
-    roles: 'admin',
+    role: 'admin',
   },
   {
     email: 'Test008@maildrop.cc',
     name: 'Test008 User',
     okta_id: '00ulthapbErVUwVJy4x8',
-    roles: 'parent',
+    role: 'instructor',
   },
-    {
+  {
     email: 'Test009@maildrop.cc',
     name: 'Test009 User',
     okta_id: '00ulthapbErVUwVJy4x9',
-    roles: 'child',
+    role: 'parent',
   },
-]
+  {
+    email: 'Test010@maildrop.cc',
+    name: 'Test010 User',
+    okta_id: '00ulthapbErVUwVJy4x10',
+    role: 'child',
+  },
+];
 
 exports.seed = function (knex) {
   return knex('profiles').insert(profiles);
