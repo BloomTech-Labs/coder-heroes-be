@@ -1,16 +1,20 @@
 const roleAuthentication = (...args) => (req, res, next) => {
   // role type is inside req.profile.body
-  const { type } = req.profile;
-  let userType;
-  if (type === 1) {
-    userType = 'instructor';
-  } else if (type === 2) {
-    userType = 'parent';
-  } else if (type === 3) {
-    userType = 'admin';
+  const { role } = req.profile;
+  let user_role;
+  if (role === 1) {
+    user_role = 'super_admin';
+  } else if (role === 2) {
+    user_role = 'admin';
+  } else if (role === 3) {
+    user_role = 'instructor';
+  } else if (role === 4) {
+    user_role = 'parent';
+  } else if (role === 5) {
+    user_role = 'child';
   }
   //check to see if role matcheds the role that have access to the endpoint
-  if ([...args].includes(userType)) {
+  if ([...args].includes(user_role)) {
     next();
   } else {
     res.status(404).json({ error: 'No Access' });
