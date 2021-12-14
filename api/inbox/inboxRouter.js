@@ -14,9 +14,9 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:okta', authRequired, function (req, res) {
-  const okta = req.params.okta;
-  Inboxes.findByUserId(okta)
+router.get('/:profile_id', authRequired, function (req, res) {
+  const profile_id = req.params.profile_id;
+  Inboxes.findByProfileId(profile_id)
     .then((inbox) => {
       if (inbox && Object.keys(inbox).length !== 0) {
         res.status(200).json(inbox);
@@ -32,9 +32,9 @@ router.get('/:okta', authRequired, function (req, res) {
 router.post('/', async (req, res) => {
   const inbox = req.body;
   if (inbox) {
-    const { user_id } = inbox;
+    const { profile_id } = inbox;
     try {
-      await Inboxes.findByUserId(user_id).then(async (exists) => {
+      await Inboxes.findByProfileId(profile_id).then(async (exists) => {
         if (exists.length === 0) {
           await Inboxes.addInbox(inbox).then((inserted) =>
             res.status(200).json({
@@ -84,10 +84,10 @@ router.post('/messages', authRequired, async (req, res) => {
 });
 
 router.put('/', authRequired, (req, res) => {
-  const { user_id } = req.body;
-  Inboxes.findByUserId(user_id)
+  const { profile_id } = req.body;
+  Inboxes.findByProfileId(profile_id)
     .then((inbox) => {
-      Inboxes.updateInbox(inbox[0].user_id, req.body)
+      Inboxes.updateInbox(inbox[0].profile_id, req.body)
         .then((updated) => {
           res.status(200).json({
             message: 'Inbox updated successfully.',
@@ -96,33 +96,33 @@ router.put('/', authRequired, (req, res) => {
         })
         .catch((err) => {
           res.status(500).json({
-            message: `Could not update inbox: '${user_id}'.`,
+            message: `Could not update inbox: '${profile_id}'.`,
             error: err.message,
           });
         });
     })
     .catch((err) => {
       res.status(404).json({
-        message: `Could not find user: '${user_id}'`,
+        message: `Could not find user: '${profile_id}'`,
         error: err.message,
       });
     });
 });
 
-router.delete('/:okta', (req, res) => {
-  const okta = req.params.okta;
+router.delete('/:profile_id', (req, res) => {
+  const profile_id = req.params.profile_id;
   try {
-    Inboxes.findByUserId(okta).then((inbox) => {
-      Inboxes.removeInbox(inbox[0].user_id).then(() => {
+    Inboxes.findByProfileId(profile_id).then((inbox) => {
+      Inboxes.removeInbox(inbox[0].profile_id).then(() => {
         res.status(200).json({
-          message: `Inbox with user_id: '${inbox[0].user_id}' was deleted.`,
+          message: `Inbox with profile_id: '${inbox[0].profile_id}' was deleted.`,
           inbox: inbox,
         });
       });
     });
   } catch (err) {
     res.status(500).json({
-      message: `Could not delete inbox with user_id: ${okta}.`,
+      message: `Could not delete inbox with profile_id: ${profile_id}.`,
       error: err.message,
     });
   }
