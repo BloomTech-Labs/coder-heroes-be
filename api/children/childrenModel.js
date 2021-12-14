@@ -6,31 +6,25 @@ const getChildren = async () => {
 
 const findByChildId = async (id) => {
   return db('children')
-    .leftJoin('profiles', 'children.user_id', 'profiles.okta')
-    .where('children.id', id);
+    .leftJoin('profiles', 'child_id', 'profiles.okta_id')
+    .where('children.profile_id', id);
 };
 
-const findByOkta = async (okta) => {
-  return db('children')
-    .leftJoin('profiles', 'children.user_id', 'profiles.okta')
-    .where('children.user_id', okta);
-};
-
-const checkEnrolled = async (child_id, schedule_id) => {
+const checkEnrolled = async (child_id, enrollments_id) => {
   return await db('enrollments')
     .where('child_id', child_id)
-    .where('schedule_id', schedule_id);
+    .where('enrollments_id', enrollments_id);
 };
 
-const checkEnrolledExists = async (id) => {
-  return await db('enrollments').where({ id });
+const checkEnrolledExists = async (enrollments_id) => {
+  return await db('enrollments').where({ enrollments_id });
 };
 
 const getEnrolledCourses = async (id) => {
   return await db('children')
-    .leftJoin('enrollments', 'children.id', 'enrollments.child_id')
-    .leftJoin('schedules', 'enrollments.schedule_id', 'schedules.id')
-    .where('children.id', id);
+    .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
+    .leftJoin('classes', 'enrollments.class_id', 'schedules.class_id')
+    .where('children.profile_id', id);
 };
 
 const addEnrolledCourse = async (course) => {
@@ -41,8 +35,8 @@ const addChild = async (child) => {
   return db('children').insert(child).returning('*');
 };
 
-const updateChild = async (id, child) => {
-  return await db('children').where({ id }).update(child).returning('*');
+const updateChild = async (child_id, child) => {
+  return await db('children').where({ child_id }).update(child).returning('*');
 };
 
 const updateEnrollment = async (id, enrollment) => {
@@ -52,12 +46,12 @@ const updateEnrollment = async (id, enrollment) => {
     .returning('*');
 };
 
-const removeChild = async (id) => {
-  return await db('children').where({ id }).del();
+const removeChild = async (child_id) => {
+  return await db('children').where({ child_id }).del();
 };
 
-const removeCourse = async (id) => {
-  return await db('enrollments').where({ id }).del();
+const removeCourse = async (enrollments_id) => {
+  return await db('enrollments').where({ enrollments_id }).del();
 };
 
 module.exports = {
@@ -67,7 +61,6 @@ module.exports = {
   checkEnrolledExists,
   checkEnrolled,
   findByChildId,
-  findByOkta,
   addChild,
   removeCourse,
   updateChild,
