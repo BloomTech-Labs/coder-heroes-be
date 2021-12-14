@@ -1,29 +1,33 @@
 const db = require('../../data/db-config');
 
-const findUserData = async (type, id) => {
-  if (type === 1) {
+const findUserData = async (role, profile_id) => {
+  if (role === 'super_admin') {
     return db('profiles')
-      .leftJoin('admins', 'profiles.okta_id', 'admins.profile_id')
-      .where('okta_id', id);
-  } else if (type === 2) {
+      .leftJoin('super_admins', 'profiles.profile_id', 'admins.profile_id')
+      .where('profile_id', profile_id);
+  } else if (role === 'admin') {
     return db('profiles')
-      .leftJoin('parents', 'profiles.okta_id_id', 'parents.profile_id')
-      .where('okta_id', id);
-  } else if (type === 3) {
+      .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
+      .where('profile_id', profile_id);
+  } else if (role === 'instructor') {
     return db('profiles')
-      .leftJoin('instructors', 'profiles.okta_id', 'instructors.profile_id')
-      .where('okta_id', id);
-  } else if (type === 4) {
+      .leftJoin('instructors', 'profiles.profile_id', 'instructors.profile_id')
+      .where('profile_id', profile_id);
+  } else if (role === 'parent') {
     return db('profiles')
-      .leftJoin('children', 'profiles.okta_id', 'children.profile_id')
-      .where('okta_id', id);
+      .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
+      .where('profile_id', profile_id);
+  } else if (role === 'child') {
+    return db('profiles')
+      .leftJoin('children', 'profiles.profile_id', 'children.profile_id')
+      .where('profile_id', profile_id);
   }
 };
 
 const getInbox = (okta) => {
   return db('profiles')
-    .leftJoin('inboxes', 'profiles.okta_id', 'inboxes.user_id')
-    .leftJoin('messages', 'inboxes.id', 'messages.inbox_id')
+    .leftJoin('inboxes', 'profiles.profile_id', 'inboxes.profile_id')
+    .leftJoin('messages', 'inboxes.inbox_id', 'messages.inbox_id')
     .where({ okta });
 };
 
