@@ -33,15 +33,15 @@ const getInbox = (okta) => {
 
 const getSchedule = (okta) => {
   return db('profiles')
-    .leftJoin('parents', 'profiles.okta_id', 'parents.profile_id')
+    .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
     .leftJoin('classes', 'enrollments.class_id', 'classes.class_id')
-    .where('profiles.okta_id', okta);
+    .where('profiles.profile_id', okta);
 };
 
 const updateUserData = (id, profile) => {
-  return db('profiles').where('okta_id', id).update(profile).returning('*');
+  return db('profiles').where('profile_id', id).update(profile).returning('*');
 };
 
 module.exports = {
