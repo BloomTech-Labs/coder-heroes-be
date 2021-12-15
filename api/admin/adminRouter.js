@@ -2,6 +2,7 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Admins = require('./adminModel');
 const router = express.Router();
+const { checkAdminExist, checkPayload } = require('./adminMiddleware');
 
 router.get('/', authRequired, function (req, res) {
   Admins.getAdmins()
@@ -13,93 +14,44 @@ router.get('/', authRequired, function (req, res) {
       res.status(500).json({ message: err.message });
     });
 });
-
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
-  Admins.findByAdminId(id)
-    .then((admin) => {
-      if (admin) {
-        res.status(200).json(admin);
-      } else {
-        res.status(404).json({ error: 'AdminNotFound' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
-});
-
-router.post('/', async (req, res) => {
-  const admin = req.body;
-  if (admin) {
-    const { user_id } = admin;
-    try {
-      await Admins.findByOkta(user_id).then(async (user) => {
-        if (user.length === 0) {
-          await Admins.addAdmin(admin).then((inserted) =>
-            res
-              .status(200)
-              .json({ message: 'Admin added.', admin: inserted[0] })
-          );
-        } else {
-          res.status(400).json({ message: 'Admin already exists.' });
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
-    }
-  } else {
-    res.status(404).json({ message: 'Admin details missing.' });
+router.get('/:id', checkAdminExist, authRequired, function (req, res, next) {
+  try {
+    res.status(200).json(req.admin);
+  } catch (error) {
+    next(error);
   }
 });
 
-router.put('/', authRequired, (req, res) => {
-  const admin = req.body;
-  if (admin) {
-    const { id } = admin;
-    Admins.findByAdminId(id)
-      .then(
-        Admins.updateAdmin(id, admin)
-          .then((updated) => {
-            res.status(200).json({
-              message: `Admin with id: ${id} updated`,
-              admin: updated[0],
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update admin '${id}'`,
-              error: err.message,
-            });
-          })
-      )
-      .catch((err) => {
-        res.status(404).json({
-          message: `Could not find admin '${id}'`,
-          error: err.message,
-        });
-      });
+router.post('/', checkPayload, async (req, res, next) => {
+  try {
+    const newadmin = await Admins.addAdmin(req.body);
+    res.status(201).json(newadmin);
+  } catch (error) {
+    next({ status: 400, message: 'could not create new admin profile' });
   }
 });
 
-router.delete('/:id', authRequired, (req, res) => {
+router.put('/:id', checkAdminExist, authRequired, async (req, res) => {
+  const id = req.params.id;
+  const { profile_id } = req.admin;
+  const updaedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
+  res.status(200).json(updaedAdmin);
+});
+
+router.delete('/:id', checkAdminExist, authRequired, async (req, res, next) => {
   const id = req.params.id;
   try {
-    Admins.findByAdminId(id).then((admin) => {
-      Admins.removeAdmin(admin[0].id).then(() => {
-        res.status(200).json({
-          message: `Admin with id:'${id}' was deleted.`,
-          admin: admin[0],
-        });
-      });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete admin with ID: ${id}`,
-      error: err.message,
-    });
+    const deletedAdmin = await Admins.removeAdmin(id);
+    res.status(200).json(deletedAdmin);
+  } catch (error) {
+    next(error);
   }
 });
+
+router.use('*', errorhandler);
+//eslint-disable-next-line
+function errorhandler(err, req, res, next) {
+  res.status(err.status || 500).json(err.message);
+}
 
 module.exports = router;
