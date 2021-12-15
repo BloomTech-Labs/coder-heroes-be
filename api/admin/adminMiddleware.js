@@ -23,6 +23,8 @@ const checkPayload = (req, res, next) => {
 
   if (okta_id === '' || okta_id === undefined) {
     next({ status: 404, message: 'okta_id is required' });
+  } else {
+    next();
   }
 };
 

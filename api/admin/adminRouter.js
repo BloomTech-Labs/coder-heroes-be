@@ -22,7 +22,7 @@ router.get('/:id', checkAdminExist, authRequired, function (req, res, next) {
   }
 });
 
-router.post('/', checkPayload, async (req, res, next) => {
+router.post('/', checkPayload, authRequired, async (req, res, next) => {
   try {
     const newadmin = await Admins.addAdmin(req.body);
     res.status(201).json(newadmin);
@@ -31,11 +31,18 @@ router.post('/', checkPayload, async (req, res, next) => {
   }
 });
 
-router.put('/:id', checkAdminExist, authRequired, async (req, res) => {
-  const id = req.params.id;
-  const { profile_id } = req.admin;
-  const updaedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
-  res.status(200).json(updaedAdmin);
+router.put('/:id', checkAdminExist, authRequired, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { profile_id } = req.admin;
+    const updaedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
+    res.status(200).json(updaedAdmin);
+  } catch (error) {
+    next({
+      status: 400,
+      message: 'soemthing went wrong while updating admin profile',
+    });
+  }
 });
 
 router.delete('/:id', checkAdminExist, authRequired, async (req, res, next) => {
