@@ -1,5 +1,5 @@
 exports.seed = function (knex) {
-  return knex('courses').insert([
+  return knex('course_types').insert([
     {
       subject: 'CS101',
       description: 'Computer Science fundamentals.',
