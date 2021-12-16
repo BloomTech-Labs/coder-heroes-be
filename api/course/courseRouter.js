@@ -2,103 +2,94 @@ const express = require('express');
 const Courses = require('./courseModel');
 const authRequired = require('../middleware/authRequired');
 const router = express.Router();
+const {
+  checkCoursePyload,
+  checkIfCourseIsUnique,
+} = require('./courseMiddleware');
 
-router.get('/', authRequired, function (req, res) {
-  Courses.getAllCourseTypes()
-    .then((courses) => {
-      res.status(200).json(courses);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
-
-router.get('/:subject', authRequired, function (req, res) {
-  const name = String(req.params.name);
-  Courses.findBySubject(name)
-    .then((course) => {
-      if (course && Object.keys(course).length !== 0) {
-        res.status(200).json(course);
-      } else {
-        res.status(404).json({ error: 'SubjectNotFound' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
-});
-
-router.post('/', authRequired, async (req, res) => {
-  const course = req.body;
-  if (course) {
-    const subject = course.subject;
-    try {
-      await Courses.findBySubject(subject).then(async (exists) => {
-        console.log(exists);
-        if (exists.length === 0) {
-          await Courses.addCourseType(course).then((inserted) =>
-            res.status(200).json({
-              message: 'Course created successfully!',
-              course: inserted[0],
-            })
-          );
-        } else {
-          res.status(400).json({ message: 'Course already exists.' });
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
-    }
-  } else {
-    res.status(404).json({ message: 'Course details missing.' });
-  }
-});
-
-router.put('/', authRequired, (req, res) => {
-  const { subject } = req.body;
-  Courses.findBySubject(subject)
-    .then((course) => {
-      Courses.updateCourseType(course[0].subject, req.body)
-        .then((updated) => {
-          res.status(200).json({
-            message: 'Course updated successfully.',
-            course: updated[0],
-          });
-        })
-        .catch((err) => {
-          res.status(500).json({
-            message: `Could not update course: '${subject}'.`,
-            error: err.message,
-          });
-        });
-    })
-    .catch((err) => {
-      res.status(404).json({
-        message: `Could not find course: '${subject}'`,
-        error: err.message,
-      });
-    });
-});
-
-router.delete('/:subject', authRequired, (req, res) => {
-  const name = req.params.name;
+router.get('/', authRequired, async function (req, res, next) {
   try {
-    Courses.findBySubject(name).then((course) => {
-      Courses.removeCourseType(course[0].subject).then(() => {
-        res.status(200).json({
-          message: `course '${course[0].subject}' was deleted.`,
-          course: course,
-        });
-      });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete course with name: ${name}.`,
-      error: err.message,
-    });
+    const courses = await Courses.getAllCourseTypes();
+    res.status(200).json(courses);
+  } catch (error) {
+    next(error);
   }
 });
+
+//get  avalible course by subject name ==> this can be used by front end for making search bar too look for cource suing its name
+router.get('/:subject', authRequired, async function (req, res, next) {
+  const subject = req.params.subject;
+  try {
+    const course = await Courses.findBySubject(subject);
+    if (course) {
+      res.status(200).json(course);
+    } else {
+      next({
+        status: 404,
+        message: 'Course with subject  ( ' + subject + ' ) not found .',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post(
+  '/',
+  authRequired,
+  checkCoursePyload,
+  checkIfCourseIsUnique,
+  async (req, res, next) => {
+    try {
+      const newCourse = await Courses.addCourseType(req.body);
+      res.status(201).json(newCourse);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.put('/', authRequired, checkCoursePyload, async (req, res, next) => {
+  const subject = req.body.subject;
+  const course = await Courses.findBySubject(subject);
+  try {
+    if (course) {
+      await Courses.updateCourseType(course.subject, req.body);
+      const updatedCourse = await Courses.findBySubject(subject);
+      res.status(200).json(updatedCourse);
+    } else {
+      next({
+        status: 404,
+        message: 'course with subject ( ' + subject + ' ) not found .',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete('/:subject', authRequired, async (req, res, next) => {
+  const subject = req.params.subject;
+  try {
+    const course = await Courses.findBySubject(subject);
+    if (course) {
+      const deletedCourse = await Courses.removeCourseType(subject);
+      res.status(200).json(deletedCourse);
+    } else {
+      next({
+        status: 404,
+        message: 'course with subject ( ' + subject + ' ) not found .',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.use('*', errorhandler);
+//eslint-disable-next-line
+function errorhandler(err, req, res, next) {
+  res.status(err.status || 500).json(err.message);
+}
 
 module.exports = router;

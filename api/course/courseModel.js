@@ -5,23 +5,22 @@ const getAllCourseTypes = async () => {
 };
 
 const findBySubject = async (subject) => {
-  return db('course_types').where('subject', 'ilike', subject);
+  return db('course_types').where('subject', subject).first();
 };
 
 const addCourseType = async (course_object) => {
-  return db('course_types').insert(course_object).returning('*');
+  await db('course_types').insert(course_object);
+  return await findBySubject(course_object.subject);
 };
 
 const updateCourseType = (subject, course) => {
-  return db('course_types')
-    .where({ subject })
-    .first()
-    .update(course)
-    .returning('*');
+  return db('course_types').where('subject', subject).update(course);
 };
 
 const removeCourseType = async (subject) => {
-  return await db('courses').where({ subject }).del();
+  const deletedCourse = await findBySubject(subject);
+  await db('course_types').where({ subject }).del();
+  return deletedCourse;
 };
 
 module.exports = {
