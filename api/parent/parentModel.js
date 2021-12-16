@@ -33,11 +33,13 @@ const addParent = async (parent) => {
 };
 
 const updateParent = async (parent_id, parent) => {
-  return await db('parents').where({ parent_id }).update(parent);
+  return await db('parents')
+    .where('parents.parent_id', parent_id)
+    .update(parent);
 };
 
-const removeParent = async (parent_id) => {
-  return await db('parents').where({ parent_id }).del();
+const removeParent = async (profile_id) => {
+  return await db('parents').where('parents.profile_id', profile_id).del();
 };
 
 module.exports = {
