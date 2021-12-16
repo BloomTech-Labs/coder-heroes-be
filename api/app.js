@@ -30,7 +30,7 @@ const inboxRouter = require('./inbox/inboxRouter');
 const courseRouter = require('./course/courseRouter');
 const scheduleRouter = require('./schedules/scheduleRouter');
 const dsRouter = require('./dsService/dsRouter');
-const newsfeedRouter = require('./newsfeed/newsfeedRouter');
+// const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 
 const app = express();
 
@@ -67,7 +67,7 @@ app.use(['/inbox', '/inboxes'], inboxRouter);
 app.use(['/course', '/courses'], courseRouter);
 app.use(['/schedule', '/schedules'], scheduleRouter);
 app.use(['/children', '/child'], childrenRouter);
-app.use(['/newsfeed', '/news'], newsfeedRouter);
+// app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 
 // catch 404 and forward to error handler

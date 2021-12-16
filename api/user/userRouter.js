@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
   const { okta_id } = req.profile;
-  console.log(req.profile);
   Profiles.findById(okta_id).then((profile) => {
     const { role, profile_id } = profile;
     User.findUserData(role, profile_id)
