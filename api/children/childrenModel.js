@@ -6,64 +6,28 @@ const getChildren = async () => {
 
 const findByChildId = async (id) => {
   return db('children')
-    .leftJoin('profiles', 'child_id', 'profiles.okta_id')
-    .where('children.profile_id', id);
-};
-
-const checkEnrolled = async (child_id, enrollments_id) => {
-  return await db('enrollments')
-    .where('child_id', child_id)
-    .where('enrollments_id', enrollments_id);
-};
-
-const checkEnrolledExists = async (enrollments_id) => {
-  return await db('enrollments').where({ enrollments_id });
+    .join('profiles', 'children.profile_id', 'profiles.profile_id')
+    .where('child_id', id)
+    .first();
 };
 
 const getEnrolledCourses = async (id) => {
+  // recives error if the id of the class doesn't exist exist  this have to modified lateron we need to make a midleware that checks fot the existing classes then runs this model'
   return await db('children')
-    .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
-    .leftJoin('classes', 'enrollments.class_id', 'schedules.class_id')
-    .where('children.profile_id', id);
+    .join('enrollments', 'children.child_id', 'enrollments.child_id')
+    .join('classes', 'enrollments.class_id', 'classes.class_id')
+    .where('children.child_id', id);
 };
 
 const addEnrolledCourse = async (course) => {
-  return await db('enrollments').insert(course).returning('*');
-};
-
-const addChild = async (child) => {
-  return db('children').insert(child).returning('*');
-};
-
-const updateChild = async (child_id, child) => {
-  return await db('children').where({ child_id }).update(child).returning('*');
-};
-
-const updateEnrollment = async (id, enrollment) => {
-  return await db('enrollments')
-    .where({ id })
-    .update(enrollment)
-    .returning('*');
-};
-
-const removeChild = async (child_id) => {
-  return await db('children').where({ child_id }).del();
-};
-
-const removeCourse = async (enrollments_id) => {
-  return await db('enrollments').where({ enrollments_id }).del();
+  // need to added middleware to the router that checks if the class exists because if it doesnt we get no response back from sever
+  await db('enrollments').insert(course);
+  return await getEnrolledCourses(course.child_id);
 };
 
 module.exports = {
   getChildren,
   getEnrolledCourses,
   addEnrolledCourse,
-  checkEnrolledExists,
-  checkEnrolled,
   findByChildId,
-  addChild,
-  removeCourse,
-  updateChild,
-  removeChild,
-  updateEnrollment,
 };
