@@ -30,7 +30,7 @@ const remove = async (okta_id) => {
 };
 
 const findOrCreateProfile = async (profileObj) => {
-  const foundProfile = await findById(profileObj.okta).then(
+  const foundProfile = await findById(profileObj.okta_id).then(
     (profile) => profile
   );
   if (foundProfile) {

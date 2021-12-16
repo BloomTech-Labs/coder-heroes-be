@@ -1,22 +1,20 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const Profiles = require('../profile/profileModel');
+// const Profiles = require('../profile/profileModel');
 const User = require('./userModel');
 const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
-  const { okta_id } = req.profile;
-  Profiles.findById(okta_id).then((profile) => {
-    const { role, profile_id } = profile;
-    User.findUserData(role, profile_id)
-      .then((user) => {
-        res.status(200).json(user);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err.message });
-      });
-  });
+  const { role, profile_id } = req.profile;
+  console.log(role, profile_id);
+  User.findUserData(role, profile_id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.get('/schedules', authRequired, function (req, res) {

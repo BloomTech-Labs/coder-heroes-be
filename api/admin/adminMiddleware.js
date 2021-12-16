@@ -1,4 +1,5 @@
 const Admins = require('./adminModel');
+
 const checkAdminExist = async (req, res, next) => {
   const id = req.params.id;
   const foundAdmin = await Admins.findByAdminId(id);
@@ -9,6 +10,7 @@ const checkAdminExist = async (req, res, next) => {
     next();
   }
 };
+
 const checkPayload = (req, res, next) => {
   const { email, name, okta_id, role } = req.body;
   if (role === '' || role === undefined) {

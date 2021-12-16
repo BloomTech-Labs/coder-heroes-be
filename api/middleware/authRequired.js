@@ -6,7 +6,7 @@ const oktaJwtVerifier = new OktaJwtVerifier(oktaVerifierConfig.config);
 
 const makeProfileObj = (claims) => {
   return {
-    okta: claims.sub,
+    okta_id: claims.sub,
     email: claims.email,
     name: claims.name,
   };
