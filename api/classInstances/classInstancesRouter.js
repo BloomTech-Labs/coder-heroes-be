@@ -2,6 +2,7 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Schedules = require('./classInstancesModel');
 const router = express.Router();
+const checkClassInstanceExist = require('./classInstanceMiddleware');
 //justin push push
 
 router.get('/', authRequired, function (req, res) {
@@ -15,15 +16,14 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
-  Schedules.findByScheduleId(id)
-    .then((schedule) => {
-      if (schedule) {
-        res.status(200).json(schedule);
-      } else {
-        res.status(404).json({ error: 'ScheduleNotFound' });
-      }
+router.get('/:class_id', checkClassInstanceExist, authRequired, function (
+  req,
+  res
+) {
+  const class_id = String(req.params.class_id);
+  Schedules.findByScheduleId(class_id)
+    .then((class_instance) => {
+      res.status(200).json(class_instance);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
