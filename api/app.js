@@ -28,7 +28,7 @@ const instructorRouter = require('./instructor/instructorRouter');
 const childrenRouter = require('./children/childrenRouter');
 const inboxRouter = require('./inbox/inboxRouter');
 const courseRouter = require('./course/courseRouter');
-const scheduleRouter = require('./classes/classesRouter');
+const scheduleRouter = require('./schedules/scheduleRouter');
 const dsRouter = require('./dsService/dsRouter');
 // const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 
