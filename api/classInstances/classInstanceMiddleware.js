@@ -3,7 +3,7 @@ const Classes = require('./classInstancesModel');
 const checkClassInstanceExist = async (req, res, next) => {
   const class_id = req.params.class_id;
   try {
-    const [foundClassInstance] = await Classes.findByScheduleId(class_id);
+    const [foundClassInstance] = await Classes.findByClassInstanceId(class_id);
     if (!foundClassInstance) {
       next({
         status: 404,

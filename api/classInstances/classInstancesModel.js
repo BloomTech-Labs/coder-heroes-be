@@ -16,7 +16,7 @@ const getAllClassInstances = async () => {
     .leftJoin('profiles', 'instructors.profile_id', 'profiles.profile_id');
 };
 
-const findByScheduleId = async (class_id) => {
+const findByClassInstanceId = async (class_id) => {
   return db('classes')
     .leftJoin(
       'course_types',
@@ -49,7 +49,7 @@ const removeSchedule = async (class_id) => {
 
 module.exports = {
   getAllClassInstances,
-  findByScheduleId,
+  findByClassInstanceId,
   addClass,
   updateSchedule,
   removeSchedule,

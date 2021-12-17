@@ -21,7 +21,7 @@ router.get('/:class_id', checkClassInstanceExist, authRequired, function (
   res
 ) {
   const class_id = String(req.params.class_id);
-  Schedules.findByScheduleId(class_id)
+  Schedules.findByClassInstanceId(class_id)
     .then((class_instance) => {
       res.status(200).json(class_instance);
     })
@@ -71,7 +71,7 @@ router.put('/', authRequired, (req, res) => {
   const schedule = req.body;
   if (schedule) {
     const { id } = schedule;
-    Schedules.findByScheduleId(id)
+    Schedules.findByClassInstanceId(id)
       .then(
         Schedules.updateSchedule(id, schedule)
           .then((updated) => {
@@ -99,7 +99,7 @@ router.put('/', authRequired, (req, res) => {
 router.delete('/:id', (req, res) => {
   const id = req.params.id;
   try {
-    Schedules.findByScheduleId(id).then((schedule) => {
+    Schedules.findByClassInstanceId(id).then((schedule) => {
       Schedules.removeSchedule(schedule[0].id).then(() => {
         res.status(200).json({
           message: `Schedule with id:'${id}' was deleted.`,
