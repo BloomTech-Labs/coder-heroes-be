@@ -1,6 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const Schedules = require('./scheduleModel');
+const Schedules = require('./classInstancesModel');
 const router = express.Router();
 //justin push push
 
