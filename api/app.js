@@ -32,6 +32,7 @@ const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 // const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 
+
 const app = express();
 
 process.on('unhandledRejection', (reason, p) => {
@@ -69,6 +70,7 @@ app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);
 // app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
+app.use(['/session', '/sessions'], sessionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
