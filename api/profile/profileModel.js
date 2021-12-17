@@ -17,7 +17,6 @@ const create = async (profile) => {
 };
 
 const update = (okta_id, profile) => {
-  console.log(profile);
   return db('profiles')
     .where({ okta_id: okta_id })
     .first()
@@ -26,7 +25,7 @@ const update = (okta_id, profile) => {
 };
 
 const remove = async (okta_id) => {
-  return await db('profiles').where({ okta_id }).del();
+  return await db('profiles').where('profiles.okta_id', '=', okta_id).del();
 };
 
 const findOrCreateProfile = async (profileObj) => {

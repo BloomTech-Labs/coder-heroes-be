@@ -221,14 +221,14 @@ router.post('/', async (req, res) => {
 router.put('/', authRequired, (req, res) => {
   const profile = req.body;
   if (profile) {
-    const okta = profile.okta || 0;
+    const okta = profile.okta_id || 0;
     Profiles.findById(okta)
       .then(
         Profiles.update(okta, profile)
           .then((updated) => {
             res
               .status(200)
-              .json({ message: 'profile created', profile: updated[0] });
+              .json({ message: 'profile updated', profile: updated[0] });
           })
           .catch((err) => {
             res.status(500).json({
@@ -277,9 +277,10 @@ router.put('/', authRequired, (req, res) => {
  */
 router.delete('/:okta', (req, res) => {
   const okta = req.params.okta;
+  console.log(okta);
   try {
     Profiles.findById(okta).then((profile) => {
-      Profiles.remove(profile.okta).then(() => {
+      Profiles.remove(okta).then(() => {
         res.status(200).json({
           message: `Profile '${okta}' was deleted.`,
           profile: profile,
