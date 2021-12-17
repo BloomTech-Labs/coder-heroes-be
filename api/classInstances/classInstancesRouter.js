@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   const schedule = req.body;
   if (schedule) {
     try {
-      await Schedules.addSchedule(schedule).then((inserted) =>
+      await Schedules.addClassInstance(schedule).then((inserted) =>
         res
           .status(200)
           .json({ message: 'Schedule added.', schedule: inserted[0] })
@@ -53,7 +53,7 @@ router.post('/sessions', async (req, res) => {
   console.log(sessions);
   if (sessions) {
     try {
-      await Schedules.addSessions(sessions).then((inserted) => {
+      await Schedules.addClassInstance(sessions).then((inserted) => {
         res
           .status(200)
           .json({ message: 'A new session was added', sessions: inserted[0] });
@@ -73,7 +73,7 @@ router.put('/', authRequired, (req, res) => {
     const { id } = schedule;
     Schedules.findByClassInstanceId(id)
       .then(
-        Schedules.updateSchedule(id, schedule)
+        Schedules.updateClassInstance(id, schedule)
           .then((updated) => {
             res.status(200).json({
               message: `Schedule with id: ${id} updated`,
@@ -100,7 +100,7 @@ router.delete('/:id', (req, res) => {
   const id = req.params.id;
   try {
     Schedules.findByClassInstanceId(id).then((schedule) => {
-      Schedules.removeSchedule(schedule[0].id).then(() => {
+      Schedules.removeClassInstance(schedule[0].id).then(() => {
         res.status(200).json({
           message: `Schedule with id:'${id}' was deleted.`,
           schedule: schedule[0],

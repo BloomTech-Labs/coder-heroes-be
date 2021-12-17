@@ -32,25 +32,25 @@ const findByClassInstanceId = async (class_id) => {
     .where('classes.class_id', class_id);
 };
 
-const addClass = async (newClass) => {
+const addClassInstance = async (newClass) => {
   return await db('classes').insert(newClass).returning('*');
 };
 
-const updateSchedule = async (class_id, newClass) => {
+const updateClassInstance = async (class_id, newClass) => {
   return await db('classes')
     .where({ class_id })
     .update(newClass)
     .returning('*');
 };
 
-const removeSchedule = async (class_id) => {
+const removeClassInstance = async (class_id) => {
   return await db('classes').where({ class_id }).del();
 };
 
 module.exports = {
   getAllClassInstances,
   findByClassInstanceId,
-  addClass,
-  updateSchedule,
-  removeSchedule,
+  addClassInstance,
+  updateClassInstance,
+  removeClassInstance,
 };
