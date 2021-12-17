@@ -11,7 +11,8 @@ const getInstructors = async () => {
 const findByInstructorId = async (instructor_id) => {
   return db('instructors')
     .leftJoin('profiles', 'instructors.profile_id', 'profiles.profile_id')
-    .where('instructors.instructor_id', instructor_id);
+    .where('instructors.instructor_id', instructor_id)
+    .first();
 };
 
 const findByProfileId = async (profile_id) => {
