@@ -2,6 +2,7 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Instructors = require('./instructorModel');
 const router = express.Router();
+const { checkInstructorExist } = require('./instructorMiddleware');
 
 router.get('/', authRequired, function (req, res) {
   Instructors.getInstructors()
@@ -14,35 +15,38 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:instructor_id', authRequired, function (req, res) {
-  const instructor_id = String(req.params.instructor_id);
-  Instructors.findByInstructorId(instructor_id)
-    .then((instructor) => {
-      if (instructor) {
-        res.status(200).json(instructor);
-      } else {
-        res.status(404).json({ error: 'Instructor Not Found' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+router.get('/:instructor_id', authRequired, checkInstructorExist, function (
+  req,
+  res,
+  next
+) {
+  try {
+    res.status(200).json(req.instructor);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.get('/:instructor_id/classes', authRequired, function (req, res) {
-  const instructor_id = String(req.params.instructor_id);
-  Instructors.findInstructorCourses(instructor_id)
-    .then((classes) => {
-      if (classes) {
-        res.status(200).json(classes);
-      } else {
-        res.status(404).json({ error: 'Instructor classes Not Found' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
-});
+router.get(
+  '/:instructor_id/classes',
+  authRequired,
+  checkInstructorExist,
+  function (req, res, next) {
+    try {
+      Instructors.findInstructorCourses(req.params.instructor_id).then(
+        (classes) => {
+          if (classes) {
+            res.status(200).json(classes);
+          } else {
+            res.status(404).json({ error: 'Instructor classes Not Found' });
+          }
+        }
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.post('/', async (req, res) => {
   const instructor = req.body;
@@ -116,5 +120,11 @@ router.delete('/:instructor_id', (req, res) => {
     });
   }
 });
+
+router.use('*', errorhandler);
+//eslint-disable-next-line
+function errorhandler(err, req, res, next) {
+  res.status(err.status || 500).json(err.message);
+}
 
 module.exports = router;
