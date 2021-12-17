@@ -44,7 +44,7 @@ const updateClassInstance = async (class_id, newClass) => {
 };
 
 const removeClassInstance = async (class_id) => {
-  return await db('classes').where({ class_id }).del();
+  return await db('classes').where('class_id', '=', class_id).del();
 };
 
 module.exports = {

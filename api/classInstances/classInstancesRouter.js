@@ -1,12 +1,15 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const Schedules = require('./classInstancesModel');
+const Classes = require('./classInstancesModel');
 const router = express.Router();
-const checkClassInstanceExist = require('./classInstanceMiddleware');
+const {
+  checkClassInstanceExist,
+  checkClassInstanceObject,
+} = require('./classInstanceMiddleware');
 //justin push push
 
 router.get('/', authRequired, function (req, res) {
-  Schedules.getAllClassInstances()
+  Classes.getAllClassInstances()
     .then((scheduleList) => {
       res.status(200).json(scheduleList);
     })
@@ -21,7 +24,7 @@ router.get('/:class_id', checkClassInstanceExist, authRequired, function (
   res
 ) {
   const class_id = String(req.params.class_id);
-  Schedules.findByClassInstanceId(class_id)
+  Classes.findByClassInstanceId(class_id)
     .then((class_instance) => {
       res.status(200).json(class_instance);
     })
@@ -30,88 +33,51 @@ router.get('/:class_id', checkClassInstanceExist, authRequired, function (
     });
 });
 
-router.post('/', async (req, res) => {
-  const schedule = req.body;
-  if (schedule) {
-    try {
-      await Schedules.addClassInstance(schedule).then((inserted) =>
-        res
-          .status(200)
-          .json({ message: 'Schedule added.', schedule: inserted[0] })
-      );
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
-    }
-  } else {
-    res.status(404).json({ message: 'Schedule details missing.' });
-  }
-});
-
-router.post('/sessions', async (req, res) => {
-  const sessions = req.body;
-  console.log(sessions);
-  if (sessions) {
-    try {
-      await Schedules.addClassInstance(sessions).then((inserted) => {
-        res
-          .status(200)
-          .json({ message: 'A new session was added', sessions: inserted[0] });
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: err.message });
-    }
-  } else {
-    res.status(404).json({ message: 'Sessions details missing' });
-  }
-});
-
-router.put('/', authRequired, (req, res) => {
-  const schedule = req.body;
-  if (schedule) {
-    const { id } = schedule;
-    Schedules.findByClassInstanceId(id)
-      .then(
-        Schedules.updateClassInstance(id, schedule)
-          .then((updated) => {
-            res.status(200).json({
-              message: `Schedule with id: ${id} updated`,
-              schedule: updated[0],
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update schedule '${id}'`,
-              error: err.message,
-            });
-          })
-      )
-      .catch((err) => {
-        res.status(404).json({
-          message: `Could not find schedule '${id}'`,
-          error: err.message,
-        });
-      });
-  }
-});
-
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
+router.post('/', checkClassInstanceObject, async (req, res) => {
+  const classInstance = req.body;
   try {
-    Schedules.findByClassInstanceId(id).then((schedule) => {
-      Schedules.removeClassInstance(schedule[0].id).then(() => {
+    await Classes.addClassInstance(classInstance).then((inserted) => {
+      res
+        .status(200)
+        .json({ message: 'New Class Instance Added.', schedule: inserted[0] });
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.put(
+  '/:class_id',
+  checkClassInstanceExist,
+  authRequired,
+  (req, res, next) => {
+    const class_id = req.params.class_id;
+    const newClassObject = req.body;
+
+    Classes.updateClassInstance(class_id, newClassObject)
+      .then((updated) => {
         res.status(200).json({
-          message: `Schedule with id:'${id}' was deleted.`,
-          schedule: schedule[0],
+          message: `Class instance with the class_id: ${class_id} updated`,
+          class_instance: updated[0],
         });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+);
+
+router.delete('/:class_id', checkClassInstanceExist, (req, res, next) => {
+  const class_id = req.params.class_id;
+  try {
+    Classes.removeClassInstance(class_id).then(() => {
+      res.status(200).json({
+        message: `Schedule with id:'${class_id}' was deleted.`,
       });
     });
   } catch (err) {
-    res.status(500).json({
-      message: `Could not delete schedule with ID: ${id}`,
-      error: err.message,
-    });
+    next(err);
   }
 });
 
