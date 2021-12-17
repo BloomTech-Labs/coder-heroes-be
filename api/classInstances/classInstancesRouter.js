@@ -6,7 +6,7 @@ const checkClassInstanceExist = require('./classInstanceMiddleware');
 //justin push push
 
 router.get('/', authRequired, function (req, res) {
-  Schedules.getSchedules()
+  Schedules.getAllClassInstances()
     .then((scheduleList) => {
       res.status(200).json(scheduleList);
     })

@@ -1,7 +1,7 @@
 const db = require('../../data/db-config');
 
 //justin
-const getSchedules = async () => {
+const getAllClassInstances = async () => {
   return await db('classes')
     .leftJoin(
       'course_types',
@@ -48,7 +48,7 @@ const removeSchedule = async (class_id) => {
 };
 
 module.exports = {
-  getSchedules,
+  getAllClassInstances,
   findByScheduleId,
   addClass,
   updateSchedule,
