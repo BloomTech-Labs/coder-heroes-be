@@ -31,7 +31,7 @@ const courseTypesRouter = require('./courseTypes/courseTypesRouter');
 const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 // const newsfeedRouter = require('./newsfeed/newsfeedRouter');
-
+const sessionRouter = require('./session/sessionRouter');
 
 const app = express();
 
