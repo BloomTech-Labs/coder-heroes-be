@@ -18,7 +18,7 @@
 // module.exports = router
 
 //IMPLEMENTATION:
-//npm i stripe   ***not "stripe-checkout" but "stripe"*** 
+//npm i stripe   ***not "stripe-checkout" but "stripe"***
 //import router into index
 //server router
 //.env file --> "STRIPE_KEY=" --> stripe test account public key
