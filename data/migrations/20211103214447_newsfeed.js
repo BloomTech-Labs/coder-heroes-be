@@ -1,6 +1,6 @@
 exports.up = (knex) => {
   return knex.schema.createTable('newsfeed', function (table) {
-    table.increments('id');
+    table.increments('newsfeed_id');
     table.string('title').notNullable();
     table.string('link').notNullable();
     table.text('description').notNullable();

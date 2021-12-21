@@ -3,46 +3,51 @@ const db = require('../../data/db-config');
 const getInstructors = async () => {
   return await db('instructors').leftJoin(
     'profiles',
-    'instructors.user_id',
-    'profiles.okta'
+    'instructors.profile_id',
+    'profiles.profile_id'
   );
 };
 
-const findByInstructorId = async (id) => {
+const findByInstructorId = async (instructor_id) => {
   return db('instructors')
-    .leftJoin('profiles', 'instructors.user_id', 'profiles.okta')
-    .where('instructors.id', id);
+    .leftJoin('profiles', 'instructors.profile_id', 'profiles.profile_id')
+    .where('instructors.instructor_id', instructor_id)
+    .first();
 };
 
-const findByOkta = async (okta) => {
+const findByProfileId = async (profile_id) => {
   return db('instructors')
-    .leftJoin('profiles', 'instructors.user_id', 'profiles.okta')
-    .where('instructors.user_id', okta);
+    .leftJoin('profiles', 'instructors.profile_id', 'profiles.profile_id')
+    .where('instructors.profile_id', profile_id);
 };
 
-const findInstructorCourses = async (id) => {
+const findInstructorCourses = async (instructor_id) => {
   return db('instructors')
-    .leftJoin('instructor_list', 'instructors.id', 'instructor_list.id')
-    .leftJoin('courses', 'instructor_list.course_id', 'courses.id')
-    .where('instructors.id', id);
+    .leftJoin(
+      'classes',
+      'instructors.instructor_id',
+      '=',
+      'classes.instructor_id'
+    )
+    .where('instructors.instructor_id', instructor_id);
 };
 
 const addInstructor = async (instructor) => {
   return await db('instructors').insert(instructor).returning('*');
 };
 
-const updateInstructor = async (id, instructor) => {
-  return await db('instructors').where({ id }).update(instructor);
+const updateInstructor = async (instructor_id, instructor) => {
+  return await db('instructors').where({ instructor_id }).update(instructor);
 };
 
-const removeInstructor = async (id) => {
-  return await db('instructors').where({ id }).del();
+const removeInstructor = async (instructor_id) => {
+  return await db('instructors').where({ instructor_id }).del();
 };
 
 module.exports = {
   getInstructors,
   findByInstructorId,
-  findByOkta,
+  findByProfileId,
   findInstructorCourses,
   addInstructor,
   updateInstructor,

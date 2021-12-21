@@ -231,10 +231,10 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | Method   | URL             | Description                                                                                                         |
 | ------   | --------------  | ------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /course/        | Returns an array filled with event objects.                                                                         |
-| [GET]    | /course/:name   | Returns the event object with the specified `subject`.                                                              |
+| [GET]    | /course/:subject   | Returns the event object with the specified `subject`.                                                              |
 | [POST]   | /course/        | Contains fields: `description`, `subject`, and  `prereq`. Returns the event object with the specified `subject`.    |
 | [PUT]    | /course/        | Updates the event with the specified `subject` using data from the `request body`. Returns the modified event       |
-| [DELETE] | /course/:name   | Removes the event with the specified `subject` and returns the deleted event.                                       |
+| [DELETE] | /course/:subject   | Removes the event with the specified `subject` and returns the deleted event.                                       |
 
 #### Schedule:
 

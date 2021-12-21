@@ -8,29 +8,28 @@ const findBy = (filter) => {
   return db('profiles').where(filter);
 };
 
-const findById = async (okta) => {
-  return db('profiles').where({ okta }).first().select('*');
+const findById = async (okta_id) => {
+  return db('profiles').where('profiles.okta_id', okta_id).first().select('*');
 };
 
 const create = async (profile) => {
   return db('profiles').insert(profile).returning('*');
 };
 
-const update = (okta, profile) => {
-  console.log(profile);
+const update = (okta_id, profile) => {
   return db('profiles')
-    .where({ okta: okta })
+    .where({ okta_id: okta_id })
     .first()
     .update(profile)
     .returning('*');
 };
 
-const remove = async (okta) => {
-  return await db('profiles').where({ okta }).del();
+const remove = async (okta_id) => {
+  return await db('profiles').where('profiles.okta_id', '=', okta_id).del();
 };
 
 const findOrCreateProfile = async (profileObj) => {
-  const foundProfile = await findById(profileObj.okta).then(
+  const foundProfile = await findById(profileObj.okta_id).then(
     (profile) => profile
   );
   if (foundProfile) {
