@@ -1,62 +1,77 @@
 exports.up = (knex) => {
   return knex.schema
-    .createTable('admins', function (table) {
-      table.increments('id');
 
+    .createTable('super_admins', function (table) {
+      table.increments('super_admin_id');
       table
-        .string('user_id')
+        .integer('profile_id')
         .unique()
         .notNullable()
-        .references('okta')
+        .references('profile_id')
+        .inTable('profiles')
+        .onDelete('CASCADE');
+    })
+
+    .createTable('admins', function (table) {
+      table.increments('admin_id');
+      table
+        .integer('profile_id')
+        .unique()
+        .notNullable()
+        .references('profile_id')
         .inTable('profiles')
         .onDelete('CASCADE');
     })
 
     .createTable('parents', function (table) {
-      table.increments('id');
-
+      table.increments('parent_id');
       table
-        .string('user_id')
+        .integer('profile_id')
         .unique()
         .notNullable()
-        .references('okta')
+        .references('profile_id')
         .inTable('profiles')
         .onDelete('CASCADE');
     })
 
     .createTable('children', function (table) {
-      table.increments('id');
+      table.increments('child_id');
+      table
+        .integer('profile_id')
+        .unique()
+        .notNullable()
+        .references('profile_id')
+        .inTable('profiles')
+        .onDelete('CASCADE');
       table.string('username').notNullable();
       table.integer('age').notNullable();
-
       table
         .integer('parent_id')
         .unsigned()
         .notNullable()
-        .references('id')
+        .references('parent_id')
         .inTable('parents')
-        .onDelete('CASCADE');
-
-      table
-        .string('user_id')
-        .unique()
-        .notNullable()
-        .references('okta')
-        .inTable('profiles')
         .onDelete('CASCADE');
     })
 
     .createTable('instructors', function (table) {
-      table.increments('id');
+      table.increments('instructor_id');
       table.integer('rating').notNullable();
       table.string('bio').notNullable();
-
       table
-        .string('user_id')
+        .integer('profile_id')
         .unique()
         .notNullable()
-        .references('okta')
+        .references('profile_id')
         .inTable('profiles')
+        .onDelete('CASCADE');
+      table.string('status').notNullable().defaultTo('pending');
+      table
+        .integer('approved_by')
+        .defaultTo(null)
+        .unsigned()
+        .references('admin_id')
+        .inTable('admins')
         .onDelete('CASCADE');
     });
 };
@@ -66,5 +81,6 @@ exports.down = (knex) => {
     .dropTableIfExists('instructors')
     .dropTableIfExists('children')
     .dropTableIfExists('parents')
-    .dropTableIfExists('admins');
+    .dropTableIfExists('admins')
+    .dropTableIfExists('super_admins');
 };

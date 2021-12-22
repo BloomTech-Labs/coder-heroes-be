@@ -1,29 +1,29 @@
-const db = require('../../data/db-config');
+//const db = require('../../data/db-config');
 
-const getNewsfeed = async () => {
-  return await db('newsfeed');
-};
+// const getNewsfeed = async () => {
 
-const findByNewsfeedId = async (id) => {
-  return db('newsfeed').where({ id });
-};
+// };
 
-const addNewsfeed = async (newsfeed) => {
-  return await db('newsfeed').insert(newsfeed).returning('*');
-};
+// const findByNewsfeedId = async (newsfeed_id) => {
 
-const updateNewsfeed = async (id, newsfeed) => {
-  return await db('newsfeed').where({ id }).update(newsfeed);
-};
+// };
 
-const removeNewsfeed = async (id) => {
-  return await db('newsfeed').where({ id }).del();
-};
+// const addNewsfeed = async (newsfeed) => {
 
-module.exports = {
-  getNewsfeed,
-  findByNewsfeedId,
-  addNewsfeed,
-  updateNewsfeed,
-  removeNewsfeed,
-};
+// };
+
+// const updateNewsfeed = async (newsfeed_id, newsfeed) => {
+
+// };
+
+// const removeNewsfeed = async (newsfeed_id) => {
+
+// };
+
+// module.exports = {
+//   getNewsfeed,
+//   findByNewsfeedId,
+//   addNewsfeed,
+//   updateNewsfeed,
+//   removeNewsfeed,
+// };

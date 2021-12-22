@@ -62,9 +62,9 @@ router.get('/:id/schedules', authRequired, function (req, res) {
 router.post('/', async (req, res) => {
   const parent = req.body;
   if (parent) {
-    const { user_id } = parent;
+    const { profile_id } = parent;
     try {
-      await Parents.findByOkta(user_id).then(async (user) => {
+      await Parents.findByParentId(profile_id).then(async (user) => {
         if (user.length === 0) {
           await Parents.addParent(parent).then((inserted) =>
             res
@@ -87,26 +87,26 @@ router.post('/', async (req, res) => {
 router.put('/', authRequired, (req, res) => {
   const parent = req.body;
   if (parent) {
-    const { user_id } = parent;
-    Parents.findByOkta(user_id)
+    const { parent_id, profile_id } = parent;
+    Parents.findByParentId(profile_id)
       .then(
-        Parents.updateParent(user_id, parent)
+        Parents.updateParent(parent_id, parent)
           .then((updated) => {
             res.status(200).json({
-              message: `Parent with id: ${user_id} updated`,
+              message: `Parent with id: ${parent_id} updated`,
               parent: updated[0],
             });
           })
           .catch((err) => {
             res.status(500).json({
-              message: `Could not update parent '${user_id}'`,
+              message: `Could not update parent '${parent_id}'`,
               error: err.message,
             });
           })
       )
       .catch((err) => {
         res.status(404).json({
-          message: `Could not find parent '${user_id}'`,
+          message: `Could not find parent '${parent_id}'`,
           error: err.message,
         });
       });
@@ -114,19 +114,19 @@ router.put('/', authRequired, (req, res) => {
 });
 
 router.delete('/:id', authRequired, (req, res) => {
-  const id = req.params.id;
+  const profile_id = req.params.id;
   try {
-    Parents.findByParentId(id).then((parent) => {
-      Parents.removeParent(parent[0].id).then(() => {
+    Parents.findByParentId(profile_id).then((parent) => {
+      Parents.removeParent(parent[0].profile_id).then(() => {
         res.status(200).json({
-          message: `Parent with id:'${id}' was deleted.`,
+          message: `Parent with id:'${profile_id}' was deleted.`,
           parent: parent[0],
         });
       });
     });
   } catch (err) {
     res.status(500).json({
-      message: `Could not delete parent with ID: ${id}`,
+      message: `Could not delete parent with profile_id: ${profile_id}`,
       error: err.message,
     });
   }

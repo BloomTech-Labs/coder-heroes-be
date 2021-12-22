@@ -1,43 +1,39 @@
-const db = require('../../data/db-config');
+// const db = require('../../data/db-config');
 
-const getInboxes = async () => {
-  return await db('inboxes')
-    .leftJoin('profiles', 'inboxes.user_id', 'profiles.okta')
-    .innerJoin('messages', 'inboxes.id', 'messages.inbox_id');
-};
+// const getInboxes = async () => {
+//   return await }
+// };
 
-const findByUserId = async (user_id) => {
-  return db('inboxes')
-    .innerJoin('messages', 'inboxes.id', 'messages.inbox_id')
-    .where({ user_id });
-};
+// const findByProfileId = async (profile_id) => {
+//   return await
+// };
 
-const findByInboxId = async (inbox_id) => {
-  return db('inboxes').where('id', inbox_id);
-};
+// const findByInboxId = async (inbox_id) => {
+//   return await
+// };
 
-const addInbox = async (inbox) => {
-  return db('inboxes').insert(inbox).returning('*');
-};
+// const addInbox = async (inbox) => {
+//   return await
+// };
 
-const addMessage = async (message) => {
-  return db('messages').insert(message).returning('*');
-};
+// const addMessage = async (message) => {
+//   return await
+// };
 
-const updateInbox = (user_id, inbox) => {
-  return db('inboxes').where({ user_id }).update(inbox).returning('*');
-};
+// const updateInbox = (profile_id, inbox) => {
+//   return await
+// };
 
-const removeInbox = async (user_id) => {
-  return await db('inboxes').where({ user_id }).del();
-};
+// const removeInbox = async (profile_id) => {
+//   return await
+// };
 
-module.exports = {
-  getInboxes,
-  findByUserId,
-  findByInboxId,
-  addInbox,
-  addMessage,
-  updateInbox,
-  removeInbox,
-};
+// module.exports = {
+//   getInboxes,
+//   findByProfileId,
+//   findByInboxId,
+//   addInbox,
+//   addMessage,
+//   updateInbox,
+//   removeInbox,
+// };

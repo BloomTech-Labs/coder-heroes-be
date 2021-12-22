@@ -1,65 +1,45 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const Profiles = require('../profile/profileModel');
+// const Profiles = require('../profile/profileModel');
 const User = require('./userModel');
 const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
-  const { okta } = req.profile;
-  Profiles.findById(okta).then((profile) => {
-    const { type } = profile;
-    User.findUserData(type, okta)
-      .then((user) => {
-        res.status(200).json(user);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err.message });
-      });
-  });
-});
-
-router.get('/inbox', authRequired, function (req, res) {
-  const { okta } = req.profile;
-  Profiles.findById(okta).then((user) => {
-    User.getInbox(user.okta)
-      .then((inbox) => {
-        res.status(200).json(inbox);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err.message });
-      });
-  });
+  const { role, profile_id } = req.profile;
+  console.log(role, profile_id);
+  User.findUserData(role, profile_id)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.get('/schedules', authRequired, function (req, res) {
-  const { okta } = req.profile;
-  Profiles.findById(okta).then((user) => {
-    User.getSchedule(user.okta)
-      .then((schedule) => {
-        res.status(200).json(schedule);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err.message });
-      });
-  });
+  const { profile_id } = req.profile;
+  User.getSchedule(profile_id)
+    .then((schedule) => {
+      res.status(200).json(schedule);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.put('/', authRequired, function (req, res) {
-  const { okta } = req.profile;
-  Profiles.findById(okta).then((profile) => {
-    const { id } = profile;
-    User.updateUserData(id, profile)
-      .then((user) => {
-        res.status(200).json(user);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err.message });
-      });
-  });
+  const { profile_id } = req.profile;
+  console.log(req.body);
+  User.updateUserData(profile_id, req.body)
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 module.exports = router;

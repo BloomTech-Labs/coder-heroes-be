@@ -3,53 +3,48 @@ const db = require('../../data/db-config');
 const getParents = async () => {
   return await db('parents').leftJoin(
     'profiles',
-    'parents.user_id',
-    'profiles.okta'
+    'parents.profile_id',
+    'profiles.profile_id'
   );
 };
 
-const findByParentId = async (id) => {
+const findByParentId = async (profile_id) => {
   return db('parents')
-    .leftJoin('profiles', 'parents.user_id', 'profiles.okta')
-    .where('parents.id', id);
+    .leftJoin('profiles', 'parents.profile_id', 'profiles.profile_id')
+    .where('parents.profile_id', profile_id);
 };
 
-const findByOkta = async (okta) => {
+const getParentChildren = async (parent_id) => {
   return db('parents')
-    .leftJoin('profiles', 'parents.user_id', 'profiles.okta')
-    .where('parents.user_id', okta);
-};
-
-const getParentChildren = async (id) => {
-  return db('parents')
-    .leftJoin('children', 'parents.id', 'children.parent_id')
-    .where('parents.id', id);
+    .leftJoin('children', 'parents.parent_id', 'children.parent_id')
+    .where('parents.parent_id', parent_id);
 };
 
 const getChildSchedules = async (id) => {
   return db('parents')
-    .leftJoin('children', 'parents.id', 'children.parent_id')
-    .leftJoin('enrollments', 'children.id', 'enrollments.child_id')
-    .leftJoin('schedules', 'enrollments.schedule_id', 'schedules.id')
-    .where('parents.id', id);
+    .leftJoin('children', 'parents.parent_id', 'children.parent_id')
+    .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
+    .leftJoin('classes', 'enrollments.class_id', 'classes.class_id')
+    .where('parents.parent_id', id);
 };
 
 const addParent = async (parent) => {
   return await db('parents').insert(parent).returning('*');
 };
 
-const updateParent = async (user_id, parent) => {
-  return await db('parents').where({ user_id }).update(parent);
+const updateParent = async (parent_id, parent) => {
+  return await db('parents')
+    .where('parents.parent_id', parent_id)
+    .update(parent);
 };
 
-const removeParent = async (id) => {
-  return await db('parents').where({ id }).del();
+const removeParent = async (profile_id) => {
+  return await db('parents').where('parents.profile_id', profile_id).del();
 };
 
 module.exports = {
   getParents,
   findByParentId,
-  findByOkta,
   getParentChildren,
   getChildSchedules,
   addParent,
