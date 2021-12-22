@@ -32,6 +32,7 @@ const scheduleRouter = require('./schedules/scheduleRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const sessionRouter = require('./session/sessionRouter');
+const stripeRouter = require('./payment/stripeRouter');
 
 const app = express();
 
@@ -71,6 +72,7 @@ app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/session', '/sessions'], sessionRouter);
+app.use(['/payment'], stripeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
