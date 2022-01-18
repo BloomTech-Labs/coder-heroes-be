@@ -7,11 +7,11 @@ const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const jsdocConfig = require('../config/jsdoc');
-const dotenv = require('dotenv');
-const config_result = dotenv.config();
-if (process.env.NODE_ENV != 'production' && config_result.error) {
-  throw config_result.error;
-}
+// const dotenv = require('dotenv');
+// const config_result = dotenv.config();
+// if (process.env.NODE_ENV != 'production' && config_result.error) {
+//   throw config_result.error;
+// }
 
 const swaggerSpec = swaggerJSDoc(jsdocConfig);
 const swaggerUIOptions = {
@@ -30,7 +30,7 @@ const childrenRouter = require('./children/childrenRouter');
 const courseTypesRouter = require('./courseTypes/courseTypesRouter');
 const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
-// const newsfeedRouter = require('./newsfeed/newsfeedRouter');
+const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const sessionRouter = require('./session/sessionRouter');
 
 const app = express();
@@ -68,14 +68,14 @@ app.use(['/user'], userRouter);
 app.use(['/course-type', '/course-types'], courseTypesRouter);
 app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);
-// app.use(['/newsfeed', '/news'], newsfeedRouter);
+app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/session', '/sessions'], sessionRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (err, req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -86,7 +86,6 @@ app.use(function (err, req, res, next) {
       res.locals.error = err;
     }
   }
-  console.error(err);
   if (process.env.NODE_ENV === 'production' && !res.locals.message) {
     res.locals.message = 'ApplicationError';
     res.locals.status = 500;

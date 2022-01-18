@@ -47,7 +47,7 @@ describe('newsfeeds router endpoints', () => {
   });
 
   describe('POST /newsfeed', () => {
-    it('Should return 200 when newsfeed is added', async () => {
+    it('Should return 201 when newsfeed is added', async () => {
       const newsfeed = {
         title: 'Test NewsFeed',
         link: 'test',
@@ -58,13 +58,13 @@ describe('newsfeeds router endpoints', () => {
 
       const res = await request(server).post('/newsfeed').send(newsfeed);
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(Newsfeed.addNewsfeed.mock.calls.length).toBe(1);
     });
   });
 
   describe('PUT /newsfeed', () => {
-    it('should return 200 when newsfeed is created', async () => {
+    it('should return 200 when newsfeed is edited', async () => {
       const newsfeed = {
         title: 'Check out these coding camps!',
         link: 'test',
@@ -73,9 +73,9 @@ describe('newsfeeds router endpoints', () => {
       Newsfeed.findByNewsfeedId.mockResolvedValue(1);
       Newsfeed.updateNewsfeed.mockResolvedValue([newsfeed]);
 
-      const res = await request(server).put('/newsfeed').send(newsfeed);
+      const res = await request(server).put('/newsfeed/1').send(newsfeed);
       expect(res.status).toBe(200);
-      expect(res.body.newsfeed.description).toBe('Testing PUT newsfeed');
+      expect(res.body.description).toBe('Testing PUT newsfeed');
       expect(Newsfeed.updateNewsfeed.mock.calls.length).toBe(1);
     });
   });
