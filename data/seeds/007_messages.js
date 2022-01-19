@@ -15,19 +15,6 @@ exports.seed = function (knex) {
       sent_by_profile_id: 5,
     },
     {
-      title: 'Going to need to cancel.',
-      message: 'My child has to miss the class',
-      inbox_id: 9,
-      sent_by_profile_id: 4,
-    },
-    {
-      title: 'Kid is sick',
-      read: true,
-      message: 'Can we get a refund for this class?',
-      inbox_id: 9,
-      sent_by_profile_id: 10,
-    },
-    {
       title: 'When is class?',
       message: 'I noticed the time was funky and had to ask.',
       inbox_id: 8,
