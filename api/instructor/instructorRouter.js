@@ -102,7 +102,7 @@ router.put('/', authRequired, (req, res) => {
   }
 });
 
-router.delete('/:instructor_id', (req, res) => {
+router.delete('/:instructor_id', authRequired, (req, res) => {
   const instructor_id = req.params.instructor_id;
   try {
     Instructors.findByInstructorId(instructor_id).then((instructor) => {
