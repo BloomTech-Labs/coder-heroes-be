@@ -5,7 +5,10 @@ const getNewsfeed = async () => {
 };
 
 const findByNewsfeedId = async (newsfeed_id) => {
-  return await db('newsfeed').select('*').where('newsfeed_id', newsfeed_id);
+  return await db('newsfeed')
+    .select('*')
+    .where('newsfeed_id', newsfeed_id)
+    .first();
 };
 
 const addNewsfeed = async (newsfeed) => {

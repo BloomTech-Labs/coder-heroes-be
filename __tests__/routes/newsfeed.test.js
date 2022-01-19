@@ -75,7 +75,7 @@ describe('newsfeeds router endpoints', () => {
 
       const res = await request(server).put('/newsfeed/1').send(newsfeed);
       expect(res.status).toBe(200);
-      expect(res.body.description).toBe('Testing PUT newsfeed');
+      expect(res.body).toBe(1);
       expect(Newsfeed.updateNewsfeed.mock.calls.length).toBe(1);
     });
   });
