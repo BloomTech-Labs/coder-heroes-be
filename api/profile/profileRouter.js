@@ -275,7 +275,7 @@ router.put('/', authRequired, (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.delete('/:okta', (req, res) => {
+router.delete('/:okta', authRequired, (req, res) => {
   const okta = req.params.okta;
   console.log(okta);
   try {
