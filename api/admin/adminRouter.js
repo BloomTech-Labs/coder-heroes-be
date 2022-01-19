@@ -14,7 +14,7 @@ router.get('/', authRequired, function (req, res) {
       res.status(500).json({ message: err.message });
     });
 });
-router.get('/:id', checkAdminExist, authRequired, function (req, res, next) {
+router.get('/:id', authRequired, checkAdminExist, function (req, res, next) {
   try {
     res.status(200).json(req.admin);
   } catch (error) {
@@ -31,7 +31,7 @@ router.post('/', checkPayload, authRequired, async (req, res, next) => {
   }
 });
 
-router.put('/:id', checkAdminExist, authRequired, async (req, res, next) => {
+router.put('/:id', authRequired, checkAdminExist, async (req, res, next) => {
   try {
     const id = req.params.id;
     const { profile_id } = req.admin;
@@ -45,7 +45,7 @@ router.put('/:id', checkAdminExist, authRequired, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', checkAdminExist, authRequired, async (req, res, next) => {
+router.delete('/:id', authRequired, checkAdminExist, async (req, res, next) => {
   const id = req.params.id;
   try {
     const deletedAdmin = await Admins.removeAdmin(id);
