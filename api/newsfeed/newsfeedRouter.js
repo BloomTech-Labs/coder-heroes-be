@@ -67,7 +67,7 @@ router.put('/:newsfeed_id', authRequired, (req, res) => {
     });
 });
 
-router.delete('/:newsfeed_id', (req, res) => {
+router.delete('/:newsfeed_id', authRequired, (req, res) => {
   Newsfeed.removeNewsfeed(req.params.newsfeed_id)
     .then((deletedFeed) => {
       if (!deletedFeed) {
