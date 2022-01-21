@@ -40,7 +40,7 @@ router.put('/:id', checkAdminExist, authRequired, async (req, res, next) => {
   } catch (error) {
     next({
       status: 400,
-      message: 'soemthing went wrong while updating admin profile',
+      message: 'something went wrong while updating admin profile',
     });
   }
 });
