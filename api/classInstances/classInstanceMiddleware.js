@@ -42,7 +42,7 @@ const checkClassInstanceObject = async (req, res, next) => {
     !location
   ) {
     next({
-      status: 404,
+      status: 400,
       message: `Please be sure that all information is submitted in order to add a new class instance to the database. Remember, we need size, open seats remaining, instructor id, course type id, start and end time, start and end date, and the location.`,
     });
   } else {
