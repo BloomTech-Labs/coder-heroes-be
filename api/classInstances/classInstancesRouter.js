@@ -19,7 +19,7 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:class_id', checkClassInstanceExist, authRequired, function (
+router.get('/:class_id', authRequired, checkClassInstanceExist, function (
   req,
   res
 ) {
@@ -33,7 +33,7 @@ router.get('/:class_id', checkClassInstanceExist, authRequired, function (
     });
 });
 
-router.post('/', checkClassInstanceObject, async (req, res) => {
+router.post('/', authRequired, checkClassInstanceObject, async (req, res) => {
   const classInstance = req.body;
   try {
     await Classes.addClassInstance(classInstance).then((inserted) => {
@@ -49,8 +49,8 @@ router.post('/', checkClassInstanceObject, async (req, res) => {
 
 router.put(
   '/:class_id',
-  checkClassInstanceExist,
   authRequired,
+  checkClassInstanceExist,
   (req, res, next) => {
     const class_id = req.params.class_id;
     const newClassObject = req.body;
@@ -68,17 +68,22 @@ router.put(
   }
 );
 
-router.delete('/:class_id', checkClassInstanceExist, (req, res, next) => {
-  const class_id = req.params.class_id;
-  try {
-    Classes.removeClassInstance(class_id).then(() => {
-      res.status(200).json({
-        message: `Schedule with id:'${class_id}' was deleted.`,
+router.delete(
+  '/:class_id',
+  authRequired,
+  checkClassInstanceExist,
+  (req, res, next) => {
+    const class_id = req.params.class_id;
+    try {
+      Classes.removeClassInstance(class_id).then(() => {
+        res.status(200).json({
+          message: `Schedule with id:'${class_id}' was deleted.`,
+        });
       });
-    });
-  } catch (err) {
-    next(err);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = router;
