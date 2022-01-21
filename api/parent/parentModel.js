@@ -9,19 +9,19 @@ const getParents = async () => {
 };
 
 const findByParentId = async (profile_id) => {
-  return db('parents')
+  return await db('parents')
     .leftJoin('profiles', 'parents.profile_id', 'profiles.profile_id')
     .where('parents.profile_id', profile_id);
 };
 
 const getParentChildren = async (parent_id) => {
-  return db('parents')
+  return await db('parents')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .where('parents.parent_id', parent_id);
 };
 
 const getChildSchedules = async (id) => {
-  return db('parents')
+  return await db('parents')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
     .leftJoin('classes', 'enrollments.class_id', 'classes.class_id')
