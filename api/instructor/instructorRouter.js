@@ -2,7 +2,10 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Instructors = require('./instructorModel');
 const router = express.Router();
-const { checkInstructorExist } = require('./instructorMiddleware');
+const {
+  checkInstructorExist,
+  checkInstructorObject,
+} = require('./instructorMiddleware');
 
 router.get('/', authRequired, function (req, res) {
   Instructors.getInstructors()
@@ -48,7 +51,7 @@ router.get(
   }
 );
 
-router.post('/', async (req, res) => {
+router.post('/', checkInstructorObject, async (req, res) => {
   const instructor = req.body;
   if (instructor) {
     const { profile_id } = instructor;
@@ -73,7 +76,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/', authRequired, (req, res) => {
+router.put('/', authRequired, checkInstructorObject, (req, res) => {
   const instructor = req.body;
   if (instructor) {
     const { instructor_id } = instructor;
