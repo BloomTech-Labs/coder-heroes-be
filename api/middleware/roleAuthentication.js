@@ -5,7 +5,7 @@ const roleAuthentication = (...args) => (req, res, next) => {
   if ([...args].includes(role)) {
     next();
   } else {
-    res.status(404).json({ error: 'No Access' });
+    res.status(401).json({ error: 'No Access' });
   }
 };
 
