@@ -12,7 +12,7 @@ const checkIfCourseIsUnique = async (req, res, next) => {
     next();
   }
 };
-const checkCoursePyload = (req, res, next) => {
+const checkCourseTypePayload = (req, res, next) => {
   const { description, subject } = req.body;
   if (description.trim() && subject.trim()) {
     next();
@@ -26,5 +26,5 @@ const checkCoursePyload = (req, res, next) => {
 
 module.exports = {
   checkIfCourseIsUnique,
-  checkCoursePyload,
+  checkCourseTypePayload,
 };
