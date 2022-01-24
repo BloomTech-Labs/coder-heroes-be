@@ -8,7 +8,5 @@ exports.seed = function (knex) {
     { profile_id: 6 },
     { profile_id: 7 },
     { profile_id: 8 },
-    { profile_id: 9 },
-    { profile_id: 10 },
   ]);
 };

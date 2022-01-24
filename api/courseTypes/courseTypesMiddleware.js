@@ -5,7 +5,7 @@ const checkIfCourseIsUnique = async (req, res, next) => {
   const course = await Courses.findBySubject(subject);
   if (course) {
     next({
-      status: 404,
+      status: 400,
       message: `Course with a name of ( ${subject} ) already exists.`,
     });
   } else {
@@ -18,7 +18,7 @@ const checkCourseTypePayload = (req, res, next) => {
     next();
   } else {
     next({
-      status: 404,
+      status: 400,
       message: 'please complete description and subject section.',
     });
   }

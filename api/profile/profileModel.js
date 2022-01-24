@@ -9,11 +9,14 @@ const findBy = (filter) => {
 };
 
 const findById = async (okta_id) => {
-  return db('profiles').where('profiles.okta_id', okta_id).first().select('*');
+  return await db('profiles')
+    .where('profiles.okta_id', okta_id)
+    .first()
+    .select('*');
 };
 
 const create = async (profile) => {
-  return db('profiles').insert(profile).returning('*');
+  return await db('profiles').insert(profile).returning('*');
 };
 
 const update = (okta_id, profile) => {

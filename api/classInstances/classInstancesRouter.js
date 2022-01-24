@@ -23,7 +23,7 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:class_id', checkClassInstanceExist, authRequired, function (
+router.get('/:class_id', authRequired, checkClassInstanceExist, function (
   req,
   res
 ) {
@@ -54,13 +54,14 @@ router.post(
       console.error(e);
       res.status(500).json({ message: e.message });
     }
+
   }
 );
 
 router.put(
   '/:class_id',
-  checkClassInstanceExist,
   authRequired,
+  checkClassInstanceExist,
   (req, res, next) => {
     const class_id = req.params.class_id;
     const newClassObject = req.body;
@@ -78,17 +79,22 @@ router.put(
   }
 );
 
-router.delete('/:class_id', checkClassInstanceExist, (req, res, next) => {
-  const class_id = req.params.class_id;
-  try {
-    Classes.removeClassInstance(class_id).then(() => {
-      res.status(200).json({
-        message: `Schedule with id:'${class_id}' was deleted.`,
+router.delete(
+  '/:class_id',
+  authRequired,
+  checkClassInstanceExist,
+  (req, res, next) => {
+    const class_id = req.params.class_id;
+    try {
+      Classes.removeClassInstance(class_id).then(() => {
+        res.status(200).json({
+          message: `Schedule with id:'${class_id}' was deleted.`,
+        });
       });
-    });
-  } catch (err) {
-    next(err);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = router;

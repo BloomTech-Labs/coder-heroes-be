@@ -14,17 +14,17 @@ const checkAdminExist = async (req, res, next) => {
 const checkPayload = (req, res, next) => {
   const { email, name, okta_id, role } = req.body;
   if (role === '' || role === undefined) {
-    next({ status: 404, message: 'role is required' });
+    next({ status: 400, message: 'role is required' });
   }
   if (email === '' || email === undefined) {
-    next({ status: 404, message: 'email is required' });
+    next({ status: 400, message: 'email is required' });
   }
   if (name === '' || name === undefined) {
-    next({ status: 404, message: 'name is required' });
+    next({ status: 400, message: 'name is required' });
   }
 
   if (okta_id === '' || okta_id === undefined) {
-    next({ status: 404, message: 'okta_id is required' });
+    next({ status: 400, message: 'okta_id is required' });
   } else {
     next();
   }

@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
       res.status(500).json({ message: e.message });
     }
   } else {
-    res.status(404).json({ message: 'Parent details missing.' });
+    res.status(400).json({ message: 'Parent details missing.' });
   }
 });
 

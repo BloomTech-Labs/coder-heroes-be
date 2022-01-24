@@ -1,31 +1,37 @@
 // const db = require('../../data/db-config');
 
 // const getInboxes = async () => {
-//   return await }
+//   return db('inboxes');
 // };
 
 // const findByProfileId = async (profile_id) => {
-//   return await
+//   return db('inboxes')
+//     .select('inbox_id', 'profile_id')
+//     .where('profile_id', profile_id)
+//     .first();
 // };
 
 // const findByInboxId = async (inbox_id) => {
-//   return await
+//   return db('inboxes')
+//     .select('inbox_id', 'profile_id')
+//     .where('inbox_id', inbox_id)
+//     .first();
 // };
 
 // const addInbox = async (inbox) => {
-//   return await
+//   return db('inboxes').insert(inbox);
 // };
 
 // const addMessage = async (message) => {
-//   return await
+//   return db('messages').insert(message);
 // };
 
 // const updateInbox = (profile_id, inbox) => {
-//   return await
+//   return db('inboxes').where('profile_id', profile_id).update(inbox);
 // };
 
 // const removeInbox = async (profile_id) => {
-//   return await
+//   return db('inboxes').where('profile_id', profile_id).delete();
 // };
 
 // module.exports = {
