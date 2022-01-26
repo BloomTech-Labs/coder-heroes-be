@@ -91,7 +91,7 @@ app.use(function (err, req, res, next) {
     res.locals.status = 500;
   }
   if (res.locals.status) {
-    res.status(res.locals.status || 500);
+    res.status(res.locals.status);
     const errObject = { error: res.locals.error, message: res.locals.message };
     return res.json(errObject);
   }
