@@ -21,5 +21,5 @@ exports.up = function (knex) {
   
   exports.down = function (knex) {
     return knex.schema
-      .dropTableIfExists('enrollments');
+      .dropTableIfExists('instructors-course_types');
   };
