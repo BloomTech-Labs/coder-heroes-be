@@ -4,6 +4,7 @@ const authRequired = require('../middleware/authRequired');
 const {
   checkChildExist,
   isChildAlreadyEnrolled,
+  checkChildObject,
 } = require('./childrenMiddleware');
 
 const router = express.Router();
@@ -20,13 +21,39 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 //dont forget authRequired
-router.get('/:id', authRequired, checkChildExist, function (req, res, next) {
+router.get('/:id', authRequired, checkChildExist, async function (
+  req,
+  res,
+  next
+) {
   try {
     res.status(200).json(req.child);
   } catch (error) {
     next(error);
   }
 });
+
+router.post('/', authRequired, checkChildObject, async function (
+  req,
+  res,
+  next
+) {
+  const { profile_id } = req.body;
+  try {
+    await Children.findByChildId(profile_id).then(async (user) => {
+      if (user.length === 0) {
+        await Children.addChild({ profile_id }).then((inserted) =>
+          res.status(200).json({ message: 'Child added.', parent: inserted[0] })
+        );
+      } else {
+        res.status(400).json({ message: 'Child already exists.' });
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 //dont forget authRequired
 router.get('/:id/enrollments', authRequired, checkChildExist, async function (
   req,

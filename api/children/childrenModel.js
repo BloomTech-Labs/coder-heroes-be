@@ -11,6 +11,10 @@ const findByChildId = async (id) => {
     .first();
 };
 
+const addChild = async (child) => {
+  return await db('children').insert(child).returning('*');
+};
+
 const getEnrolledCourses = async (id) => {
   // recives error if the id of the class doesn't exist exist  this have to modified lateron we need to make a midleware that checks fot the existing classes then runs this model'
   const enrollments = await db('children')
@@ -54,4 +58,5 @@ module.exports = {
   getEnrolledCourses,
   addEnrolledCourse,
   findByChildId,
+  addChild,
 };

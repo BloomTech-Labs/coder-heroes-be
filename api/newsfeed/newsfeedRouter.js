@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const roleAuthentication = require('../middleware/roleAuthentication');
 const Newsfeed = require('./newsfeedModel');
 const router = express.Router();
 
@@ -29,28 +30,33 @@ router.get('/:newsfeed_id', authRequired, function (req, res) {
     });
 });
 
-router.post('/', authRequired, (req, res) => {
-  Newsfeed.addNewsfeed(req.body)
-    .then((newFeed) => {
-      if (!req.body) {
-        res
-          .status(401)
-          .json({ message: 'Feed must have Title, Description and Link' });
-      } else if (
-        !req.body.title.trim() ||
-        !req.body.description.trim() ||
-        !req.body.link.trim()
-      ) {
-        res.status(401).json({ message: 'Missing parameters' });
-      } else {
-        res.status(201).json(newFeed);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
+router.post(
+  '/',
+  authRequired,
+  roleAuthentication(['super_admin', 'admin', 'instructor']),
+  (req, res) => {
+    Newsfeed.addNewsfeed(req.body)
+      .then((newFeed) => {
+        if (!req.body) {
+          res
+            .status(401)
+            .json({ message: 'Feed must have Title, Description and Link' });
+        } else if (
+          !req.body.title.trim() ||
+          !req.body.description.trim() ||
+          !req.body.link.trim()
+        ) {
+          res.status(401).json({ message: 'Missing parameters' });
+        } else {
+          res.status(201).json(newFeed);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+      });
+  }
+);
 
 router.put('/:newsfeed_id', authRequired, (req, res) => {
   Newsfeed.updateNewsfeed(req.params.newsfeed_id, req.body)
@@ -67,19 +73,24 @@ router.put('/:newsfeed_id', authRequired, (req, res) => {
     });
 });
 
-router.delete('/:newsfeed_id', authRequired, (req, res) => {
-  Newsfeed.removeNewsfeed(req.params.newsfeed_id)
-    .then((deletedFeed) => {
-      if (!deletedFeed) {
-        res.status(404).json({ message: 'Feed Not Found' });
-      } else {
-        res.status(200).json(deletedFeed);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
+router.delete(
+  '/:newsfeed_id',
+  authRequired,
+  roleAuthentication(['super_admin', 'admin', 'instructor']),
+  (req, res) => {
+    Newsfeed.removeNewsfeed(req.params.newsfeed_id)
+      .then((deletedFeed) => {
+        if (!deletedFeed) {
+          res.status(404).json({ message: 'Feed Not Found' });
+        } else {
+          res.status(200).json(deletedFeed);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+      });
+  }
+);
 
 module.exports = router;
