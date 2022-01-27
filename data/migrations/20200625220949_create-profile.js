@@ -6,7 +6,7 @@ exports.up = (knex) => {
       table.string('email');
       table.string('name');
       table.string('okta_id').unique();
-      table.string('role').notNullable();
+      table.integer('role_id').notNullable();
       table
         .string('avatarUrl')
         .defaultTo('https://i.stack.imgur.com/frlIf.png');
