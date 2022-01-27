@@ -1,18 +1,5 @@
-const Admins = require('./adminModel');
-
-const checkAdminExist = async (req, res, next) => {
-  const id = req.params.id;
-  const foundAdmin = await Admins.findByAdminId(id);
-  if (!foundAdmin) {
-    next({ status: 404, message: `admin with id ${id} is not found ` });
-  } else {
-    req.admin = foundAdmin;
-    next();
-  }
-};
-
-const checkPayload = (req, res, next) => {
-  const { email, name, okta_id, role } = req.body;
+const checkProfileObject = (req, res, next) => {
+  const { email, name, okta_id, role, avatarUrl } = req.body;
   if (!role) next({ status: 400, message: 'role is required' });
   if (!email) next({ status: 400, message: 'email is required' });
   if (!name) next({ status: 400, message: 'name is required' });
@@ -38,11 +25,12 @@ const checkPayload = (req, res, next) => {
       message:
         'strings sent in the request body must not exceed a length of 255 characters',
     });
+  if (typeof avatarUrl !== 'string' || avatarUrl.length > 255)
+    req.body.avatarUrl = null;
 
   next();
 };
 
 module.exports = {
-  checkAdminExist,
-  checkPayload,
+  checkProfileObject,
 };
