@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Parents = require('./parentModel');
 const router = express.Router();
 const { checkParentObject } = require('./parentMiddleware');
@@ -80,23 +81,28 @@ router.post('/', checkParentObject, async (req, res) => {
   }
 });
 
-router.delete('/:profile_id', authRequired, (req, res) => {
-  const profile_id = req.params.profile_id;
-  try {
-    Parents.findByParentId(profile_id).then((parent) => {
-      Parents.removeParent(parent[0].profile_id).then(() => {
-        res.status(200).json({
-          message: `Parent with id:'${profile_id}' was deleted.`,
-          parent: parent[0],
+router.delete(
+  '/:profile_id',
+  authRequired,
+  ownerAuthorization('params'),
+  (req, res) => {
+    const profile_id = req.params.profile_id;
+    try {
+      Parents.findByParentId(profile_id).then((parent) => {
+        Parents.removeParent(parent[0].profile_id).then(() => {
+          res.status(200).json({
+            message: `Parent with id:'${profile_id}' was deleted.`,
+            parent: parent[0],
+          });
         });
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete parent with profile_id: ${profile_id}`,
-      error: err.message,
-    });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete parent with profile_id: ${profile_id}`,
+        error: err.message,
+      });
+    }
   }
-});
+);
 
 module.exports = router;

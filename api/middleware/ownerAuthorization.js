@@ -2,7 +2,7 @@
 const ownerAuthorization = (key) => (req, res, next) => {
   if (
     req.profile.profile_id === req[key].profile_id ||
-    (req.profile.role_id < 3 && req.profile.role_id < req[key].role_id)
+    (req.profile.role_id < 3 && req.profile.role_id < (req[key].role_id || 3))
   )
     next();
   else
