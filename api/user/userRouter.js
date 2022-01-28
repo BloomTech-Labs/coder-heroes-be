@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
   const { role, profile_id } = req.profile;
-  console.log(role, profile_id);
   User.findUserData(role, profile_id)
     .then((user) => {
       res.status(200).json(user);
@@ -31,7 +30,6 @@ router.get('/schedules', authRequired, function (req, res) {
 
 router.put('/', authRequired, function (req, res) {
   const { profile_id } = req.profile;
-  console.log(req.body);
   User.updateUserData(profile_id, req.body)
     .then((user) => {
       res.status(200).json(user);
