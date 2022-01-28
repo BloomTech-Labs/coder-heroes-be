@@ -1,7 +1,7 @@
 const Instructors = require('./instructorModel');
 
 const { findByAdminId } = require('../admin/adminModel');
-const { findById } = require('../profile/profileModel');
+const { findBy } = require('../profile/profileModel');
 
 const checkInstructorExist = (fromParams) => async (req, res, next) => {
   const instructor_id = req[fromParams ? 'params' : 'body'].instructor_id;
@@ -59,7 +59,7 @@ const checkInstructorObject = async (req, res, next) => {
         message: `An admin of id ${approved_by} was not found. Change approved_by to null or replace the value with a valid admin id.`,
       });
   }
-  const profile = await findById(profile_id);
+  const profile = await findBy({ profile_id });
   if (!profile)
     next({
       status: 400,
