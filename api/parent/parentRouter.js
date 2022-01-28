@@ -15,8 +15,8 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
+router.get('/:profile_id', authRequired, function (req, res) {
+  const id = String(req.params.profile_id);
   Parents.findByParentId(id)
     .then((parent) => {
       if (parent) {
@@ -30,8 +30,8 @@ router.get('/:id', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id/children', authRequired, function (req, res) {
-  const id = req.params.id;
+router.get('/:parent_id/children', authRequired, function (req, res) {
+  const id = req.params.parent_id;
   Parents.getParentChildren(id)
     .then((children) => {
       if (children) {
@@ -45,8 +45,8 @@ router.get('/:id/children', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id/schedules', authRequired, function (req, res) {
-  const { id } = req.params;
+router.get('/:parent_id/schedules', authRequired, function (req, res) {
+  const id = req.params.parent_id;
   Parents.getChildSchedules(id)
     .then((schedules) => {
       if (schedules) {
@@ -80,8 +80,8 @@ router.post('/', checkParentObject, async (req, res) => {
   }
 });
 
-router.delete('/:id', authRequired, (req, res) => {
-  const profile_id = req.params.id;
+router.delete('/:profile_id', authRequired, (req, res) => {
+  const profile_id = req.params.profile_id;
   try {
     Parents.findByParentId(profile_id).then((parent) => {
       Parents.removeParent(parent[0].profile_id).then(() => {
