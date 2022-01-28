@@ -80,35 +80,6 @@ router.post('/', checkParentObject, async (req, res) => {
   }
 });
 
-router.put('/', authRequired, checkParentObject, (req, res) => {
-  const parent = req.body;
-  if (parent) {
-    const { parent_id, profile_id } = parent;
-    Parents.findByParentId(profile_id)
-      .then(
-        Parents.updateParent(parent_id, parent)
-          .then((updated) => {
-            res.status(200).json({
-              message: `Parent with id: ${parent_id} updated`,
-              parent: updated[0],
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update parent '${parent_id}'`,
-              error: err.message,
-            });
-          })
-      )
-      .catch((err) => {
-        res.status(404).json({
-          message: `Could not find parent '${parent_id}'`,
-          error: err.message,
-        });
-      });
-  }
-});
-
 router.delete('/:id', authRequired, (req, res) => {
   const profile_id = req.params.id;
   try {
