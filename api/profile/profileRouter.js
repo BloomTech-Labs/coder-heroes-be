@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Profiles = require('./profileModel');
 const router = express.Router();
 const {
@@ -214,6 +215,7 @@ router.put(
   authRequired,
   checkProfileObject,
   checkProfileExists(false),
+  ownerAuthorization('user'),
   (req, res) => {
     const profile = req.body;
     const okta = req.user.okta_id;
@@ -265,6 +267,7 @@ router.delete(
   '/:okta_id',
   authRequired,
   checkProfileExists(true),
+  ownerAuthorization('user'),
   (req, res) => {
     const okta = req.params.okta_id;
     try {
