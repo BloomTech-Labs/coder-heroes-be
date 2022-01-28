@@ -3,8 +3,8 @@ const Instructors = require('./instructorModel');
 const { findByAdminId } = require('../admin/adminModel');
 const { findById } = require('../profile/profileModel');
 
-const checkInstructorExist = async (req, res, next) => {
-  const instructor_id = req.params.instructor_id;
+const checkInstructorExist = (fromParams) => async (req, res, next) => {
+  const instructor_id = req[fromParams ? 'params' : 'body'].instructor_id;
   const foundInstructor = await Instructors.findByInstructorId(instructor_id);
   if (foundInstructor == undefined) {
     next({
