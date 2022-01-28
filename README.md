@@ -192,7 +192,6 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | [GET]    | /parent/:id/children/  | Returns an array filled with event objects with the specified `id`.                                      |
 | [GET]    | /parent/:id/schedules/ | Returns an array filled with event objects with the specified `id`.                                      |
 | [POST]   | /parent/               | Returns an event object with the specified `user_id`. Creates a new parent.                              |
-| [PUT]    | /parent/               | Returns an event object with the specified `user_id`. Updates specific parent.                           |
 | [DELETE] | /parent/:id/           | Returns an event object with the specified `id`. Deletes specific parent.                                |
 
 #### Instructor:
