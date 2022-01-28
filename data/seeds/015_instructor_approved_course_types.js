@@ -1,4 +1,3 @@
-
 exports.seed = function (knex) {
   return knex('instructors-course_types').insert([
     {
@@ -127,4 +126,3 @@ exports.seed = function (knex) {
     },
   ]);
 };
-
