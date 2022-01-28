@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
@@ -51,6 +52,7 @@ router.put(
   '/:class_id',
   authRequired,
   checkClassInstanceExist,
+  ownerAuthorization('class_instance'),
   (req, res, next) => {
     const class_id = req.params.class_id;
     const newClassObject = req.body;
@@ -72,6 +74,7 @@ router.delete(
   '/:class_id',
   authRequired,
   checkClassInstanceExist,
+  ownerAuthorization('class_instance'),
   (req, res, next) => {
     const class_id = req.params.class_id;
     try {
