@@ -1,45 +1,45 @@
-// const db = require('../../data/db-config');
+const db = require('../../data/db-config');
 
-// const getInboxes = async () => {
-//   return db('inboxes');
-// };
+const getInboxes = async () => {
+  return db('inboxes');
+};
 
-// const findByProfileId = async (profile_id) => {
-//   return db('inboxes')
-//     .select('inbox_id', 'profile_id')
-//     .where('profile_id', profile_id)
-//     .first();
-// };
+const findByProfileId = async (profile_id) => {
+  return db('inboxes')
+    .select('inbox_id', 'profile_id')
+    .where('profile_id', profile_id)
+    .first();
+};
 
-// const findByInboxId = async (inbox_id) => {
-//   return db('inboxes')
-//     .select('inbox_id', 'profile_id')
-//     .where('inbox_id', inbox_id)
-//     .first();
-// };
+const findByInboxId = async (inbox_id) => {
+  return db('inboxes')
+    .select('inbox_id', 'profile_id')
+    .where('inbox_id', inbox_id)
+    .first();
+};
 
-// const addInbox = async (inbox) => {
-//   return db('inboxes').insert(inbox);
-// };
+const addInbox = async (inbox) => {
+  return db('inboxes').insert(inbox);
+};
 
-// const addMessage = async (message) => {
-//   return db('messages').insert(message);
-// };
+const addMessage = async (message) => {
+  return db('messages').insert(message);
+};
 
-// const updateInbox = (profile_id, inbox) => {
-//   return db('inboxes').where('profile_id', profile_id).update(inbox);
-// };
+const updateInbox = (profile_id, inbox) => {
+  return db('inboxes').where('profile_id', profile_id).update(inbox);
+};
 
-// const removeInbox = async (profile_id) => {
-//   return db('inboxes').where('profile_id', profile_id).delete();
-// };
+const removeInbox = async (profile_id) => {
+  return db('inboxes').where('profile_id', profile_id).delete();
+};
 
-// module.exports = {
-//   getInboxes,
-//   findByProfileId,
-//   findByInboxId,
-//   addInbox,
-//   addMessage,
-//   updateInbox,
-//   removeInbox,
-// };
+module.exports = {
+  getInboxes,
+  findByProfileId,
+  findByInboxId,
+  addInbox,
+  addMessage,
+  updateInbox,
+  removeInbox,
+};
