@@ -12,6 +12,7 @@ const checkIfCourseIsUnique = async (req, res, next) => {
     next();
   }
 };
+
 const checkCourseTypePayload = (req, res, next) => {
   const { description, subject } = req.body;
   if (description.trim() && subject.trim()) {
@@ -19,9 +20,16 @@ const checkCourseTypePayload = (req, res, next) => {
   } else {
     next({
       status: 400,
-      message: 'please complete description and subject section.',
+      message:
+        'the description string must not exceed a length of 255 characters',
     });
-  }
+  if (subject.length > 255)
+    next({
+      status: 400,
+      message: 'the subject string must not exceed a length of 255 characters',
+    });
+
+  next();
 };
 
 module.exports = {

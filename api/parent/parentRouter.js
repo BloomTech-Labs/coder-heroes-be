@@ -2,6 +2,7 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Parents = require('./parentModel');
 const router = express.Router();
+const { checkParentObject } = require('./parentMiddleware');
 
 router.get('/', authRequired, function (req, res) {
   Parents.getParents()
@@ -59,32 +60,27 @@ router.get('/:id/schedules', authRequired, function (req, res) {
     });
 });
 
-router.post('/', async (req, res) => {
-  const parent = req.body;
-  if (parent) {
-    const { profile_id } = parent;
-    try {
-      await Parents.findByParentId(profile_id).then(async (user) => {
-        if (user.length === 0) {
-          await Parents.addParent(parent).then((inserted) =>
-            res
-              .status(200)
-              .json({ message: 'Parent added.', parent: inserted[0] })
-          );
-        } else {
-          res.status(400).json({ message: 'Parent already exists.' });
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
-    }
-  } else {
-    res.status(400).json({ message: 'Parent details missing.' });
+router.post('/', checkParentObject, async (req, res) => {
+  const { profile_id } = req.body;
+  try {
+    await Parents.findByParentId(profile_id).then(async (user) => {
+      if (user.length === 0) {
+        await Parents.addParent({ profile_id }).then((inserted) =>
+          res
+            .status(200)
+            .json({ message: 'Parent added.', parent: inserted[0] })
+        );
+      } else {
+        res.status(400).json({ message: 'Parent already exists.' });
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
   }
 });
 
-router.put('/', authRequired, (req, res) => {
+router.put('/', authRequired, checkParentObject, (req, res) => {
   const parent = req.body;
   if (parent) {
     const { parent_id, profile_id } = parent;

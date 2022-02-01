@@ -55,11 +55,11 @@ router.put('/:id', authRequired, checkAdminExist, async (req, res, next) => {
   try {
     const id = req.params.id;
     const { profile_id } = req.admin;
-    const updaedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
-    res.status(200).json(updaedAdmin);
+    const updatedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
+    res.status(200).json(updatedAdmin);
   } catch (error) {
     next({
-      status: 400,
+      status: 500,
       message: 'soemthing went wrong while updating admin profile',
     });
   }
