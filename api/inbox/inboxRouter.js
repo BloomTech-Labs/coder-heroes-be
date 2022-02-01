@@ -18,7 +18,7 @@ router.get('/:profile_id', authRequired, function (req, res) {
   Inboxes.findByInboxId(req.params.profile_id)
     .then((inbox) => {
       if (!req.params.profile_id) {
-        res.status(404).json({ message: 'Profile not found' });
+        res.status(404).json({ message: 'Inbox not found' });
       } else {
         res.status(200).json(inbox);
       }
@@ -32,7 +32,11 @@ router.get('/:profile_id', authRequired, function (req, res) {
 router.post('/', async (req, res) => {
   Inboxes.addInbox(req.body)
     .then((inbox) => {
-      res.status(201).json(inbox);
+      if (!req.body.profile_id) {
+        res.status(401).json({ message: 'Requires profile id' });
+      } else {
+        res.status(201).json(inbox);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -43,7 +47,15 @@ router.post('/', async (req, res) => {
 router.post('/messages', authRequired, async (req, res) => {
   Inboxes.addMessage(req.body)
     .then((message) => {
-      res.status(201).json(message);
+      if (!req.body) {
+        res.status(401).json({ message: 'Please enter nessesary information' });
+      } else if (!req.body.title.trim()) {
+        res.status(401).json({ message: 'Please enter a title' });
+      } else if (!req.body.message.trim()) {
+        res.status(401).json({ message: 'Please enter a message' });
+      } else {
+        res.status(201).json(message);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -54,7 +66,15 @@ router.post('/messages', authRequired, async (req, res) => {
 router.put('/:profile_id', authRequired, (req, res) => {
   Inboxes.updateInbox(req.params.profile_id, req.body)
     .then((inbox) => {
-      res.status(201).json(inbox);
+      if (!req.params.profile_id) {
+        res.status(404).json({ message: 'Inbox not found' });
+      } else if (!req.body) {
+        res.status(401).json({ message: 'Please enter nessesary information' });
+      } else if (!req.body.profile_id) {
+        res.status(401).json({ message: 'Please provide profile_id' });
+      } else {
+        res.status(201).json(inbox);
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -62,10 +82,14 @@ router.put('/:profile_id', authRequired, (req, res) => {
     });
 });
 
-router.delete('/:profile_id', (req, res) => {
+router.delete('/:profile_id', authRequired, (req, res) => {
   Inboxes.removeInbox(req.params.profile_id)
     .then((inbox) => {
-      res.status(200).json(inbox);
+      if (!req.params.profile_id) {
+        res.status(401).json({ message: 'Inbox not found' });
+      } else {
+        res.status(200).json(inbox);
+      }
     })
     .catch((err) => {
       console.log(err);
