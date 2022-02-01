@@ -23,6 +23,7 @@ const checkCourseTypePayload = (req, res, next) => {
       message:
         'the description string must not exceed a length of 255 characters',
     });
+  }
   if (subject.length > 255)
     next({
       status: 400,
