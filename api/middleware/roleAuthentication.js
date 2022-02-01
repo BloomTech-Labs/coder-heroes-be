@@ -1,4 +1,4 @@
-const roleAuthentication = (args) => (req, res, next) => {
+const roleAuthentication = (...args) => (req, res, next) => {
   // role type is inside req.profile.body
   const { role } = req.profile;
   console.log(role);
