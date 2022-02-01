@@ -12,18 +12,12 @@ const checkIfCourseIsUnique = async (req, res, next) => {
     next();
   }
 };
-const checkCoursePyload = (req, res, next) => {
-  let { description, subject } = req.body;
-  if (typeof description !== 'string')
-    next({ status: 400, message: 'description must be of type string' });
-  if (typeof subject !== 'string')
-    next({ status: 400, message: 'subject must be of type string' });
-  description = description.trim();
-  subject = subject.trim();
-  req.body = { description, subject };
-  if (!description) next({ status: 400, message: 'description is required' });
-  if (!subject) next({ status: 400, message: 'subject is required' });
-  if (description.length > 255)
+
+const checkCourseTypePayload = (req, res, next) => {
+  const { description, subject } = req.body;
+  if (description.trim() && subject.trim()) {
+    next();
+  } else {
     next({
       status: 400,
       message:
@@ -40,5 +34,5 @@ const checkCoursePyload = (req, res, next) => {
 
 module.exports = {
   checkIfCourseIsUnique,
-  checkCoursePyload,
+  checkCourseTypePayload,
 };
