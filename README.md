@@ -238,14 +238,12 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 #### Class:
 
-| Method | URL |
-Description |
-| ----- | ------------------- | --------------------------------------------------- | ----------- |
-| [GET] | /class-instance | Returns an array filled with specific class objects |
-| [GET] | /class-instance/:class-id | Returns the class with specified `id`.  
-| [POST] | /class-instance | Returns the class object with the specified `id`. Creates a class.
-| [PUT] | /class-instance/:class-id | Returns the class object with the specified `id`. Updates a specific class.
-| [DELETE]| /class-instance/:class-id | Returns the class object with the specified `id`. Deletes specific class.
+| Method   | URL                       | Description                                                                 |
+| -------- | ------------------------- | --------------------------------------------------------------------------- |
+| [GET]    | /class-instance           | Returns an array filled with specific class objects                         |
+| [GET]    | /class-instance/:class-id | Returns the class object with the specified `id`. Creates a class.          |
+| [PUT]    | /class-instance/:class-id | Returns the class object with the specified `id`. Updates a specific class. |
+| [DELETE] | /class-instance/:class-id | Returns the class object with the specified `id`. Deletes specific class.   |
 
 #### Schedule:
 
