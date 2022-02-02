@@ -12,4 +12,6 @@ const roleAuthentication = async (...args) => (req, res, next) => {
   }
 };
 
-module.exports = roleAuthentication;
+const roles = ['child', 'parent', 'instructor', 'admin', 'super_admin'];
+
+module.exports = { roleAuthentication, roles };
