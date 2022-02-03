@@ -137,6 +137,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
   course_id: INTEGER,
   approved: BOOLEAN,
   approved_by: INTEGER,
+  availability: STRING,
 }
 ```` 
 
