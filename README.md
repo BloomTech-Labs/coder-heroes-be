@@ -163,6 +163,24 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 }
 ````
 
+<h1>Classes</h1>
+
+````
+{
+  class_id: INCREMENT,
+  size: INTEGER,
+  min_age: INTEGER,
+  max_age: INTEGER,
+  open_seats_remaining: INTEGER,
+  intructor_id: INTEGER,
+  course_type_id: INTEGER,
+  start_time: TIME,
+  end_time: TIME,
+  start_date: DATE,
+  end_date: DATE,
+  location: STRING,
+}
+
 #### Profile:
 
 | Method   | URL             | Description                                                                                                |
