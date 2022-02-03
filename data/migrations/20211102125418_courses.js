@@ -10,6 +10,8 @@ exports.up = (knex) => {
     .createTable('classes', (table) => {
       table.increments('class_id');
       table.integer('size').notNullable();
+      table.integer('min_age');
+      table.integer('max_age');
       table.integer('open_seats_remaining');
 
       table
