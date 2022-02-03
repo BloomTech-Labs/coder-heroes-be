@@ -12,6 +12,7 @@ exports.up = (knex) => {
       table.integer('size').notNullable();
       table.integer('min_age');
       table.integer('max_age');
+      table.integer('sessions');
       table.integer('open_seats_remaining');
 
       table
