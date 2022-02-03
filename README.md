@@ -156,8 +156,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 ````
 {
   id: INCREMENT,
-  title: INTEGER,
-  link: INTEGER,
+  title: STRING,
+  link: STRING,
   description: STRING,
   posted_at: TIMESTAMP,
 }
