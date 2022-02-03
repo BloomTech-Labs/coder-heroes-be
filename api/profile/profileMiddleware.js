@@ -1,3 +1,5 @@
+const Profiles = require('./profileModel');
+
 const checkProfileObject = (req, res, next) => {
   const { email, name, okta_id, role, avatarUrl } = req.body;
   if (!role) next({ status: 400, message: 'role is required' });
@@ -31,6 +33,18 @@ const checkProfileObject = (req, res, next) => {
   next();
 };
 
+const checkUserExist = async (req, res, next) => {
+  const id = req.params.profile_id;
+  const foundUser = await Profiles.findByProfileId(id);
+  if (!foundUser) {
+    next({ status: 404, message: `User with id ${id} is not found ` });
+  } else {
+    req.user = foundUser;
+    next();
+  }
+};
+
 module.exports = {
   checkProfileObject,
+  checkUserExist
 };

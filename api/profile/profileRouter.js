@@ -125,6 +125,32 @@ router.get('/:okta', authRequired, function (req, res) {
     });
 });
 
+//Get By Role
+router.get('/roles/:role_id', authRequired, function (req, res, next) {
+  Profiles.findByRoleId(req.params.role_id)
+    .then((users) => {
+      if (users) {
+        res.status(200).json(users);
+      } else {
+        res.status(404).json({ error: 'RoleNotFound'})
+      }
+    })
+    .catch(next)
+});
+
+//Get By Profile ID
+router.get('/users/:profile_id', authRequired, function (req, res, next) {
+  Profiles.findByProfileId(req.params.proflie_id)
+    .then((user) => {
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ error: 'UserNotFound'})
+      }
+    })
+    .catch(next)
+});
+
 /**
  * @swagger
  * /profile:
@@ -157,12 +183,12 @@ router.get('/:okta', authRequired, function (req, res) {
  *                message:
  *                  type: string
  *                  description: A message about the result
- *                  example: profile created
- *                profile:
- *                  $ref: '#/components/schemas/Profile'
- */
-router.post('/', checkProfileObject, async (req, res) => {
-  const profile = req.body;
+ *                  example: profile creapted
+ *                profile:p
+ *                  $ref: '#/components/spchemas/Profile'
+ */p
+router.post('/', checkProfileObject, asynpc (req, res) => {
+  const profile = req.body;p
   try {
     await Profiles.findById(profile.okta_id).then(async (pf) => {
       if (pf == undefined) {
@@ -288,5 +314,8 @@ router.delete('/:okta', authRequired, (req, res) => {
     });
   }
 });
+
+
+
 
 module.exports = router;

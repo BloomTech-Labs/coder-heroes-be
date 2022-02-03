@@ -44,6 +44,17 @@ const findOrCreateProfile = async (profileObj) => {
   }
 };
 
+const findByRoleId = async (role_id) => {
+  return await db('profiles')
+    .where('role_id', role_id)
+}
+
+const findByProfileId = async (profile_id) =>{
+  return await db('profiles')
+    .where('profile_id', profile_id)
+    .first()
+};
+
 module.exports = {
   findAll,
   findBy,
@@ -52,4 +63,6 @@ module.exports = {
   update,
   remove,
   findOrCreateProfile,
+  findByRoleId,
+  findByProfileId
 };
