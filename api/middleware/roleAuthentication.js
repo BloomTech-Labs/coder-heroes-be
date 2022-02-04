@@ -1,7 +1,10 @@
-const roleAuthentication = (...args) => (req, res, next) => {
-  // role type is inside req.profile.body
+const { getRoles } = require('../roles/rolesModel');
+
+const roleAuthentication = async (...args) => (req, res, next) => {
+  req.profile.role = getRoles()
+    .where({ role_id: req.profile.role_id })
+    .first().role_name;
   const { role } = req.profile;
-  //check to see if role matcheds the role that have access to the endpoint
   if ([...args].includes(role)) {
     next();
   } else {

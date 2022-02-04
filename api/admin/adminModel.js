@@ -22,7 +22,7 @@ const addAdmin = async (admin) => {
     "email": "asdfasdf@maildrop.cc",
     "name": "eooas User",
     "okta_id": "00ulthapbErVUwasdt4x11",
-    "role": "admin"
+    "role_id": 2
   }
   ==> make sure to look at the adminMiddleware.js and make changes there
   */
