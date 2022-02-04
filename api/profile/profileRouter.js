@@ -186,8 +186,8 @@ router.get('/users/:profile_id', authRequired, function (req, res, next) {
  *                  example: profile creapted
  *                profile:p
  *                  $ref: '#/components/spchemas/Profile'
- */p
-router.post('/', checkProfileObject, asynpc (req, res) => {
+ */
+router.post('/', checkProfileObject, async (req, res) => {
   const profile = req.body;p
   try {
     await Profiles.findById(profile.okta_id).then(async (pf) => {
@@ -206,6 +206,7 @@ router.post('/', checkProfileObject, asynpc (req, res) => {
     res.status(500).json({ message: e.message });
   }
 });
+
 /**
  * @swagger
  * /profile:
