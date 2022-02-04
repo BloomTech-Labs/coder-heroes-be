@@ -132,25 +132,27 @@ router.get('/roles/:role_id', authRequired, function (req, res, next) {
       if (users) {
         res.status(200).json(users);
       } else {
-        res.status(404).json({ error: 'RoleNotFound'})
+        res.status(404).json({ error: 'RoleNotFound' });
       }
     })
-    .catch(next)
+    .catch(next);
 });
 
 //Get By Profile ID
 router.get('/users/:profile_id', authRequired, function (req, res, next) {
-  Profiles.findByProfileId(req.params.proflie_id)
+  Profiles.findByProfileId(req.params.profile_id)
     .then((user) => {
       if (user) {
         res.status(200).json(user);
       } else {
-        res.status(404).json({ error: 'UserNotFound'})
+        res.status(404).json({ error: 'UserNotFound' });
       }
     })
-    .catch(next)
+    .catch(next);
 });
 
+//Post A New Profile
+router.post('/');
 /**
  * @swagger
  * /profile:
@@ -188,7 +190,7 @@ router.get('/users/:profile_id', authRequired, function (req, res, next) {
  *                  $ref: '#/components/spchemas/Profile'
  */
 router.post('/', checkProfileObject, async (req, res) => {
-  const profile = req.body;p
+  const profile = req.body;
   try {
     await Profiles.findById(profile.okta_id).then(async (pf) => {
       if (pf == undefined) {
@@ -315,8 +317,5 @@ router.delete('/:okta', authRequired, (req, res) => {
     });
   }
 });
-
-
-
 
 module.exports = router;
