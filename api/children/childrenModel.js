@@ -8,8 +8,7 @@ const getEnrolledCourses = async (id) => {
     .where('children.child_id', id);
 
   const enrolledCourses = {
-    child_id: id,
-    proflie_id: enrollments[0].profile_id,
+    profile_id: enrollments[0].profile_id,
     username: enrollments[0].username,
     age: enrollments[0].age,
     parent_id: enrollments[0].parent_id,
