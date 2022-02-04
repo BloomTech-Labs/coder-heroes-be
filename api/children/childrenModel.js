@@ -1,16 +1,5 @@
 const db = require('../../data/db-config');
 
-const getChildren = async () => {
-  return await db('children');
-};
-
-const findByChildId = async (id) => {
-  return db('children')
-    .join('profiles', 'children.profile_id', 'profiles.profile_id')
-    .where('child_id', id)
-    .first();
-};
-
 const getEnrolledCourses = async (id) => {
   // recives error if the id of the class doesn't exist exist  this have to modified lateron we need to make a midleware that checks fot the existing classes then runs this model'
   const enrollments = await db('children')
@@ -50,8 +39,6 @@ const addEnrolledCourse = async (course) => {
 };
 
 module.exports = {
-  getChildren,
   getEnrolledCourses,
   addEnrolledCourse,
-  findByChildId,
 };
