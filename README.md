@@ -169,7 +169,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | ------   | --------------  | ---------------------------------------------------------------------------------------------------------- |
 | [GET]    | /profile/       | Returns an array filled with event objects.                                                                |
 | [GET]    | /profile/:okta/ | Returns an event object with the specified `okta`.                                                         |
-| [GET]    | /users/:profile_id       | Returns an array filled with event objects that contains information based on profile_id and role_id.                                                                |
+| [GET]    | /profiles/users/:profile_id       | Returns an array filled with event objects that contains information based on profile_id and role_id.                                                                |
 | [GET]    | /profile/role/role:id       | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type.                                                                |
 | [POST]   | /profile/       | Requires a name, password, and email. Registers a new user.                                                |
 | [PUT]    | /profile/       | Returns an event object with the specified `okta`. Updates specific profile.                               |
