@@ -40,7 +40,17 @@ const checkProfileExist = async (req, res, next) => {
   }
 };
 
+const checkRoleExist = async (req, res, next) => {
+  const role = req.params.role_id;
+  if (role >= 0 || role <= 5) {
+    next();
+  } else {
+    next({ status: 404, message: `No such role exists` });
+  }
+};
+
 module.exports = {
   checkProfileObject,
   checkProfileExist,
+  checkRoleExist,
 };
