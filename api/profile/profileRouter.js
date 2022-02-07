@@ -9,7 +9,8 @@ const {
 } = require('./profileMiddleware');
 
 router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
-  Profiles.findByRoleId()
+  const role_id = req.params.role_id;
+  Profiles.findByRoleId(role_id)
     .then((roleList) => {
       res.status(200).json(roleList);
     })
@@ -19,19 +20,23 @@ router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
     });
 });
 
-router.get('/users/:profile_id', authRequired, checkProfileExist, function (
-  req,
-  res
-) {
-  Profiles.findByProfileId()
-    .then((profile) => {
-      res.status(200).json(profile);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
+router.get(
+  '/users/:profile_id',
+  authRequired,
+  checkProfileExist,
+  async function (req, res, next) {
+    try {
+      const { profile_id, role_id } = req.profile;
+      const profileInfo = await Profiles.findByProfileAndRoleId(
+        profile_id,
+        role_id
+      );
+      res.status(200).json(profileInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 /**
  * @swagger
