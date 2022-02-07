@@ -2,12 +2,30 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Profiles = require('./profileModel');
 const router = express.Router();
-const { checkProfileObject, checkRoleExist } = require('./profileMiddleware');
+const {
+  checkProfileObject,
+  checkRoleExist,
+  checkProfileExist,
+} = require('./profileMiddleware');
 
 router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
   Profiles.findByRoleId()
     .then((roleList) => {
       res.status(200).json(roleList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
+});
+
+router.get('/users/:profile_id', authRequired, checkProfileExist, function (
+  req,
+  res
+) {
+  Profiles.findByProfileId()
+    .then((profile) => {
+      res.status(200).json(profile);
     })
     .catch((err) => {
       console.log(err);
