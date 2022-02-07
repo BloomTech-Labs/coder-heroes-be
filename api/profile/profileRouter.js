@@ -2,7 +2,18 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Profiles = require('./profileModel');
 const router = express.Router();
-const { checkProfileObject } = require('./profileMiddleware');
+const { checkProfileObject, checkRoleExist } = require('./profileMiddleware');
+
+router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
+  Profiles.findByRoleId()
+    .then((roleList) => {
+      res.status(200).json(roleList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
+});
 
 /**
  * @swagger
@@ -125,7 +136,7 @@ router.get('/:okta', authRequired, function (req, res) {
     });
 });
 
-/**
+/*p*
  * @swagger
  * /profile:
  *  post:
