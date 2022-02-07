@@ -1,17 +1,17 @@
 const db = require('../../data/db-config');
 
-const getParentChildren = async (parent_id) => {
+const getParentChildren = async (profile_id) => {
   return await db('parents')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
-    .where('parents.parent_id', parent_id);
+    .where('parents.profile_id', profile_id);
 };
 
-const getChildSchedules = async (id) => {
+const getChildSchedules = async (profile_id) => {
   return await db('parents')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
     .leftJoin('classes', 'enrollments.class_id', 'classes.class_id')
-    .where('parents.parent_id', id);
+    .where('parents.profile_id', profile_id);
 };
 
 module.exports = {

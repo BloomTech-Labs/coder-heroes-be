@@ -3,8 +3,8 @@ const authRequired = require('../middleware/authRequired');
 const Parents = require('./parentModel');
 const router = express.Router();
 
-router.get('/:id/children', authRequired, function (req, res) {
-  const id = req.params.id;
+router.get('/:profile_id/children', authRequired, function (req, res) {
+  const id = req.params.profile_id;
   Parents.getParentChildren(id)
     .then((children) => {
       if (children) {
@@ -18,9 +18,9 @@ router.get('/:id/children', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id/schedules', authRequired, function (req, res) {
-  const { id } = req.params;
-  Parents.getChildSchedules(id)
+router.get('/:profile_id/schedules', authRequired, function (req, res) {
+  const { profile_id } = req.params;
+  Parents.getChildSchedules(profile_id)
     .then((schedules) => {
       if (schedules) {
         res.status(200).json(schedules);
