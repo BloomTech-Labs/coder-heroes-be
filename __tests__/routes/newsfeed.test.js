@@ -10,6 +10,12 @@ jest.mock('../../api/middleware/authRequired.js', () =>
   jest.fn((req, res, next) => next())
 );
 
+describe('sanity test', () => {
+  test('check that test environment is being used', () => {
+    expect(process.env.NODE_ENV).toBe('test');
+  });
+});
+
 describe('newsfeeds router endpoints', () => {
   beforeAll(() => {
     server.use(['/newsfeed', '/newsfeeds'], newsfeedRouter);
