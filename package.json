@@ -13,7 +13,7 @@
     "lint:fix": "npx eslint --fix .",
     "format": "npx prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
     "knex": "npx knex --knexfile config/knexfile.js",
-    "tests": "npx jest",
+    "tests": "cross-env NODE_ENV=testing jest --verbose --runInBand",
     "coverage": "CI=true npx jest --coverage --detectOpenHandles --forceExit",
     "seed": "knex seed:run --knexfile config/knexfile.js",
     "migrateh": "heroku run knex migrate:latest -a coder-heroes-api --knexfile config/knexfile.js",
