@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Parents = require('./parentModel');
 const router = express.Router();
 const { checkParentObject } = require('./parentMiddleware');
@@ -15,8 +16,8 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
+router.get('/:profile_id', authRequired, function (req, res) {
+  const id = String(req.params.profile_id);
   Parents.findByParentId(id)
     .then((parent) => {
       if (parent) {
@@ -30,8 +31,8 @@ router.get('/:id', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id/children', authRequired, function (req, res) {
-  const id = req.params.id;
+router.get('/:parent_id/children', authRequired, function (req, res) {
+  const id = req.params.parent_id;
   Parents.getParentChildren(id)
     .then((children) => {
       if (children) {
@@ -45,8 +46,8 @@ router.get('/:id/children', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id/schedules', authRequired, function (req, res) {
-  const { id } = req.params;
+router.get('/:parent_id/schedules', authRequired, function (req, res) {
+  const id = req.params.parent_id;
   Parents.getChildSchedules(id)
     .then((schedules) => {
       if (schedules) {
@@ -80,52 +81,28 @@ router.post('/', checkParentObject, async (req, res) => {
   }
 });
 
-router.put('/', authRequired, checkParentObject, (req, res) => {
-  const parent = req.body;
-  if (parent) {
-    const { parent_id, profile_id } = parent;
-    Parents.findByParentId(profile_id)
-      .then(
-        Parents.updateParent(parent_id, parent)
-          .then((updated) => {
-            res.status(200).json({
-              message: `Parent with id: ${parent_id} updated`,
-              parent: updated[0],
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update parent '${parent_id}'`,
-              error: err.message,
-            });
-          })
-      )
-      .catch((err) => {
-        res.status(404).json({
-          message: `Could not find parent '${parent_id}'`,
-          error: err.message,
+router.delete(
+  '/:profile_id',
+  authRequired,
+  ownerAuthorization('params'),
+  (req, res) => {
+    const profile_id = req.params.profile_id;
+    try {
+      Parents.findByParentId(profile_id).then((parent) => {
+        Parents.removeParent(parent[0].profile_id).then(() => {
+          res.status(200).json({
+            message: `Parent with id:'${profile_id}' was deleted.`,
+            parent: parent[0],
+          });
         });
       });
-  }
-});
-
-router.delete('/:id', authRequired, (req, res) => {
-  const profile_id = req.params.id;
-  try {
-    Parents.findByParentId(profile_id).then((parent) => {
-      Parents.removeParent(parent[0].profile_id).then(() => {
-        res.status(200).json({
-          message: `Parent with id:'${profile_id}' was deleted.`,
-          parent: parent[0],
-        });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete parent with profile_id: ${profile_id}`,
+        error: err.message,
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete parent with profile_id: ${profile_id}`,
-      error: err.message,
-    });
+    }
   }
-});
+);
 
 module.exports = router;

@@ -1,9 +1,11 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const {
   roleAuthentication,
   roles,
 } = require('../middleware/roleAuthentication');
+
 const Admins = require('./adminModel');
 const router = express.Router();
 const { checkAdminExist, checkPayload } = require('./adminMiddleware');
@@ -51,29 +53,42 @@ router.post(
   }
 );
 
-router.put('/:id', authRequired, checkAdminExist, async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const { profile_id } = req.admin;
-    const updatedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
-    res.status(200).json(updatedAdmin);
-  } catch (error) {
-    next({
-      status: 400,
-      message: 'something went wrong while updating admin profile',
-    });
-  }
-});
+router.put(
+  '/:id',
+  authRequired,
+  checkAdminExist,
+  ownerAuthorization('admin'),
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const { profile_id } = req.admin;
+      const updatedAdmin = await Admins.updateAdmin(profile_id, req.body, id);
+      res.status(200).json(updatedAdmin);
+    } catch (error) {
+      next({
+        status: 500,
+        message: 'something went wrong while updating admin profile',
+      });
+    }
 
-router.delete('/:id', authRequired, checkAdminExist, async (req, res, next) => {
-  const id = req.params.id;
-  try {
-    const deletedAdmin = await Admins.removeAdmin(id);
-    res.status(200).json(deletedAdmin);
-  } catch (error) {
-    next(error);
   }
-});
+);
+
+router.delete(
+  '/:id',
+  authRequired,
+  checkAdminExist,
+  ownerAuthorization('admin'),
+  async (req, res, next) => {
+    const id = req.params.id;
+    try {
+      const deletedAdmin = await Admins.removeAdmin(id);
+      res.status(200).json(deletedAdmin);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.use('*', errorhandler);
 //eslint-disable-next-line
