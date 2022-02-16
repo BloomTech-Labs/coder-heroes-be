@@ -17,12 +17,12 @@ const findByAdminId = async (id) => {
 };
 
 const addAdmin = async (admin) => {
-  // we are makeing okta_id as payload we need to figure out away to save it from sever
+  // we are making okta_id as payload we need to figure out away to save it from sever
   /*payload  {
     "email": "asdfasdf@maildrop.cc",
     "name": "eooas User",
     "okta_id": "00ulthapbErVUwasdt4x11",
-    "role": "admin"
+    "role_id": 2
   }
   ==> make sure to look at the adminMiddleware.js and make changes there
   */

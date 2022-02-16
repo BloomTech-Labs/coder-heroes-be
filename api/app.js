@@ -65,7 +65,10 @@ app.use(['/parent', '/parents'], parentRouter);
 app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
 // app.use(['/inbox', '/inboxes'], inboxRouter);
-app.use(['/course-type', '/course-types'], courseTypesRouter);
+app.use(
+  ['/course-type', '/course-types', '/course', '/courses'],
+  courseTypesRouter
+);
 app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
@@ -91,7 +94,7 @@ app.use(function (err, req, res, next) {
     res.locals.status = 500;
   }
   if (res.locals.status) {
-    res.status(res.locals.status || 500);
+    res.status(res.locals.status);
     const errObject = { error: res.locals.error, message: res.locals.message };
     return res.json(errObject);
   }

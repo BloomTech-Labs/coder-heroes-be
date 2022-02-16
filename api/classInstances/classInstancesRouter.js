@@ -1,6 +1,10 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const ownerAuthorization = require('../middleware/ownerAuthorization');
+const {
+  roleAuthentication,
+  roles,
+} = require('../middleware/roleAuthentication');
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
@@ -24,7 +28,7 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
   req,
   res
 ) {
-  const class_id = String(req.params.class_id);
+  const class_id = parseInt(req.params.class_id);
   Classes.findByClassInstanceId(class_id)
     .then((class_instance) => {
       res.status(200).json(class_instance);
@@ -34,19 +38,25 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
     });
 });
 
-router.post('/', authRequired, checkClassInstanceObject, async (req, res) => {
-  const classInstance = req.body;
-  try {
-    await Classes.addClassInstance(classInstance).then((inserted) => {
-      res
-        .status(200)
-        .json({ message: 'New Class Instance Added.', schedule: inserted[0] });
-    });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: e.message });
+router.post(
+  '/',
+  checkClassInstanceObject,
+  roleAuthentication(...roles.slice(2)),
+  async (req, res) => {
+    const classInstance = req.body;
+    try {
+      await Classes.addClassInstance(classInstance).then((inserted) => {
+        res.status(200).json({
+          message: 'New Class Instance Added.',
+          schedule: inserted[0],
+        });
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: e.message });
+    }
   }
-});
+);
 
 router.put(
   '/:class_id',

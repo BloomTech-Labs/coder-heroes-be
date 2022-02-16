@@ -1,7 +1,8 @@
+const { getRoleById } = require('../roles/rolesModel');
+
 const roleAuthentication = (...args) => (req, res, next) => {
-  // role type is inside req.profile.body
+  req.profile.role = getRoleById(req.profile.role_id);
   const { role } = req.profile;
-  //check to see if role matcheds the role that have access to the endpoint
   if ([...args].includes(role)) {
     next();
   } else {
@@ -9,4 +10,6 @@ const roleAuthentication = (...args) => (req, res, next) => {
   }
 };
 
-module.exports = roleAuthentication;
+const roles = ['child', 'parent', 'instructor', 'admin', 'super_admin'];
+
+module.exports = { roleAuthentication, roles };
