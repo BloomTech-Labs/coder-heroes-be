@@ -1,6 +1,6 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('instructors-course_types', (table) => {
-    table.increments('instructors-course_types_id');
+  return knex.schema.createTable('instructors_course_types', (table) => {
+    table.increments('instructors_course_types_id');
     table
       .integer('profile_id')
       .unsigned()
@@ -19,5 +19,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('instructors-course_types');
+  return knex.schema.dropTableIfExists('instructors_course_types');
 };

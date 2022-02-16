@@ -65,7 +65,10 @@ app.use(['/parent', '/parents'], parentRouter);
 app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
 // app.use(['/inbox', '/inboxes'], inboxRouter);
-app.use(['/course-type', '/course-types'], courseTypesRouter);
+app.use(
+  ['/course-type', '/course-types', '/course', '/courses'],
+  courseTypesRouter
+);
 app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);

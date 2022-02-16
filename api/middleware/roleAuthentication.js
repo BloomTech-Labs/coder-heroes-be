@@ -1,9 +1,7 @@
-const { getRoles } = require('../roles/rolesModel');
+const { getRoleById } = require('../roles/rolesModel');
 
-const roleAuthentication = async (...args) => (req, res, next) => {
-  req.profile.role = getRoles()
-    .where({ role_id: req.profile.role_id })
-    .first().role_name;
+const roleAuthentication = (...args) => (req, res, next) => {
+  req.profile.role = getRoleById(req.profile.role_id);
   const { role } = req.profile;
   if ([...args].includes(role)) {
     next();
