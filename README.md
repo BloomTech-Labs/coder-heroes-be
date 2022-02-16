@@ -166,46 +166,29 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 #### Profile:
 
-| Method   | URL             | Description                                                                  |
-| -------- | --------------- | ---------------------------------------------------------------------------- |
-| [GET]    | /profile/       | Returns an array filled with event objects.                                  |
-| [GET]    | /profile/:okta/ | Returns an event object with the specified `okta`.                           |
-| [POST]   | /profile/       | Requires a name, password, and email. Registers a new user.                  |
-| [PUT]    | /profile/       | Returns an event object with the specified `okta`. Updates specific profile. |
-| [DELETE] | /profile/:okta/ | Returns an event object with the specified `okta`. Deletes specific profile. |
-
-#### Admin:
-
-| Method   | URL         | Description                                                                |
-| -------- | ----------- | -------------------------------------------------------------------------- |
-| [GET]    | /admin/     | Returns an array filled with event objects.                                |
-| [GET]    | /admin/:id/ | Returns an event object with the specified `id`.                           |
-| [POST]   | /admin/     | Returns an event object with the specified `user_id`. Creates a new admin. |
-| [PUT]    | /admin/     | Returns an event object with the specified `id`. Updates specific admin.   |
-| [DELETE] | /admin/:id/ | Returns an event object with the specified `id`. Deletes specific admin.   |
+| Method   | URL             | Description                                                                                                |
+| ------   | --------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /profile/       | Returns an array filled with event objects.                                                                |
+| [GET]    | /profile/:okta/ | Returns an event object with the specified `okta`.                                                         |
+| [GET]    | /profiles/users/:profile_id       | Returns an array filled with event objects that contains information based on profile_id and role_id.                                                                |
+| [GET]    | /profile/role/role:id       | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type.                                                                |
+| [POST]   | /profile/       | Requires a name, password, and email. Registers a new user.                                                |
+| [PUT]    | /profile/       | Returns an event object with the specified `okta`. Updates specific profile.                               |
+| [DELETE] | /profile/:okta/ | Returns an event object with the specified `okta`. Deletes specific profile.                               |
 
 #### Parent:
 
-| Method   | URL                    | Description                                                                    |
-| -------- | ---------------------- | ------------------------------------------------------------------------------ |
-| [GET]    | /parent/               | Returns an array filled with event objects.                                    |
-| [GET]    | /parent/:id/           | Returns an event object with the specified `id`.                               |
-| [GET]    | /parent/:id/children/  | Returns an array filled with event objects with the specified `id`.            |
-| [GET]    | /parent/:id/schedules/ | Returns an array filled with event objects with the specified `id`.            |
-| [POST]   | /parent/               | Returns an event object with the specified `user_id`. Creates a new parent.    |
-| [PUT]    | /parent/               | Returns an event object with the specified `user_id`. Updates specific parent. |
-| [DELETE] | /parent/:id/           | Returns an event object with the specified `id`. Deletes specific parent.      |
+| Method   | URL                    | Description                                                                                              |
+| ------   | ---------------------  | -------------------------------------------------------------------------------------------------------- |
+| [GET]    | /parent/:id/children/  | Returns an array filled with event objects with the specified `id`.                                      |
+| [GET]    | /parent/:id/schedules/ | Returns an array filled with event objects with the specified `id`.                                      |
 
 #### Instructor:
 
-| Method   | URL                      | Description                                                                     |
-| -------- | ------------------------ | ------------------------------------------------------------------------------- |
-| [GET]    | /instructor/             | Returns an array filled with event objects.                                     |
-| [GET]    | /instructor/:id/         | Returns an event object with the specified `id`.                                |
-| [GET]    | /instructor/:id/classes/ | Returns an array filled with event objects with the specified `id`.             |
-| [POST]   | /instructor/             | Returns an event object with the specified `user_id`. Creates a new instructor. |
-| [PUT]    | /instructor/             | Returns an event object with the specified `id`. Updates specific instructor.   |
-| [DELETE] | /instructor/:id/         | Returns an event object with the specified `id`. Deletes specific instructor.   |
+| Method   | URL                      | Description                                                                                                |
+| ------   | -----------------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /instructor/:id/courses/ | Returns an array filled with event objects with the specified `id`.                                        |
+
 
 #### User:
 
@@ -259,17 +242,12 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 #### Children:
 
-| Method   | URL                       | Description                                                                        |
-| -------- | ------------------------- | ---------------------------------------------------------------------------------- |
-| [GET]    | /children/                | Returns an array filled with event objects.                                        |
-| [GET]    | /children/:id/            | Returns the event object with the specified `id`.                                  |
-| [GET]    | /children/:id/enrollments | Returns an array filled with event objects with the specified `id`.                |
-| [POST]   | /children/:id/enrollments | Returns the event object with the specified `id`. Enrolls a student.               |
-| [POST]   | /children/                | Returns the event object with the specified `user_id`. Creates a student.          |
-| [PUT]    | /children/                | Returns the event object with the specified `id`. Updates a student.               |
-| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. |
-| [DELETE] | /children/:id/            | Returns the event object with the specified `inbox_id`. Delete's specific student. |
-| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course.   |
+| Method   | URL                       | Description                                                                                                |
+| ------   | ------------------------  | ---------------------------------------------------------------------------------------------------------- |
+| [GET]    | /children/:id/enrollments | Returns an array filled with event objects with the specified `id`.                                        |
+| [POST]   | /children/:id/enrollments | Returns the event object with the specified `id`. Enrolls a student.                                       |
+| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments.                         |
+| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course.                           |
 
 #### Newsfeed:
 
