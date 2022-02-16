@@ -43,7 +43,29 @@ const checkProfileObject = (req, res, next) => {
   next();
 };
 
+const checkProfileExist = async (req, res, next) => {
+  const id = req.params.profile_id;
+  const foundProfile = await Profiles.findByProfileId(id);
+  if (!foundProfile) {
+    next({ status: 404, message: `profile with id ${id} is not found ` });
+  } else {
+    req.profile = foundProfile;
+    next();
+  }
+};
+
+const checkRoleExist = async (req, res, next) => {
+  const role = req.params.role_id;
+  if (role >= 1 || role <= 5) {
+    next();
+  } else {
+    next({ status: 404, message: `No such role exists` });
+  }
+};
+
 module.exports = {
   checkProfileExists,
   checkProfileObject,
+  checkProfileExist,
+  checkRoleExist,
 };
