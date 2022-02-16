@@ -1,7 +1,7 @@
 const db = require('../../data/db-config');
 
-const findUserData = async (role, profile_id) => {
-  if (role === 'super_admin') {
+const findUserData = async (role_id, profile_id) => {
+  if (role_id === 1) {
     return db('profiles')
       .leftJoin(
         'super_admins',
@@ -9,19 +9,19 @@ const findUserData = async (role, profile_id) => {
         'super_admins.profile_id'
       )
       .where('super_admins.profile_id', profile_id);
-  } else if (role === 'admin') {
+  } else if (role_id === 2) {
     return db('profiles')
       .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
       .where('parents.profile_id', profile_id);
-  } else if (role === 'instructor') {
+  } else if (role_id === 3) {
     return db('profiles')
       .leftJoin('instructors', 'profiles.profile_id', 'instructors.profile_id')
       .where('instructors.profile_id', profile_id);
-  } else if (role === 'parent') {
+  } else if (role_id === 4) {
     return db('profiles')
       .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
       .where('parents.profile_id', profile_id);
-  } else if (role === 'child') {
+  } else if (role_id === 5) {
     return db('profiles')
       .leftJoin('children', 'profiles.profile_id', 'children.profile_id')
       .where('children.profile_id', profile_id);

@@ -15,7 +15,7 @@
     "knex": "npx knex --knexfile config/knexfile.js",
     "tests": "npx jest",
     "coverage": "CI=true npx jest --coverage --detectOpenHandles --forceExit",
-    "seed": "knex seed:run",
+    "seed": "knex seed:run --knexfile config/knexfile.js",
     "migrateh": "heroku run knex migrate:latest -a coder-heroes-api --knexfile config/knexfile.js",
     "rollbackh": "heroku run knex migrate:rollback -a coder-heroes-api --knexfile config/knexfile.js",
     "databaseh": "heroku pg:psql -a coder-heroes-api --knexfile config/knexfile.js",
