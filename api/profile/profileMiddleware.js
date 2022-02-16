@@ -1,25 +1,37 @@
+const Profiles = require('./profileModel');
+
+const checkProfileExists = (fromParams) => async (req, res, next) => {
+  const okta_id = req[fromParams ? 'params' : 'body'].okta_id;
+  const foundProfile = await Profiles.findById(okta_id);
+  if (!foundProfile) {
+    next({
+      status: 404,
+      message: `Profile with okta_id ${okta_id} is not found.`,
+    });
+  } else {
+    req.user = foundProfile;
+    next();
+  }
+};
+
 const checkProfileObject = (req, res, next) => {
-  const { email, name, okta_id, role, avatarUrl } = req.body;
-  if (!role) next({ status: 400, message: 'role is required' });
+  const { email, name, okta_id, role_id, avatarUrl } = req.body;
+  if (!role_id) next({ status: 400, message: 'role_id is required' });
   if (!email) next({ status: 400, message: 'email is required' });
   if (!name) next({ status: 400, message: 'name is required' });
   if (!okta_id) next({ status: 400, message: 'okta_id is required' });
   if (
-    typeof role !== 'string' ||
+    typeof role_id !== 'number' ||
     typeof email !== 'string' ||
     typeof name !== 'string' ||
     typeof okta_id !== 'string'
   )
     next({
       status: 400,
-      message: 'variables in the request body must all be of type string',
+      message:
+        'variables in the request body must all be of type string except role_id must be of type number',
     });
-  if (
-    role.length > 255 ||
-    email.length > 255 ||
-    name.length > 255 ||
-    okta_id.length > 255
-  )
+  if (email.length > 255 || name.length > 255 || okta_id.length > 255)
     next({
       status: 400,
       message:
@@ -31,6 +43,29 @@ const checkProfileObject = (req, res, next) => {
   next();
 };
 
+const checkProfileExist = async (req, res, next) => {
+  const id = req.params.profile_id;
+  const foundProfile = await Profiles.findByProfileId(id);
+  if (!foundProfile) {
+    next({ status: 404, message: `profile with id ${id} is not found ` });
+  } else {
+    req.profile = foundProfile;
+    next();
+  }
+};
+
+const checkRoleExist = async (req, res, next) => {
+  const role = req.params.role_id;
+  if (role >= 1 || role <= 5) {
+    next();
+  } else {
+    next({ status: 404, message: `No such role exists` });
+  }
+};
+
 module.exports = {
+  checkProfileExists,
   checkProfileObject,
+  checkProfileExist,
+  checkRoleExist,
 };

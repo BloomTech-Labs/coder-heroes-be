@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Instructors = require('./instructorModel');
 const router = express.Router();
 const {
@@ -18,22 +19,23 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:instructor_id', authRequired, checkInstructorExist, function (
-  req,
-  res,
-  next
-) {
-  try {
-    res.status(200).json(req.instructor);
-  } catch (error) {
-    next(error);
+router.get(
+  '/:instructor_id',
+  authRequired,
+  checkInstructorExist(true),
+  function (req, res, next) {
+    try {
+      res.status(200).json(req.instructor);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get(
   '/:instructor_id/classes',
   authRequired,
-  checkInstructorExist,
+  checkInstructorExist(true),
   function (req, res, next) {
     try {
       Instructors.findInstructorCourses(req.params.instructor_id).then(
@@ -76,53 +78,64 @@ router.post('/', checkInstructorObject, async (req, res) => {
   }
 });
 
-router.put('/', authRequired, checkInstructorObject, (req, res) => {
-  const instructor = req.body;
-  if (instructor) {
-    const { instructor_id } = instructor;
-    Instructors.findByInstructorId(instructor_id)
-      .then(
-        Instructors.updateInstructor(instructor_id, instructor)
-          .then((updated) => {
-            res.status(200).json({
-              message: `Instructor with id: ${instructor_id} updated`,
-              instructor: updated[0],
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update instructor '${instructor_id}'`,
-              error: err.message,
-            });
-          })
-      )
-      .catch((err) => {
-        res.status(404).json({
-          message: `Could not find instructor '${instructor_id}'`,
-          error: err.message,
+router.put(
+  '/',
+  authRequired,
+  checkInstructorObject,
+  checkInstructorExist(false),
+  ownerAuthorization('instructor'),
+  (req, res) => {
+    const instructor = req.body;
+    if (instructor) {
+      const { instructor_id } = instructor;
+      Instructors.findByInstructorId(instructor_id)
+        .then(
+          Instructors.updateInstructor(instructor_id, instructor)
+            .then((updated) => {
+              res.status(200).json({
+                message: `Instructor with id: ${instructor_id} updated`,
+                instructor: updated[0],
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                message: `Could not update instructor '${instructor_id}'`,
+                error: err.message,
+              });
+            })
+        )
+        .catch((err) => {
+          res.status(404).json({
+            message: `Could not find instructor '${instructor_id}'`,
+            error: err.message,
+          });
         });
-      });
+    }
   }
-});
+);
 
-router.delete('/:instructor_id', authRequired, (req, res) => {
-  const instructor_id = req.params.instructor_id;
-  try {
-    Instructors.findByInstructorId(instructor_id).then((instructor) => {
-      Instructors.removeInstructor(instructor[0].instructor_id).then(() => {
+router.delete(
+  '/:instructor_id',
+  authRequired,
+  checkInstructorExist(true),
+  ownerAuthorization('instructor'),
+  (req, res) => {
+    const { instructor_id } = req.instructor;
+    try {
+      Instructors.removeInstructor(instructor_id).then(() => {
         res.status(200).json({
           message: `Instructor with id:'${instructor_id}' was deleted.`,
-          instructor: instructor[0],
+          instructor: req.instructor,
         });
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete instructor with ID: ${instructor_id}`,
-      error: err.message,
-    });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete instructor with ID: ${instructor_id}`,
+        error: err.message,
+      });
+    }
   }
-});
+);
 
 router.use('*', errorhandler);
 //eslint-disable-next-line
