@@ -14,7 +14,8 @@ exports.up = (knex) => {
         .integer('role_id')
         .notNullable()
         .references('role_id')
-        .inTable('roles');
+        .inTable('roles')
+        .onDelete('CASCADE');
       table
         .string('avatarUrl')
         .defaultTo('https://i.stack.imgur.com/frlIf.png');

@@ -1,10 +1,12 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Parents = require('./parentModel');
 const router = express.Router();
 
 router.get('/:profile_id/children', authRequired, function (req, res) {
   const id = req.params.profile_id;
+
   Parents.getParentChildren(id)
     .then((children) => {
       if (children) {
