@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Instructors = require('./instructorModel');
 const router = express.Router();
 const { checkInstructorExist } = require('./instructorMiddleware');
@@ -7,7 +8,7 @@ const { checkInstructorExist } = require('./instructorMiddleware');
 router.get(
   '/:profile_id/classes',
   authRequired,
-  checkInstructorExist,
+  checkInstructorExist(true),
   function (req, res, next) {
     try {
       Instructors.findInstructorCourses(req.params.profile_id).then(

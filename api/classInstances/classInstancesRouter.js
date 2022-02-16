@@ -1,5 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const {
   roleAuthentication,
   roles,
@@ -27,7 +28,7 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
   req,
   res
 ) {
-  const class_id = String(req.params.class_id);
+  const class_id = parseInt(req.params.class_id);
   Classes.findByClassInstanceId(class_id)
     .then((class_instance) => {
       res.status(200).json(class_instance);
@@ -61,6 +62,7 @@ router.put(
   '/:class_id',
   authRequired,
   checkClassInstanceExist,
+  ownerAuthorization('class_instance'),
   (req, res, next) => {
     const class_id = req.params.class_id;
     const newClassObject = req.body;
@@ -82,6 +84,7 @@ router.delete(
   '/:class_id',
   authRequired,
   checkClassInstanceExist,
+  ownerAuthorization('class_instance'),
   (req, res, next) => {
     const class_id = req.params.class_id;
     try {
