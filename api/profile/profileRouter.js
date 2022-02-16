@@ -6,7 +6,7 @@ const router = express.Router();
 const {
   checkProfileObject,
   checkRoleExist,
-  checkProfileExist,
+  checkProfileExists,
 } = require('./profileMiddleware');
 
 router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
@@ -24,7 +24,7 @@ router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
 router.get(
   '/users/:profile_id',
   authRequired,
-  checkProfileExist,
+  checkProfileExists,
   async function (req, res, next) {
     try {
       const { profile_id, role_id } = req.profile;
