@@ -1,10 +1,9 @@
 const Instructors = require('./instructorModel');
 
 const checkInstructorExist = async (req, res, next) => {
-  const profile_id = req.params.profile_id;
+  const profile_id = parseInt(req.params.profile_id);
   const foundInstructor = await Instructors.findByInstructorId(profile_id);
-  console.log('test');
-  if (foundInstructor == undefined) {
+  if (!foundInstructor) {
     next({
       status: 404,
       message: `Instructor with id ${profile_id} is not found.`,
