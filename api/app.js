@@ -12,6 +12,7 @@ const config_result = dotenv.config();
 if (process.env.NODE_ENV != 'production' && config_result.error) {
   throw config_result.error;
 }
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 const swaggerSpec = swaggerJSDoc(jsdocConfig);
 const swaggerUIOptions = {
@@ -32,7 +33,7 @@ const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const sessionRouter = require('./session/sessionRouter');
-
+const stripeRouter = require('./payment/stripeRouter');
 const app = express();
 
 process.on('unhandledRejection', (reason, p) => {
@@ -74,7 +75,7 @@ app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/session', '/sessions'], sessionRouter);
-
+app.use(['/payment', '/payments'], stripeRouter);
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
   next(createError(404));
