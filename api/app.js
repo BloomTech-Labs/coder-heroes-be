@@ -12,7 +12,6 @@ const config_result = dotenv.config();
 if (process.env.NODE_ENV != 'production' && config_result.error) {
   throw config_result.error;
 }
-if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 const swaggerSpec = swaggerJSDoc(jsdocConfig);
 const swaggerUIOptions = {
