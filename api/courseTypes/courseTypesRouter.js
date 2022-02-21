@@ -1,9 +1,13 @@
 const express = require('express');
 const Courses = require('./courseTypesModel');
 const authRequired = require('../middleware/authRequired');
+const {
+  roleAuthentication,
+  roles,
+} = require('../middleware/roleAuthentication');
 const router = express.Router();
 const {
-  checkCoursePyload,
+  checkCourseTypePayload,
   checkIfCourseIsUnique,
 } = require('./courseTypesMiddleware');
 
@@ -36,8 +40,9 @@ router.get('/:subject', authRequired, async function (req, res, next) {
 
 router.post(
   '/',
+  checkCourseTypePayload,
   authRequired,
-  checkCoursePyload,
+  roleAuthentication(...roles.slice(2)),
   checkIfCourseIsUnique,
   async (req, res, next) => {
     try {
@@ -49,24 +54,29 @@ router.post(
   }
 );
 
-router.put('/', authRequired, checkCoursePyload, async (req, res, next) => {
-  const subject = req.body.subject;
-  const course = await Courses.findBySubject(subject);
-  try {
-    if (course) {
-      await Courses.updateCourseType(course.subject, req.body);
-      const updatedCourse = await Courses.findBySubject(subject);
-      res.status(200).json(updatedCourse);
-    } else {
-      next({
-        status: 404,
-        message: 'course with subject ( ' + subject + ' ) not found .',
-      });
+router.put(
+  '/',
+  authRequired,
+  checkCourseTypePayload,
+  async (req, res, next) => {
+    const subject = req.body.subject;
+    const course = await Courses.findBySubject(subject);
+    try {
+      if (course) {
+        await Courses.updateCourseType(course.subject, req.body);
+        const updatedCourse = await Courses.findBySubject(subject);
+        res.status(200).json(updatedCourse);
+      } else {
+        next({
+          status: 404,
+          message: 'course with subject ( ' + subject + ' ) not found .',
+        });
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 router.delete('/:subject', authRequired, async (req, res, next) => {
   const subject = req.params.subject;

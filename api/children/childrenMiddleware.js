@@ -14,13 +14,13 @@ const isChildAlreadyEnrolled = async (req, res, next) => {
   const id = req.params.id;
   const { class_id } = req.body;
   const enrolledClasses = await Children.getEnrolledCourses(id);
-  const chidIsenrolled = enrolledClasses.find((item) => {
+  const childIsEnrolled = enrolledClasses.find((item) => {
     if (class_id == item.class_id) {
       return true;
     }
   });
-  if (chidIsenrolled) {
-    next({ status: 404, message: 'child is already enrolled' });
+  if (childIsEnrolled) {
+    next({ status: 400, message: 'child is already enrolled' });
   } else {
     req.wantToEnroll = { child_id: id, ...req.body, class_id: class_id };
 

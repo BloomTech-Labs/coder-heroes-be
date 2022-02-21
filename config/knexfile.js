@@ -1,5 +1,4 @@
-var dotenv = require('dotenv');
-dotenv.config({ path: '../.env' });
+require('dotenv').config({ path: '../.env' });
 
 module.exports = {
   development: {
@@ -15,7 +14,7 @@ module.exports = {
 
   test: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: process.env.TESTING_DATABASE_URL,
     migrations: { directory: '../data/migrations' },
     seeds: { directory: '../data/seeds' },
   },
