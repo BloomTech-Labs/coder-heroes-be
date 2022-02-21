@@ -22,7 +22,6 @@ const swaggerUIOptions = {
 const indexRouter = require('./index/indexRouter');
 const profileRouter = require('./profile/profileRouter');
 const userRouter = require('./user/userRouter');
-const adminRouter = require('./admin/adminRouter');
 const parentRouter = require('./parent/parentRouter');
 const instructorRouter = require('./instructor/instructorRouter');
 const childrenRouter = require('./children/childrenRouter');
@@ -61,7 +60,7 @@ app.use(cookieParser());
 // application routes
 app.use('/', indexRouter);
 app.use(['/profile', '/profiles'], profileRouter);
-app.use(['/admin', '/admins'], adminRouter);
+// app.use(['/admin', '/admins'], adminRouter);
 app.use(['/parent', '/parents'], parentRouter);
 app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
