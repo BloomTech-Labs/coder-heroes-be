@@ -11,7 +11,7 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 const uuid = require('uuid');
 const router = express.Router();
 
-router.post('/payment', (req, res) => {
+router.post('/pay', (req, res) => {
   const { product, token } = req.body;
   const idempotencyKey = uuid();
 
