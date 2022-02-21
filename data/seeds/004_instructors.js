@@ -5,14 +5,14 @@ exports.seed = function (knex) {
       rating: 2,
       bio: 'I love spaghetti and code, but not the two together.',
       status: false,
-      approved_by: 1,
+      // approved_by: 1,
     },
     {
       profile_id: 8,
       rating: 5,
       bio: 'Coding is life.',
       status: true,
-      approved_by: 2,
+      // approved_by: 1,
     },
   ]);
 };
