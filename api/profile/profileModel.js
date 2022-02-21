@@ -9,11 +9,14 @@ const findBy = (filter) => {
 };
 
 const findById = async (okta_id) => {
-  return db('profiles').where('profiles.okta_id', okta_id).first().select('*');
+  return await db('profiles')
+    .where('profiles.okta_id', okta_id)
+    .first()
+    .select('*');
 };
 
 const create = async (profile) => {
-  return db('profiles').insert(profile).returning('*');
+  return await db('profiles').insert(profile).returning('*');
 };
 
 const update = (okta_id, profile) => {
@@ -41,6 +44,69 @@ const findOrCreateProfile = async (profileObj) => {
   }
 };
 
+const findByRoleId = async (role_id) => {
+  switch (role_id) {
+    case 1:
+      return await db('profiles').where('profiles.role_id', role_id);
+    case 2:
+      return await db('profiles').where('profiles.role_id', role_id);
+    case 3:
+      return await db('profiles')
+        .rightJoin(
+          'instructors',
+          'profiles.profile_id',
+          'instructors.profile_id'
+        )
+        .where('profiles.role_id', role_id);
+    case 4:
+      return await db('profiles')
+        .rightJoin('parents', 'profiles.profile_id', 'parents.profile_id')
+        .where('profiles.role_id', role_id);
+    case 5:
+      return await db('profiles')
+        .rightJoin('children', 'profiles.profile_id', 'children.profiles_id')
+        .where('profiles.role_id', role_id);
+  }
+};
+
+const findByProfileId = async (profile_id) => {
+  return await db('profiles').where('profiles.profile_id', profile_id);
+};
+
+const findByProfileAndRoleId = async (profile_id, role_id) => {
+  switch (role_id) {
+    case 1:
+      return await db('profiles')
+        .where('profiles.role_id', role_id)
+        .where('profiles.profile_id', profile_id)
+        .first();
+    case 2:
+      return await db('profiles')
+        .where('profiles.role_id', role_id)
+        .where('profiles.profile_id', profile_id)
+        .first();
+    case 3:
+      return await db('profiles')
+        .rightJoin(
+          'instructors',
+          'profiles.profile_id',
+          'instructors.profile_id'
+        )
+        .where('profiles.profile_id', profile_id)
+        .first();
+    case 4:
+      return await db('profiles')
+        .rightJoin('parents', 'profiles.profile_id', 'parents.profile_id')
+        .where('profiles.profile_id', profile_id)
+        .first();
+    case 5:
+      return await db('profiles')
+        .rightJoin('children', 'profiles.profile_id', 'children.profiles_id')
+        .where('profiles.profile_id', profile_id)
+        .first();
+  }
+};
+
 module.exports = {
   findAll,
   findBy,
@@ -49,4 +115,7 @@ module.exports = {
   update,
   remove,
   findOrCreateProfile,
+  findByRoleId,
+  findByProfileId,
+  findByProfileAndRoleId,
 };

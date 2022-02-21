@@ -1,5 +1,10 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
+const {
+  roleAuthentication,
+  roles,
+} = require('../middleware/roleAuthentication');
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
@@ -19,11 +24,11 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:class_id', checkClassInstanceExist, authRequired, function (
+router.get('/:class_id', authRequired, checkClassInstanceExist, function (
   req,
   res
 ) {
-  const class_id = String(req.params.class_id);
+  const class_id = parseInt(req.params.class_id);
   Classes.findByClassInstanceId(class_id)
     .then((class_instance) => {
       res.status(200).json(class_instance);
@@ -33,24 +38,31 @@ router.get('/:class_id', checkClassInstanceExist, authRequired, function (
     });
 });
 
-router.post('/', checkClassInstanceObject, async (req, res) => {
-  const classInstance = req.body;
-  try {
-    await Classes.addClassInstance(classInstance).then((inserted) => {
-      res
-        .status(200)
-        .json({ message: 'New Class Instance Added.', schedule: inserted[0] });
-    });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: e.message });
+router.post(
+  '/',
+  checkClassInstanceObject,
+  roleAuthentication(...roles.slice(2)),
+  async (req, res) => {
+    const classInstance = req.body;
+    try {
+      await Classes.addClassInstance(classInstance).then((inserted) => {
+        res.status(200).json({
+          message: 'New Class Instance Added.',
+          schedule: inserted[0],
+        });
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: e.message });
+    }
   }
-});
+);
 
 router.put(
   '/:class_id',
-  checkClassInstanceExist,
   authRequired,
+  checkClassInstanceExist,
+  ownerAuthorization('class_instance'),
   (req, res, next) => {
     const class_id = req.params.class_id;
     const newClassObject = req.body;
@@ -68,17 +80,23 @@ router.put(
   }
 );
 
-router.delete('/:class_id', checkClassInstanceExist, (req, res, next) => {
-  const class_id = req.params.class_id;
-  try {
-    Classes.removeClassInstance(class_id).then(() => {
-      res.status(200).json({
-        message: `Schedule with id:'${class_id}' was deleted.`,
+router.delete(
+  '/:class_id',
+  authRequired,
+  checkClassInstanceExist,
+  ownerAuthorization('class_instance'),
+  (req, res, next) => {
+    const class_id = req.params.class_id;
+    try {
+      Classes.removeClassInstance(class_id).then(() => {
+        res.status(200).json({
+          message: `Schedule with id:'${class_id}' was deleted.`,
+        });
       });
-    });
-  } catch (err) {
-    next(err);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = router;

@@ -1,82 +1,81 @@
 const request = require('supertest');
 const express = require('express');
-const Courses = require('../../api/course/courseModel');
-const courseRouter = require('../../api/course/courseRouter');
+const Courses = require('../../api/courseTypes/courseTypesModel');
+const courseRouter = require('../../api/courseTypes/courseTypesRouter');
 const server = express();
 server.use(express.json());
 
-jest.mock('../../api/course/courseModel.js');
+jest.mock('../../api/courseTypes/courseTypesModel.js');
 jest.mock('../../api/middleware/authRequired.js', () =>
   jest.fn((req, res, next) => next())
 );
 
 describe('courses router endpoints', () => {
   beforeAll(() => {
-    server.use(['/course', '/courses'], courseRouter);
+    server.use(['/course-type', '/course-types'], courseRouter);
     jest.clearAllMocks();
   });
 
-  describe('GET /courses', () => {
+  describe('GET /courses-type', () => {
     it('should return 200', async () => {
-      Courses.getCourses.mockResolvedValue([]);
-      const res = await request(server).get('/courses');
+      Courses.getAllCourseTypes.mockResolvedValue([]);
+      const res = await request(server).get('/course-type');
 
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(0);
-      expect(Courses.getCourses.mock.calls.length).toBe(1);
+      expect(Courses.getAllCourseTypes.mock.calls.length).toBe(1);
     });
   });
 
-  describe('GET /courses/:name', () => {
+  describe('GET /courses-type/:name', () => {
     it('should return 200 when course is found', async () => {
-      Courses.findByName.mockResolvedValue({
+      Courses.findBySubject.mockResolvedValue({
         subject: 'CS101',
       });
-      const res = await request(server).get('/courses/CS101');
+      const res = await request(server).get('/course-type/CS101');
 
       expect(res.status).toBe(200);
       expect(res.body.subject).toBe('CS101');
-      expect(Courses.findByName.mock.calls.length).toBe(1);
+      expect(Courses.findBySubject.mock.calls.length).toBe(1);
     });
 
     it('Should return 404 when no course found', async () => {
-      Courses.findByName.mockResolvedValue();
-      const res = await request(server).get('/courses/CS101B');
+      Courses.findBySubject.mockResolvedValue();
+      const res = await request(server).get('/course-type/CS101B');
 
       expect(res.status).toBe(404);
-      expect(res.body.error).toBe('CourseNotFound');
     });
   });
 
-  describe('POST /course', () => {
+  describe('POST /course-type', () => {
     it('Should return 200 when course is added', async () => {
       const course = {
         subject: 'CS101BA',
         description: 'New Test Course',
       };
-      Courses.findByName.mockResolvedValue([]);
-      Courses.addCourse.mockResolvedValue([course]);
+      Courses.findBySubject.mockResolvedValue([]);
+      Courses.addCourseType.mockResolvedValue([course]);
 
-      const res = await request(server).post('/courses').send(course);
+      const res = await request(server).post('/course-type').send(course);
 
       expect(res.status).toBe(200);
-      expect(Courses.addCourse.mock.calls.length).toBe(1);
+      expect(Courses.addCourseType.mock.calls.length).toBe(1);
     });
   });
 
-  describe('PUT /course', () => {
+  describe('PUT /course-type', () => {
     it('should return 200 when course is created', async () => {
       const course = {
         subject: 'CS101',
         description: 'Testing PUT Course',
       };
-      Courses.findByName.mockResolvedValue(course.subject);
-      Courses.updateCourse.mockResolvedValue([course]);
+      Courses.findBySubject.mockResolvedValue(course.subject);
+      Courses.updateCourseType.mockResolvedValue([course]);
 
-      const res = await request(server).put('/courses').send(course);
+      const res = await request(server).put('/course-type').send(course);
       expect(res.status).toBe(200);
-      expect(res.body.course.description).toBe('Testing PUT Course');
-      expect(Courses.updateCourse.mock.calls.length).toBe(1);
+      expect(res.body).toBe('CS101');
+      expect(Courses.updateCourseType.mock.calls.length).toBe(1);
     });
   });
 });

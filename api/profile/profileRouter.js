@@ -1,7 +1,43 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Profiles = require('./profileModel');
 const router = express.Router();
+const {
+  checkProfileObject,
+  checkRoleExist,
+  checkProfileExists,
+} = require('./profileMiddleware');
+
+router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
+  const role_id = req.params.role_id;
+  Profiles.findByRoleId(role_id)
+    .then((roleList) => {
+      res.status(200).json(roleList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    });
+});
+
+router.get(
+  '/users/:profile_id',
+  authRequired,
+  checkProfileExists,
+  async function (req, res, next) {
+    try {
+      const { profile_id, role_id } = req.profile;
+      const profileInfo = await Profiles.findByProfileAndRoleId(
+        profile_id,
+        role_id
+      );
+      res.status(200).json(profileInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 /**
  * @swagger
@@ -109,22 +145,14 @@ router.get('/', authRequired, function (req, res) {
  *        description: 'Profile not found'
  */
 
-router.get('/:okta', authRequired, function (req, res) {
-  const okta = String(req.params.okta);
-  Profiles.findById(okta)
-    .then((profile) => {
-      if (profile) {
-        res.status(200).json(profile);
-      } else {
-        res.status(404).json({ error: 'ProfileNotFound' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+router.get('/:okta_id', authRequired, checkProfileExists(true), function (
+  req,
+  res
+) {
+  res.status(200).json(req.user);
 });
 
-/**
+/*p*
  * @swagger
  * /profile:
  *  post:
@@ -160,28 +188,23 @@ router.get('/:okta', authRequired, function (req, res) {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.post('/', async (req, res) => {
+router.post('/', checkProfileObject, async (req, res) => {
   const profile = req.body;
-  if (profile) {
-    const okta = profile.okta || 0;
-    try {
-      await Profiles.findById(okta).then(async (pf) => {
-        if (pf == undefined) {
-          await Profiles.create(profile).then((profile) =>
-            res
-              .status(200)
-              .json({ message: 'profile created', profile: profile[0] })
-          );
-        } else {
-          res.status(400).json({ message: 'profile already exists' });
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
-    }
-  } else {
-    res.status(404).json({ message: 'Profile missing' });
+  try {
+    await Profiles.findById(profile.okta_id).then(async (pf) => {
+      if (pf == undefined) {
+        await Profiles.create(profile).then((profile) =>
+          res
+            .status(200)
+            .json({ message: 'profile created', profile: profile[0] })
+        );
+      } else {
+        res.status(400).json({ message: 'profile already exists' });
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: e.message });
   }
 });
 /**
@@ -218,33 +241,29 @@ router.post('/', async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.put('/', authRequired, (req, res) => {
-  const profile = req.body;
-  if (profile) {
-    const okta = profile.okta_id || 0;
-    Profiles.findById(okta)
-      .then(
-        Profiles.update(okta, profile)
-          .then((updated) => {
-            res
-              .status(200)
-              .json({ message: 'profile updated', profile: updated[0] });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              message: `Could not update profile '${okta}'`,
-              error: err.message,
-            });
-          })
-      )
+router.put(
+  '/',
+  authRequired,
+  checkProfileObject,
+  checkProfileExists(false),
+  ownerAuthorization('user'),
+  (req, res) => {
+    const profile = req.body;
+    const okta = req.user.okta_id;
+    Profiles.update(okta, profile)
+      .then((updated) => {
+        res
+          .status(200)
+          .json({ message: 'profile updated', profile: updated[0] });
+      })
       .catch((err) => {
-        res.status(404).json({
-          message: `Could not find profile '${okta}'`,
+        res.status(500).json({
+          message: `Could not update profile '${okta}'`,
           error: err.message,
         });
       });
   }
-});
+);
 /**
  * @swagger
  * /profile/{id}:
@@ -275,24 +294,27 @@ router.put('/', authRequired, (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.delete('/:okta', (req, res) => {
-  const okta = req.params.okta;
-  console.log(okta);
-  try {
-    Profiles.findById(okta).then((profile) => {
+router.delete(
+  '/:okta_id',
+  authRequired,
+  checkProfileExists(true),
+  ownerAuthorization('user'),
+  (req, res) => {
+    const okta = req.params.okta_id;
+    try {
       Profiles.remove(okta).then(() => {
         res.status(200).json({
           message: `Profile '${okta}' was deleted.`,
-          profile: profile,
+          profile: req.user,
         });
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete profile with ID: ${okta}`,
-      error: err.message,
-    });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete profile with ID: ${okta}`,
+        error: err.message,
+      });
+    }
   }
-});
+);
 
 module.exports = router;

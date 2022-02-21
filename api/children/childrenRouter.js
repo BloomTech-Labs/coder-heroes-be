@@ -9,26 +9,7 @@ const {
 const router = express.Router();
 
 //dont forget authRequired
-router.get('/', authRequired, function (req, res) {
-  Children.getChildren()
-    .then((child) => {
-      res.status(200).json(child);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
-//dont forget authRequired
-router.get('/:id', checkChildExist, authRequired, function (req, res, next) {
-  try {
-    res.status(200).json(req.child);
-  } catch (error) {
-    next(error);
-  }
-});
-//dont forget authRequired
-router.get('/:id/enrollments', checkChildExist, authRequired, async function (
+router.get('/:id/enrollments', authRequired, checkChildExist, async function (
   req,
   res,
   next
@@ -44,9 +25,9 @@ router.get('/:id/enrollments', checkChildExist, authRequired, async function (
 //dont forget authRequired
 router.post(
   '/:id/enrollments',
+  authRequired,
   checkChildExist,
   isChildAlreadyEnrolled,
-  authRequired,
   async (req, res) => {
     // the req.body is only class_id  === > {class_id} , it will get modified in isChildAlreadyEnrolled middleware
     const enroll = await Children.addEnrolledCourse(req.wantToEnroll);
