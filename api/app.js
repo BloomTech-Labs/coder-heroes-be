@@ -22,7 +22,6 @@ const swaggerUIOptions = {
 const indexRouter = require('./index/indexRouter');
 const profileRouter = require('./profile/profileRouter');
 const userRouter = require('./user/userRouter');
-const adminRouter = require('./admin/adminRouter');
 const parentRouter = require('./parent/parentRouter');
 const instructorRouter = require('./instructor/instructorRouter');
 const childrenRouter = require('./children/childrenRouter');
@@ -32,6 +31,7 @@ const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const sessionRouter = require('./session/sessionRouter');
+const stripeRouter = require('./payment/stripeRouter');
 
 const app = express();
 
@@ -60,17 +60,21 @@ app.use(cookieParser());
 // application routes
 app.use('/', indexRouter);
 app.use(['/profile', '/profiles'], profileRouter);
-app.use(['/admin', '/admins'], adminRouter);
+// app.use(['/admin', '/admins'], adminRouter);
 app.use(['/parent', '/parents'], parentRouter);
 app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
 app.use(['/inbox', '/inboxes'], inboxRouter);
-app.use(['/course-type', '/course-types'], courseTypesRouter);
+app.use(
+  ['/course-type', '/course-types', '/course', '/courses'],
+  courseTypesRouter
+);
 app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/session', '/sessions'], sessionRouter);
+app.use(['/payment'], stripeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {

@@ -9,7 +9,6 @@ const {
 
 const router = express.Router();
 
-//dont forget authRequired
 router.get('/', authRequired, function (req, res) {
   Children.getChildren()
     .then((child) => {
@@ -20,7 +19,7 @@ router.get('/', authRequired, function (req, res) {
       res.status(500).json({ message: err.message });
     });
 });
-//dont forget authRequired
+
 router.get('/:id', authRequired, checkChildExist, async function (
   req,
   res,
@@ -54,7 +53,6 @@ router.post('/', authRequired, checkChildObject, async function (
   }
 });
 
-//dont forget authRequired
 router.get('/:id/enrollments', authRequired, checkChildExist, async function (
   req,
   res,
@@ -68,7 +66,7 @@ router.get('/:id/enrollments', authRequired, checkChildExist, async function (
     next(error);
   }
 });
-//dont forget authRequired
+
 router.post(
   '/:id/enrollments',
   authRequired,

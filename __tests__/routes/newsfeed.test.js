@@ -10,6 +10,12 @@ jest.mock('../../api/middleware/authRequired.js', () =>
   jest.fn((req, res, next) => next())
 );
 
+describe('sanity test', () => {
+  test('check that test environment is being used', () => {
+    expect(process.env.NODE_ENV).toBe('test');
+  });
+});
+
 describe('newsfeeds router endpoints', () => {
   beforeAll(() => {
     server.use(['/newsfeed', '/newsfeeds'], newsfeedRouter);
@@ -71,11 +77,11 @@ describe('newsfeeds router endpoints', () => {
         description: 'Testing PUT newsfeed',
       };
       Newsfeed.findByNewsfeedId.mockResolvedValue(1);
-      Newsfeed.updateNewsfeed.mockResolvedValue([newsfeed]);
+      Newsfeed.updateNewsfeed.mockResolvedValue(newsfeed);
 
       const res = await request(server).put('/newsfeed/1').send(newsfeed);
       expect(res.status).toBe(200);
-      expect(res.body).toBe(1);
+      expect(res.body).toStrictEqual(newsfeed);
       expect(Newsfeed.updateNewsfeed.mock.calls.length).toBe(1);
     });
   });
