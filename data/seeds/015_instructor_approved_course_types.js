@@ -1,5 +1,5 @@
 exports.seed = function (knex) {
-  return knex('instructors-course_types').insert([
+  return knex('instructors_course_types').insert([
     {
       profile_id: 1,
       course_type_id: 1,
