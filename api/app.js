@@ -73,8 +73,7 @@ app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/session', '/sessions'], sessionRouter);
-app.use(['/payment'], stripeRouter);
-
+app.use(['/payment', '/payments'], stripeRouter);
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
   next(createError(404));
