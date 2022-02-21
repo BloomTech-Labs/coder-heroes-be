@@ -106,18 +106,6 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 }
 ```
 
-<h1>Sessions</h1>
-
-```
-{
-  start_time: TIME,
-  end_time: TIME,
-  start_date: DATE,
-  end_date: DATE,
-  location: STRING,
-}
-```
-
 <h1>Enrollments</h1>
 
 ```

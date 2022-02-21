@@ -25,12 +25,13 @@ const userRouter = require('./user/userRouter');
 const parentRouter = require('./parent/parentRouter');
 const instructorRouter = require('./instructor/instructorRouter');
 const childrenRouter = require('./children/childrenRouter');
-// const inboxRouter = require('./inbox/inboxRouter');
+const inboxRouter = require('./inbox/inboxRouter');
 const courseTypesRouter = require('./courseTypes/courseTypesRouter');
 const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const sessionRouter = require('./session/sessionRouter');
+const stripeRouter = require('./payment/stripeRouter');
 
 const app = express();
 
@@ -62,7 +63,7 @@ app.use(['/profile', '/profiles'], profileRouter);
 app.use(['/parent', '/parents'], parentRouter);
 app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
-// app.use(['/inbox', '/inboxes'], inboxRouter);
+app.use(['/inbox', '/inboxes'], inboxRouter);
 app.use(
   ['/course-type', '/course-types', '/course', '/courses'],
   courseTypesRouter
@@ -72,6 +73,7 @@ app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/session', '/sessions'], sessionRouter);
+app.use(['/payment'], stripeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
