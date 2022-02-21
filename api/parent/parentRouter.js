@@ -1,6 +1,5 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-// const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Parents = require('./parentModel');
 const router = express.Router();
 
