@@ -18,7 +18,6 @@ exports.up = (knex) => {
         'Friday',
       ]);
       table.integer('max_size').notNullable();
-      table.integer('number_registered');
       table.integer('min_age');
       table.integer('max_age');
 
@@ -43,9 +42,30 @@ exports.up = (knex) => {
       table.date('end_date').notNullable();
       table.string('location').notNullable();
       table.integer('number_of_sessions');
+    })
+    .createTable('instructors_program_types', (table) => {
+      //programs that instructors have been approved to teach
+      table.increments('instructors_program_types_id');
+      table
+        .integer('instructor_id')
+        .unsigned()
+        .notNullable()
+        .references('instructor_id')
+        .inTable('instructors')
+        .onDelete('CASCADE');
+      table
+        .integer('program_id')
+        .unsigned()
+        .notNullable()
+        .references('program_id')
+        .inTable('programs')
+        .onDelete('CASCADE');
     });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('classes').dropTableIfExists('programs');
+  return knex.schema
+    .dropTableIfExists('instructors_program_types')
+    .dropTableIfExists('classes')
+    .dropTableIfExists('programs');
 };
