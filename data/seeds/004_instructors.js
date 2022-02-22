@@ -12,7 +12,7 @@ exports.seed = function (knex) {
       rating: 5,
       bio: 'Coding is life.',
       status: true,
-      approved_by: 2,
+      approved_by: 1,
     },
   ]);
 };
