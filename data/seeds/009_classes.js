@@ -4,7 +4,7 @@ exports.seed = function (knex) {
       class_name: 'App Building Fundamentals',
       class_description:
         'A month-long course where students with design, build, and deploy an app from beginning to end!',
-      day_of_week: 'Monday',
+      days_of_week: ['Monday'],
       max_size: 20,
       min_age: 7,
       max_age: 12,
@@ -15,7 +15,24 @@ exports.seed = function (knex) {
       start_date: '04/04/2022',
       end_date: '04/28/2022',
       location: "Children's Coding Center",
-      number_of_sessions: '4',
+      number_of_sessions: 4,
+    },
+    {
+      class_name: 'Mindful Design',
+      class_description:
+        'Students will learn about creativity and web design basics',
+      days_of_week: ['Wednesday', 'Friday'],
+      max_size: 12,
+      min_age: 6,
+      max_age: 10,
+      instructor_id: 2,
+      program_id: 3,
+      start_time: '15:30:00',
+      end_time: '17:45:00',
+      start_date: '04/04/2022',
+      end_date: '04/28/2022',
+      location: "Children's Coding Center",
+      number_of_sessions: 4,
     },
   ]);
 };

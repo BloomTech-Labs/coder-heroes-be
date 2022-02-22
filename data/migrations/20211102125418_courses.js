@@ -8,21 +8,15 @@ exports.up = (knex) => {
 
     .createTable('classes', (table) => {
       table.increments('class_id');
-      table.string('class_name');
-      table.string('class_description');
-      table.enu('day_of_week', [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-      ]);
+      table.string('class_name').notNullable();
+      table.string('class_description').notNullable();
+      table.specificType('days_of_week', 'text ARRAY');
       table.integer('max_size').notNullable();
-      table.integer('min_age');
-      table.integer('max_age');
-
+      table.integer('min_age').notNullable();
+      table.integer('max_age').notNullable();
       table
         .integer('instructor_id')
+        .notNullable()
         .unsigned()
         .notNullable()
         .references('instructor_id')
@@ -31,6 +25,7 @@ exports.up = (knex) => {
 
       table
         .integer('program_id')
+        .notNullable()
         .unsigned()
         .notNullable()
         .references('program_id')
@@ -41,13 +36,14 @@ exports.up = (knex) => {
       table.date('start_date').notNullable();
       table.date('end_date').notNullable();
       table.string('location').notNullable();
-      table.integer('number_of_sessions');
+      table.integer('number_of_sessions').notNullable();
     })
     .createTable('instructors_program_types', (table) => {
       //programs that instructors have been approved to teach
       table.increments('instructors_program_types_id');
       table
         .integer('instructor_id')
+        .notNullable()
         .unsigned()
         .notNullable()
         .references('instructor_id')
@@ -55,6 +51,7 @@ exports.up = (knex) => {
         .onDelete('CASCADE');
       table
         .integer('program_id')
+        .notNullable()
         .unsigned()
         .notNullable()
         .references('program_id')
