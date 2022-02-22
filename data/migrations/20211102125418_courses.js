@@ -8,8 +8,19 @@ exports.up = (knex) => {
 
     .createTable('classes', (table) => {
       table.increments('class_id');
-      table.integer('size').notNullable();
-      table.integer('open_seats_remaining');
+      table.string('class_name');
+      table.string('class_description');
+      table.enu('day_of_week', [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+      ]);
+      table.integer('max_size').notNullable();
+      table.integer('number_registered');
+      table.integer('min_age');
+      table.integer('max_age');
 
       table
         .integer('instructor_id')
@@ -31,6 +42,7 @@ exports.up = (knex) => {
       table.date('start_date').notNullable();
       table.date('end_date').notNullable();
       table.string('location').notNullable();
+      table.integer('number_of_sessions');
     });
 };
 
