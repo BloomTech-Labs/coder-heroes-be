@@ -68,10 +68,10 @@ const {
  *          description: Low value: 00:00:00, High Value: 24:00:00
  *        start_date:
  *          type: date
- *          description: ex. 02/08/2022
+ *          description: ex. 02/08/2022 (2022-08-02T04:00:00.000Z)
  *        end_date:
  *          type: date
- *          description: ex. 02/09/2022
+ *          description: ex. 02/09/2022 (2022-09-02T04:00:00.000Z)
  *        location:
  *          type: string
  *        number_of_sessions:
@@ -93,6 +93,62 @@ const {
  *        end_date: '2022-04-28T04:00:00.000Z',
  *        location: 'Children's Coding Center',
  *        number_of_sessions: 4,
+ */
+
+/**
+/class-instance(s):
+ *  get:
+ *    description: Returns a list of all classes
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - class-instance, class-instance
+ *    responses:
+ *      200:
+ *        description: array of classes
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Classes'
+ *              example:
+ *                - class_id: 1,
+ *                  class_name: 'App Building Fundamentals',
+ *                  class_description: 'A month-long course where students with design, build, and deploy an app from beginning t'o end!,
+ *                  days_of_week: ['Monday'],
+ *                  max_size: 20,
+ *                  min_age: 7,
+ *                  max_age: 12,
+ *                  instructor_id: 1,
+ *                  program_id: 1,
+ *                  start_time: '08:00:00',
+ *                  end_time: '12:30:00,'
+ *                  start_date: '2022-04-04T04:00:00.000Z',
+ *                  end_date: '2022-04-28T04:00:00.000Z',
+ *                  location: 'Children's Coding Center',
+ *                  number_of_sessions: 4,
+ *                  program_name: 'Codercamp'
+ *               - class_id: 2,
+ *                  class_name: 'Mindful Design',
+ *                  class_description: 'Students will learn about creativity and web design basics',
+ *                  days_of_week: ['Wednesday', 'Friday']
+ *                  max_size: 12,
+ *                  min_age: 6,
+ *                  max_age: 10,
+ *                  instructor_id: 2,
+ *                  program_id: 3,
+ *                  start_time: '15:30:00',
+ *                  end_time: '17:45:00,'
+ *                  start_date: '2022-04-04T04:00:00.000Z',
+ *                  end_date: '2022-04-28T04:00:00.000Z',
+ *                  location: 'Children's Coding Center',
+ *                  number_of_sessions: 8,
+ *                  program_name: 'Coderyoga'
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      403:
+ *        $ref: '#/components/responses/UnauthorizedError'
  */
 
 router.get('/', authRequired, function (req, res, next) {

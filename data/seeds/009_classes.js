@@ -32,7 +32,7 @@ exports.seed = function (knex) {
       start_date: '04/04/2022',
       end_date: '04/28/2022',
       location: "Children's Coding Center",
-      number_of_sessions: 4,
+      number_of_sessions: 8,
     },
   ]);
 };
