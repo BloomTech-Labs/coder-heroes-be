@@ -16,9 +16,7 @@ const findByClassInstanceId = async (class_id) => {
     .first();
 };
 
-findByClassInstanceId(1).then((res) => {
-  console.log(res);
-});
+//KAT STOPPED UPDATES HERE
 
 const addClassInstance = async (newClass) => {
   return await db('classes').insert(newClass).returning('*');
