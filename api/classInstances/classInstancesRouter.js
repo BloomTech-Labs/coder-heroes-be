@@ -166,6 +166,7 @@ router.get('/', authRequired, function (req, res, next) {
 });
 
 /**
+ * @swagger
  * components:
  *  parameters:
  *    class_id:
@@ -173,27 +174,27 @@ router.get('/', authRequired, function (req, res, next) {
  *      in: path
  *      description: ID of the class to return
  *      required: true
- *      example: 00uhjfrwdWAQvD8JV4x6
+ *      example: 1
  *      schema:
- *        type: string
- * /class-instance(s):
+ *        type: integer
+ * /class-instanc/{class_id}:
  *  get:
- *   description: Returns a list of all classes
+ *   description: Returns a class object
  *   security:
  *     - okta: []
  *   tags:
  *     - classes
  *   responses:
  *     200:
- *       description: array of classes
+ *       description: class object
  *       content:
  *          application/json:
  *            schema:
- *              type: array
+ *              type: object
  *              items:
  *                $ref: '#/components/schemas/Classes'
  *              example:
- *                - class_id: 1
+ *                  class_id: 1
  *                  class_name: 'App Building Fundamentals'
  *                  class_description: >
  *                    A month-long course where students with design,
@@ -212,28 +213,12 @@ router.get('/', authRequired, function (req, res, next) {
  *                  location: 'Childrens Coding Center'
  *                  number_of_sessions: 4
  *                  program_name: 'Codercamp'
- *                - class_id: 2
- *                  class_name: 'Mindful Design'
- *                  class_description: 'Students will learn about creativity and web design basics'
- *                  days_of_week:
- *                   - Monday
- *                   - Friday
- *                  max_size: 12
- *                  min_age: 6
- *                  max_age: 10
- *                  instructor_id: 2
- *                  program_id: 3
- *                  start_time: '15:30:00'
- *                  end_time: '17:45:00'
- *                  start_date: '2022-04-04T04:00:00.000Z'
- *                  end_date: '2022-04-28T04:00:00.000Z'
- *                  location: 'Childrens Coding Center'
- *                  number_of_sessions: 8
- *                  program_name: 'Coderyoga'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       403:
  *         $ref: '#/components/responses/UnauthorizedError'
+ *       404:
+ *        'Class Instance with id 6 does not exist'
  */
 
 router.get('/:class_id', authRequired, checkClassInstanceExist, function (
