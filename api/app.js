@@ -72,8 +72,8 @@ app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 // app.use(['/payment', '/payments'], stripeRouter); we can uncomment this when the stripe router is built out
-// catch 404 and forward to error handler
-app.use(function (err, req, res, next) {
+
+app.get('*', function (req, res, next) {
   next(createError(404));
 });
 
