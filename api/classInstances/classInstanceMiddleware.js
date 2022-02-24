@@ -8,9 +8,9 @@ const { findByInstructorId } = require('../instructor/instructorModel');
 const { getAllCourseTypes } = require('../courseTypes/courseTypesModel');
 
 const checkClassInstanceExist = async (req, res, next) => {
-  const class_id = req.params.class_id;
+  const class_id = parseInt(req.params.class_id);
   try {
-    const [foundClassInstance] = await Classes.findByClassInstanceId(class_id);
+    const foundClassInstance = await Classes.findByClassInstanceId(class_id);
     if (!foundClassInstance) {
       next({
         status: 404,
@@ -24,6 +24,8 @@ const checkClassInstanceExist = async (req, res, next) => {
     next(err);
   }
 };
+
+//MIDDLEWARE BELOW NEED TO BE UPDATED BASED ON CHANGES TO CLASSES TABLE
 
 const checkClassInstanceObject = async (req, res, next) => {
   const {
