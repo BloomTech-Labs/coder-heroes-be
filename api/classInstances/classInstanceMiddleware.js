@@ -1,4 +1,5 @@
 const Classes = require('./classInstancesModel');
+const createError = require('http-errors');
 
 const {
   verifyTimeWithoutTimeZone,
@@ -12,10 +13,9 @@ const checkClassInstanceExist = async (req, res, next) => {
   try {
     const foundClassInstance = await Classes.findByClassInstanceId(class_id);
     if (!foundClassInstance) {
-      next({
-        status: 404,
-        message: `Class Instance with id ${class_id} does not exist`,
-      });
+      next(
+        createError(404, `Class Instance with id ${class_id} does not exist`)
+      );
     } else {
       req.class_instance = foundClassInstance;
       next();
