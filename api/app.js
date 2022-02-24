@@ -73,7 +73,7 @@ app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 // app.use(['/payment', '/payments'], stripeRouter); we can uncomment this when the stripe router is built out
 
-app.get('*', function (req, res, next) {
+app.use('*', function (req, res, next) {
   next(createError(404));
 });
 
