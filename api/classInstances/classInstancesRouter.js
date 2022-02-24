@@ -169,15 +169,10 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
   req,
   res
 ) {
-  const class_id = parseInt(req.params.class_id);
-  Classes.findByClassInstanceId(class_id)
-    .then((class_instance) => {
-      res.status(200).json(class_instance);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+  res.status(200).json(req.class_instance);
 });
+
+//ROUTES BELOW NEED TO BE UPDATED BASED ON CHANGES TO CLASSES TABLE
 
 router.post(
   '/',
