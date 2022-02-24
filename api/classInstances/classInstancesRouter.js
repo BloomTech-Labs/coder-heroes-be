@@ -151,10 +151,10 @@ const {
  *                  location: 'Childrens Coding Center'
  *                  number_of_sessions: 8
  *                  program_name: 'Coderyoga'
- *       401:
- *         $ref: '#/components/responses/UnauthorizedError'
- *       403:
- *         $ref: '#/components/responses/UnauthorizedError'
+ *     401:
+ *       $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *       $ref: '#/components/responses/UnauthorizedError'
  */
 
 router.get('/', authRequired, function (req, res, next) {
@@ -185,12 +185,15 @@ router.get('/', authRequired, function (req, res, next) {
  *     - okta: []
  *   tags:
  *     - classes
+ *   parameters:
+ *      - $ref: '#/components/parameters/class_id'
  *   responses:
  *     200:
  *       description: class object
  *       content:
  *          application/json:
  *            schema:
+ *              $ref: '#/components/schemas/Classes'
  *              type: object
  *              items:
  *                $ref: '#/components/schemas/Classes'
@@ -214,10 +217,12 @@ router.get('/', authRequired, function (req, res, next) {
  *                  location: 'Childrens Coding Center'
  *                  number_of_sessions: 4
  *                  program_name: 'Codercamp'
- *       401:
+ *     401:
  *         $ref: '#/components/responses/UnauthorizedError'
- *       403:
+ *     403:
  *         $ref: '#/components/responses/UnauthorizedError'
+ *     404:
+ *       description: 'Class Instance with id {class_id} does not exist'
  */
 
 router.get('/:class_id', authRequired, checkClassInstanceExist, function (
