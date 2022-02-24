@@ -170,14 +170,15 @@ router.get('/', authRequired, function (req, res, next) {
  * components:
  *  parameters:
  *    class_id:
- *      name: class_id
- *      in: path
- *      description: ID of the class to return
- *      required: true
- *      example: 1
- *      schema:
- *        type: integer
- * /class-instanc/{class_id}:
+ *        name: class_id
+ *        in: path
+ *        description: ID of the class to return
+ *        required: true
+ *        example: 1
+ *        schema:
+ *         type: integer
+ *
+ * /class-instance/{class_id}:
  *  get:
  *   description: Returns a class object
  *   security:
@@ -217,8 +218,6 @@ router.get('/', authRequired, function (req, res, next) {
  *         $ref: '#/components/responses/UnauthorizedError'
  *       403:
  *         $ref: '#/components/responses/UnauthorizedError'
- *       404:
- *        'Class Instance with id 6 does not exist'
  */
 
 router.get('/:class_id', authRequired, checkClassInstanceExist, function (
