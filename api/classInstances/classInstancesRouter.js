@@ -1,15 +1,16 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const ownerAuthorization = require('../middleware/ownerAuthorization');
-const {
-  roleAuthentication,
-  roles,
-} = require('../middleware/roleAuthentication');
+// const {
+//   roleAuthentication,
+//   roles,
+// } = require('../middleware/roleAuthentication');
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
   checkClassInstanceExist,
   validateClassObject,
+  checkInstructorExists,
 } = require('./classInstanceMiddleware');
 
 /**
@@ -237,19 +238,17 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
 router.post(
   '/',
   validateClassObject,
-  roleAuthentication(...roles.slice(2)),
-  async (req, res) => {
+  checkInstructorExists,
+  async (req, res, next) => {
     const classInstance = req.body;
     try {
-      await Classes.addClassInstance(classInstance).then((inserted) => {
-        res.status(200).json({
-          message: 'New Class Instance Added.',
-          schedule: inserted[0],
-        });
+      const inserted = await Classes.addClassInstance(classInstance);
+      res.status(200).json({
+        message: 'New Class Instance Added.',
+        schedule: inserted,
       });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
+    } catch (err) {
+      next(err);
     }
   }
 );
