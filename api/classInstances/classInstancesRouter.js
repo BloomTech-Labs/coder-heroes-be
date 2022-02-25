@@ -418,6 +418,35 @@ router.put(
   }
 );
 
+/**
+ * @swagger
+ * /class_instance/{class_id}:
+ *  delete:
+ *    summary: Remove a class
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - classes
+ *    parameters:
+ *      - $ref: '#/components/parameters/class_id'
+ *    responses:
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      200:
+ *        description: An object message about the deleted class
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  description: A message about the result
+ *                  example: Class instances with id:'${class_id}' was deleted
+ */
+
 router.delete(
   '/:class_id',
   authRequired,
@@ -427,7 +456,7 @@ router.delete(
     try {
       Classes.removeClassInstance(class_id).then(() => {
         res.status(200).json({
-          message: `Schedule with id:'${class_id}' was deleted.`,
+          message: `Class instance with id:'${class_id}' was deleted.`,
         });
       });
     } catch (err) {
