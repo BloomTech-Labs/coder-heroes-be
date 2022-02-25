@@ -19,45 +19,39 @@ const classSchema = yup.object().shape({
     .typeError('days of week must be submitted as an array')
     .required('days of week are required'),
   max_size: yup
-    .integer()
-    .typeError('max size must be an integer')
+    .number()
+    .typeError('max size must be a number')
     .min(1, 'size must be at least 1')
     .required('max size is required'),
   min_age: yup
-    .integer()
-    .typeError('min age must be an integer')
+    .number()
+    .typeError('min age must be a number')
     .required('min age is required'),
   max_age: yup
-    .integer()
-    .typeError('max age must be an integer')
+    .number()
+    .typeError('max age must be a number')
     .required('max age is required')
     .min(yup.ref('min_age'), 'max age cannot be less than max age'),
-  instructor_id: yup.integer().typeError('instructor must be an integer'),
-  program_id: yup.integer().typeError('instructor must be an integer'),
+  instructor_id: yup.number().typeError('instructor must be an number'),
+  program_id: yup.number().typeError('instructor must be an number'),
   start_time: yup
     .string()
-    .type('start_time must be a string')
+    .typeError('start_time must be a string')
     .trim('whitespace alone is not accepted')
     .required('start_time is required'),
   end_time: yup
     .string()
-    .type('end_time must be a string')
+    .typeError('end_time must be a string')
     .trim('whitespace alone is not accepted')
     .required('end_time is required')
     .test('is_greater', 'end time should be greater', function (value) {
       const { start_time } = this.parent;
       return moment(value, 'HH:mm').isAfter(moment(start_time, 'HH:mm'));
     }),
-  start_date: yup
-    .date()
-    .string()
-    .type('date must be a string')
-    .trim('whitespace alone is not accepted'),
+  start_date: yup.date().required('date is required'),
   end_date: yup
     .date()
-    .string()
-    .type('date must be a string')
-    .trim('whitespace alone is not accepted')
+    .required('date is required')
     .min(yup.ref('start_date'), 'end date cannot before start date'),
   location: yup
     .string()
@@ -66,8 +60,8 @@ const classSchema = yup.object().shape({
     .trim('whitespace alone is not accepted')
     .required('you must provide a location'),
   number_of_sessions: yup
-    .integer()
-    .typeError('number of sessions must be an integer')
+    .number()
+    .typeError('number of sessions must be a number')
     .required('number of sessions is required'),
 });
 
