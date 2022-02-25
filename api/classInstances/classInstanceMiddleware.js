@@ -1,7 +1,7 @@
 const Classes = require('./classInstancesModel');
 const createError = require('http-errors');
 const { classSchema } = require('../classInstances/classSchema');
-// const { findByInstructorId } = require('../instructor/instructorModel');
+const { findByInstructorId } = require('../instructor/instructorModel');
 
 const checkClassInstanceExist = async (req, res, next) => {
   const class_id = parseInt(req.params.class_id);
@@ -30,6 +30,19 @@ const validateClassObject = async (req, res, next) => {
     next();
   } catch (err) {
     next(createError(422, err.message));
+  }
+};
+
+const checkInstructorExists = async (req, res, next) => {
+  if (req.body.instructor_id) {
+    try {
+      const instructor = await findByInstructorId(req.body.instructor_id);
+      instructor ? next() : next(createError(404, 'instructor does not exist'));
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    next();
   }
 };
 
@@ -136,4 +149,8 @@ const validateClassObject = async (req, res, next) => {
 //   next();
 // };
 
-module.exports = { checkClassInstanceExist, validateClassObject };
+module.exports = {
+  checkClassInstanceExist,
+  validateClassObject,
+  checkInstructorExists,
+};
