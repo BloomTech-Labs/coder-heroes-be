@@ -245,7 +245,7 @@ router.post(
       const inserted = await Classes.addClassInstance(classInstance);
       res.status(200).json({
         message: 'New Class Instance Added.',
-        schedule: inserted,
+        created_class: inserted,
       });
     } catch (err) {
       next(err);

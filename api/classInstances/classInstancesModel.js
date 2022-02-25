@@ -19,7 +19,8 @@ const findByClassInstanceId = async (class_id) => {
 //FUNCTIONS BELOW NEED TO BE UPDATED BASED ON CHANGES TO CLASSES TABLE
 
 const addClassInstance = async (newClass) => {
-  return await db('classes').insert(newClass).returning('*');
+  const [createdClass] = await db('classes').insert(newClass).returning('*');
+  return createdClass;
 };
 
 const updateClassInstance = async (class_id, newClass) => {
