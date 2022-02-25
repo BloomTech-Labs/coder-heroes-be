@@ -1,10 +1,10 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const ownerAuthorization = require('../middleware/ownerAuthorization');
+// const ownerAuthorization = require('../middleware/ownerAuthorization'); nneds to be refactored
 // const {
 //   roleAuthentication,
 //   roles,
-// } = require('../middleware/roleAuthentication');
+// } = require('../middleware/roleAuthentication'); needs to be refactored
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
@@ -281,9 +281,8 @@ router.delete(
   '/:class_id',
   authRequired,
   checkClassInstanceExists,
-  ownerAuthorization('class_instance'),
   (req, res, next) => {
-    const class_id = req.params.class_id;
+    const class_id = parseInt(req.params.class_id);
     try {
       Classes.removeClassInstance(class_id).then(() => {
         res.status(200).json({
