@@ -319,6 +319,82 @@ router.post(
   }
 );
 
+/**
+ * @swagger
+ *  components:
+ *  parameters:
+ *    class_id:
+ *        name: class_id
+ *        in: path
+ *        description: ID of the class to update
+ *        required: true
+ *        example: 1
+ *        schema:
+ *         type: integer
+ *
+ * /class-instance/{class_id}:
+ *  put:
+ *   description: Returns an updated class object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - classes
+ *   parameters:
+ *     - $ref: '#/components/parameters/class_id'
+ *   requestBody:
+ *      description: Class object with updates
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Classes'
+ *          example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 25
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Local Library'
+ *                  number_of_sessions: 4
+ *   responses:
+ *     200:
+ *       description: updated class object
+ *       content:
+ *          application/json:
+ *              type: object
+ *              example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 25
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Local Library'
+ *                  number_of_sessions: 4
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+
 router.put(
   '/:class_id',
   validateClassObject,
