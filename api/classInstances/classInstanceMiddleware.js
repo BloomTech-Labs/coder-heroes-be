@@ -3,7 +3,7 @@ const createError = require('http-errors');
 const { classSchema } = require('../classInstances/classSchema');
 const { findByInstructorId } = require('../instructor/instructorModel');
 
-const checkClassInstanceExist = async (req, res, next) => {
+const checkClassInstanceExists = async (req, res, next) => {
   const class_id = parseInt(req.params.class_id);
   try {
     const foundClassInstance = await Classes.findByClassInstanceId(class_id);
@@ -150,7 +150,7 @@ const checkInstructorExists = async (req, res, next) => {
 // };
 
 module.exports = {
-  checkClassInstanceExist,
+  checkClassInstanceExists,
   validateClassObject,
   checkInstructorExists,
 };
