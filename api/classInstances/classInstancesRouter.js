@@ -9,7 +9,7 @@ const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
   checkClassInstanceExist,
-  checkClassInstanceObject,
+  validateClassObject,
 } = require('./classInstanceMiddleware');
 
 /**
@@ -236,7 +236,7 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
 
 router.post(
   '/',
-  checkClassInstanceObject,
+  validateClassObject,
   roleAuthentication(...roles.slice(2)),
   async (req, res) => {
     const classInstance = req.body;

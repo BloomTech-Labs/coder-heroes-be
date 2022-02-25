@@ -21,6 +21,7 @@ const classSchema = yup.object().shape({
   max_size: yup
     .integer()
     .typeError('max size must be an integer')
+    .min(1, 'size must be at least 1')
     .required('max size is required'),
   min_age: yup
     .integer()
@@ -63,7 +64,7 @@ const classSchema = yup.object().shape({
     .typeError('location needs to be a string')
     .min(2, 'location must be at least 2 chars')
     .trim('whitespace alone is not accepted')
-    .required('you must provide a lcoation'),
+    .required('you must provide a location'),
   number_of_sessions: yup
     .integer()
     .typeError('number of sessions must be an integer')
