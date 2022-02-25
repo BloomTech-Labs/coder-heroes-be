@@ -8,7 +8,7 @@ const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
-  checkClassInstanceExist,
+  checkClassInstanceExists,
   validateClassObject,
   checkInstructorExists,
 } = require('./classInstanceMiddleware');
@@ -226,7 +226,7 @@ router.get('/', authRequired, function (req, res, next) {
  *       description: 'Class Instance with id {class_id} does not exist'
  */
 
-router.get('/:class_id', authRequired, checkClassInstanceExist, function (
+router.get('/:class_id', authRequired, checkClassInstanceExists, function (
   req,
   res
 ) {
@@ -237,6 +237,7 @@ router.get('/:class_id', authRequired, checkClassInstanceExist, function (
 
 router.post(
   '/',
+  authRequired,
   validateClassObject,
   checkInstructorExists,
   async (req, res, next) => {
@@ -255,18 +256,19 @@ router.post(
 
 router.put(
   '/:class_id',
+  validateClassObject,
+  checkInstructorExists,
   authRequired,
-  checkClassInstanceExist,
-  ownerAuthorization('class_instance'),
+  checkClassInstanceExists,
   (req, res, next) => {
-    const class_id = req.params.class_id;
+    const class_id = parseInt(req.params.class_id);
     const newClassObject = req.body;
 
     Classes.updateClassInstance(class_id, newClassObject)
       .then((updated) => {
         res.status(200).json({
           message: `Class instance with the class_id: ${class_id} updated`,
-          class_instance: updated[0],
+          class_instance: updated,
         });
       })
       .catch((err) => {
@@ -278,7 +280,7 @@ router.put(
 router.delete(
   '/:class_id',
   authRequired,
-  checkClassInstanceExist,
+  checkClassInstanceExists,
   ownerAuthorization('class_instance'),
   (req, res, next) => {
     const class_id = req.params.class_id;
