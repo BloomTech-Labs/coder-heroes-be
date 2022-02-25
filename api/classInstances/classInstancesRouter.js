@@ -233,7 +233,72 @@ router.get('/:class_id', authRequired, checkClassInstanceExists, function (
   res.status(200).json(req.class_instance);
 });
 
-//ROUTES BELOW NEED TO BE UPDATED BASED ON CHANGES TO CLASSES TABLE
+/**
+ * @swagger
+ * /class-instance:
+ *  post:
+ *   description: Returns a newly created class object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - classes
+ *   requestBody:
+ *      description: Class object to be created
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Classes'
+ *          example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 20
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Childrens Coding Center'
+ *                  number_of_sessions: 4
+ *   responses:
+ *     200:
+ *       description: class object
+ *       content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Classes'
+ *              type: object
+ *              items:
+ *                $ref: '#/components/schemas/Classes'
+ *              example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 20
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Childrens Coding Center'
+ *                  number_of_sessions: 4
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
 
 router.post(
   '/',
