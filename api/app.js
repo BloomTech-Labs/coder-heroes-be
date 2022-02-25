@@ -30,7 +30,7 @@ const courseTypesRouter = require('./courseTypes/courseTypesRouter');
 const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
-// const stripeRouter = require('./payment/stripeRouter'); we can uncomment this when the stripe router is built out
+const stripeRouter = require('./payment/stripeRouter');
 
 const app = express();
 
@@ -71,7 +71,7 @@ app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
-// app.use(['/payment', '/payments'], stripeRouter); we can uncomment this when the stripe router is built out
+app.use(['/payments', '/payment'], stripeRouter);
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
   next(createError(404));
