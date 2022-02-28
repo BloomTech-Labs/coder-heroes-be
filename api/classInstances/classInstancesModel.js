@@ -1,36 +1,22 @@
 const db = require('../../data/db-config');
 
-//justin
 const getAllClassInstances = async () => {
-  return await db('classes')
-    .leftJoin(
-      'course_types',
-      'classes.course_type_id',
-      'course_types.course_type_id'
-    )
-    .leftJoin(
-      'instructors',
-      'classes.instructor_id',
-      'instructors.instructor_id'
-    )
-    .leftJoin('profiles', 'instructors.profile_id', 'profiles.profile_id');
+  return await db('classes as c')
+    .select('c.*', 'p.program_name', 'i.instructor_id')
+    .leftJoin('programs as p', 'p.program_id', 'c.program_id')
+    .leftJoin('instructors as i', 'c.instructor_id', 'i.instructor_id');
 };
 
 const findByClassInstanceId = async (class_id) => {
-  return db('classes')
-    .leftJoin(
-      'course_types',
-      'classes.course_type_id',
-      'course_types.course_type_id'
-    )
-    .leftJoin(
-      'instructors',
-      'classes.instructor_id',
-      'instructors.instructor_id'
-    )
-    .leftJoin('profiles', 'instructors.profile_id', 'profiles.profile_id')
-    .where('classes.class_id', class_id);
+  return await db('classes as c')
+    .select('c.*', 'p.program_name', 'i.instructor_id')
+    .leftJoin('programs as p', 'p.program_id', 'c.program_id')
+    .leftJoin('instructors as i', 'c.instructor_id', 'i.instructor_id')
+    .where('c.class_id', class_id)
+    .first();
 };
+
+//FUNCTIONS BELOW NEED TO BE UPDATED BASED ON CHANGES TO CLASSES TABLE
 
 const addClassInstance = async (newClass) => {
   return await db('classes').insert(newClass).returning('*');
