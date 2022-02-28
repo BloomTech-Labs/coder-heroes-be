@@ -22,11 +22,11 @@ const checkClassInstanceExists = async (req, res, next) => {
 
 const validateClassObject = async (req, res, next) => {
   try {
-    const validated = await classSchema.validate(req.body, {
+    const validatedClass = await classSchema.validate(req.body, {
       strict: false,
       stripUnknown: true,
     });
-    req.body = validated;
+    req.body = validatedClass;
     next();
   } catch (err) {
     next(createError(422, err.message));
