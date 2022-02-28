@@ -1,7 +1,7 @@
 const db = require('../../data/db-config');
 
-const getAllCourseTypes = async () => {
-  return await db('course_types');
+const getAllProgramTypes = async () => {
+  return db('programs');
 };
 
 const findBySubject = async (subject) => {
@@ -24,7 +24,7 @@ const removeCourseType = async (subject) => {
 };
 
 module.exports = {
-  getAllCourseTypes,
+  getAllProgramTypes,
   findBySubject,
   addCourseType,
   updateCourseType,

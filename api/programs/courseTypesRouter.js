@@ -13,8 +13,8 @@ const {
 
 router.get('/', authRequired, async function (req, res, next) {
   try {
-    const courses = await Courses.getAllCourseTypes();
-    res.status(200).json(courses);
+    const programs = await Courses.getAllProgramTypes();
+    res.status(200).json(programs);
   } catch (error) {
     next(error);
   }
