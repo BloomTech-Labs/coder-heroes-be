@@ -1,15 +1,16 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const ownerAuthorization = require('../middleware/ownerAuthorization');
-const {
-  roleAuthentication,
-  roles,
-} = require('../middleware/roleAuthentication');
+// const ownerAuthorization = require('../middleware/ownerAuthorization'); nneds to be refactored
+// const {
+//   roleAuthentication,
+//   roles,
+// } = require('../middleware/roleAuthentication'); needs to be refactored
 const Classes = require('./classInstancesModel');
 const router = express.Router();
 const {
-  checkClassInstanceExist,
-  checkClassInstanceObject,
+  checkClassInstanceExists,
+  validateClassObject,
+  checkInstructorExists,
 } = require('./classInstanceMiddleware');
 
 /**
@@ -225,49 +226,190 @@ router.get('/', authRequired, function (req, res, next) {
  *       description: 'Class Instance with id {class_id} does not exist'
  */
 
-router.get('/:class_id', authRequired, checkClassInstanceExist, function (
+router.get('/:class_id', authRequired, checkClassInstanceExists, function (
   req,
   res
 ) {
   res.status(200).json(req.class_instance);
 });
 
-//ROUTES BELOW NEED TO BE UPDATED BASED ON CHANGES TO CLASSES TABLE
+/**
+ * @swagger
+ * /class-instance:
+ *  post:
+ *   description: Returns a newly created class object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - classes
+ *   requestBody:
+ *      description: Class object to be created
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Classes'
+ *          example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 20
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Childrens Coding Center'
+ *                  number_of_sessions: 4
+ *   responses:
+ *     200:
+ *       description: class object
+ *       content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Classes'
+ *              type: object
+ *              items:
+ *                $ref: '#/components/schemas/Classes'
+ *              example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 20
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Childrens Coding Center'
+ *                  number_of_sessions: 4
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
 
 router.post(
   '/',
-  checkClassInstanceObject,
-  roleAuthentication(...roles.slice(2)),
-  async (req, res) => {
+  authRequired,
+  validateClassObject,
+  checkInstructorExists,
+  async (req, res, next) => {
     const classInstance = req.body;
     try {
-      await Classes.addClassInstance(classInstance).then((inserted) => {
-        res.status(200).json({
-          message: 'New Class Instance Added.',
-          schedule: inserted[0],
-        });
+      const inserted = await Classes.addClassInstance(classInstance);
+      res.status(200).json({
+        message: 'New Class Instance Added.',
+        created_class: inserted,
       });
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ message: e.message });
+    } catch (err) {
+      next(err);
     }
   }
 );
 
+/**
+ * @swagger
+ *  components:
+ *  parameters:
+ *    class_id:
+ *        name: class_id
+ *        in: path
+ *        description: ID of the class to update
+ *        required: true
+ *        example: 1
+ *        schema:
+ *         type: integer
+ *
+ * /class-instance/{class_id}:
+ *  put:
+ *   description: Returns an updated class object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - classes
+ *   parameters:
+ *     - $ref: '#/components/parameters/class_id'
+ *   requestBody:
+ *      description: Class object with updates
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Classes'
+ *          example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 25
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Local Library'
+ *                  number_of_sessions: 4
+ *   responses:
+ *     200:
+ *       description: updated class object
+ *       content:
+ *          application/json:
+ *              type: object
+ *              example:
+ *                  class_name: 'App Building Fundamentals'
+ *                  class_description: >
+ *                    A month-long course where students with design,
+ *                    build, and deploy an app from beginning to end!
+ *                  days_of_week:
+ *                    - Monday
+ *                  max_size: 25
+ *                  min_age: 7
+ *                  max_age: 12
+ *                  instructor_id: 1
+ *                  program_id: 1
+ *                  start_time: '08:00:00'
+ *                  end_time: '12:30:00'
+ *                  start_date: '2022-04-04T04:00:00.000Z'
+ *                  end_date: '2022-04-28T04:00:00.000Z'
+ *                  location: 'Local Library'
+ *                  number_of_sessions: 4
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+
 router.put(
   '/:class_id',
+  validateClassObject,
+  checkInstructorExists,
   authRequired,
-  checkClassInstanceExist,
-  ownerAuthorization('class_instance'),
+  checkClassInstanceExists,
   (req, res, next) => {
-    const class_id = req.params.class_id;
+    const class_id = parseInt(req.params.class_id);
     const newClassObject = req.body;
 
     Classes.updateClassInstance(class_id, newClassObject)
       .then((updated) => {
         res.status(200).json({
           message: `Class instance with the class_id: ${class_id} updated`,
-          class_instance: updated[0],
+          class_instance: updated,
         });
       })
       .catch((err) => {
@@ -276,17 +418,45 @@ router.put(
   }
 );
 
+/**
+ * @swagger
+ * /class_instance/{class_id}:
+ *  delete:
+ *    summary: Remove a class
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - classes
+ *    parameters:
+ *      - $ref: '#/components/parameters/class_id'
+ *    responses:
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      200:
+ *        description: An object message about the deleted class
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  description: A message about the result
+ *                  example: Class instances with id:'${class_id}' was deleted
+ */
+
 router.delete(
   '/:class_id',
   authRequired,
-  checkClassInstanceExist,
-  ownerAuthorization('class_instance'),
+  checkClassInstanceExists,
   (req, res, next) => {
-    const class_id = req.params.class_id;
+    const class_id = parseInt(req.params.class_id);
     try {
       Classes.removeClassInstance(class_id).then(() => {
         res.status(200).json({
-          message: `Schedule with id:'${class_id}' was deleted.`,
+          message: `Class instance with id:'${class_id}' was deleted.`,
         });
       });
     } catch (err) {
