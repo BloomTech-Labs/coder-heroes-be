@@ -8,6 +8,14 @@ const getById = async (id) => {
   return db('programs').where('program_id', id).first();
 };
 
+const getByName = async (program_name) => {
+  return db('programs').where({ program_name }).first();
+};
+
+getByName('Coderyoga').then((res) => {
+  console.log(res);
+});
+
 const addCourseType = async (program_object) => {
   return db('programs').insert(program_object).returning('*');
 };
@@ -25,6 +33,7 @@ const removeCourseType = async (subject) => {
 module.exports = {
   getAllProgramTypes,
   getById,
+  getByName,
   addCourseType,
   updateCourseType,
   removeCourseType,

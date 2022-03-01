@@ -9,7 +9,7 @@ const programSchema = yup.object().shape({
     .required('you must provide a program name'),
   program_description: yup
     .string()
-    .typeError('program description must be as string')
+    .typeError('program description must be a string')
     .min(5, 'program description must be at least 5 char')
     .trim('whitespace alone is not accepted')
     .required('you must provide a program description'),
