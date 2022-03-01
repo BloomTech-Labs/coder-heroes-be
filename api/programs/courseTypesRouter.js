@@ -53,24 +53,21 @@ router.post(
   }
 );
 
-router.put('/', authRequired, validateProgramObject, async (req, res, next) => {
-  const subject = req.body.subject;
-  const course = await Courses.findBySubject(subject);
-  try {
-    if (course) {
-      await Courses.updateCourseType(course.subject, req.body);
-      const updatedCourse = await Courses.findBySubject(subject);
+router.put(
+  '/:id',
+  authRequired,
+  checkProgramExists,
+  validateProgramObject,
+  async (req, res, next) => {
+    const id = Number(req.params.id);
+    try {
+      const [updatedCourse] = await Courses.updateCourseType(id, req.body);
       res.status(200).json(updatedCourse);
-    } else {
-      next({
-        status: 404,
-        message: 'course with subject ( ' + subject + ' ) not found .',
-      });
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 router.delete(
   '/:id',

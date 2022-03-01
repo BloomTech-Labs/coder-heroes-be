@@ -16,8 +16,11 @@ const addCourseType = async (program_object) => {
   return db('programs').insert(program_object).returning('*');
 };
 
-const updateCourseType = (subject, course) => {
-  return db('course_types').where('subject', subject).update(course);
+const updateCourseType = (id, program_object) => {
+  return db('programs')
+    .where('program_id', id)
+    .update(program_object)
+    .returning('*');
 };
 
 const removeCourseType = async (id) => {
