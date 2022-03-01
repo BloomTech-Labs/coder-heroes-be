@@ -26,7 +26,7 @@ const update = (id, program_object) => {
 const remove = async (id) => {
   const deletedProgram = await getById(id);
   await db('programs').where('program_id', id).del();
-  return `${deletedProgram.program_name} program has been delted successfully`;
+  return `${deletedProgram.program_name} program has been deleted successfully`;
 };
 
 module.exports = {

@@ -1,10 +1,10 @@
-const Courses = require('./programTypesModel');
+const Programs = require('./programTypesModel');
 const { programSchema } = require('./programSchema');
 const createError = require('http-errors');
 
 const checkIfProgramIsUnique = async (req, res, next) => {
   const { program_name } = req.body;
-  const program = await Courses.getByName(program_name);
+  const program = await Programs.getByName(program_name);
   if (program) {
     next({
       status: 400,
@@ -30,8 +30,9 @@ const validateProgramObject = async (req, res, next) => {
 
 const checkProgramExists = async (req, res, next) => {
   try {
-    const program = await Courses.getById(Number(req.params.id));
+    const program = await Programs.getById(Number(req.params.id));
     if (program) {
+      req.programFromDB = program;
       next();
     } else {
       next(createError(404, `Program with id ${req.params.id} not found.`));

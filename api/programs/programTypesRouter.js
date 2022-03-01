@@ -21,21 +21,8 @@ router.get('/', authRequired, async function (req, res, next) {
   }
 });
 
-router.get('/:id', authRequired, async function (req, res, next) {
-  const id = Number(req.params.id);
-  try {
-    const program = await Programs.getById(id);
-    if (program) {
-      res.status(200).json(program);
-    } else {
-      next({
-        status: 404,
-        message: 'program with id ' + id + ' not found .',
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
+router.get('/:id', authRequired, checkProgramExists, async function (req, res) {
+  res.status(200).json(req.programFromDB);
 });
 
 router.post(
