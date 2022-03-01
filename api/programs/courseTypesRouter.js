@@ -71,7 +71,7 @@ router.put('/', authRequired, validateProgramObject, async (req, res, next) => {
   }
 });
 
-router.delete('/:subject', authRequired, async (req, res, next) => {
+router.delete('/:id', authRequired, async (req, res, next) => {
   const subject = req.params.subject;
   try {
     const course = await Courses.findBySubject(subject);

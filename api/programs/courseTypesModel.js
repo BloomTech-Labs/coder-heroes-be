@@ -20,10 +20,10 @@ const updateCourseType = (subject, course) => {
   return db('course_types').where('subject', subject).update(course);
 };
 
-const removeCourseType = async (subject) => {
-  const deletedCourse = await getById(subject);
-  await db('course_types').where({ subject }).del();
-  return deletedCourse;
+const removeCourseType = async (id) => {
+  const deletedProgram = await getById(id);
+  await db('programs').where('program_id', id).del();
+  return `${deletedProgram.program_name} program has been delted successfully`;
 };
 
 module.exports = {
