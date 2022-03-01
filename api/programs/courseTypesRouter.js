@@ -9,6 +9,7 @@ const router = express.Router();
 const {
   validateProgramObject,
   checkIfProgramIsUnique,
+  checkProgramExists,
 } = require('./courseTypesMiddleware');
 
 router.get('/', authRequired, async function (req, res, next) {
@@ -71,23 +72,20 @@ router.put('/', authRequired, validateProgramObject, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', authRequired, async (req, res, next) => {
-  const subject = req.params.subject;
-  try {
-    const course = await Courses.findBySubject(subject);
-    if (course) {
-      const deletedCourse = await Courses.removeCourseType(subject);
-      res.status(200).json(deletedCourse);
-    } else {
-      next({
-        status: 404,
-        message: 'course with subject ( ' + subject + ' ) not found .',
-      });
+router.delete(
+  '/:id',
+  authRequired,
+  checkProgramExists,
+  async (req, res, next) => {
+    const id = Number(req.params.id);
+    try {
+      const deletionMessage = await Courses.removeCourseType(id);
+      res.status(200).json(deletionMessage);
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
 router.use('*', errorhandler);
 //eslint-disable-next-line

@@ -28,7 +28,20 @@ const validateProgramObject = async (req, res, next) => {
   }
 };
 
+const checkProgramExists = async (req, res, next) => {
+  try {
+    const program = await Courses.getById(Number(req.params.id));
+    if (program) {
+      next();
+    } else {
+      next(createError(404, `Program with id ${req.params.id} not found.`));
+    }
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   checkIfProgramIsUnique,
   validateProgramObject,
+  checkProgramExists,
 };
