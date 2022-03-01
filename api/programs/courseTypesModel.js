@@ -4,13 +4,12 @@ const getAllProgramTypes = async () => {
   return db('programs');
 };
 
-const findBySubject = async (subject) => {
-  return db('course_types').where('subject', subject).first();
+const getById = async (id) => {
+  return db('programs').where('program_id', id).first();
 };
 
-const addCourseType = async (course_object) => {
-  await db('course_types').insert(course_object);
-  return await findBySubject(course_object.subject);
+const addCourseType = async (program_object) => {
+  return db('programs').insert(program_object).returning('*');
 };
 
 const updateCourseType = (subject, course) => {
@@ -18,14 +17,14 @@ const updateCourseType = (subject, course) => {
 };
 
 const removeCourseType = async (subject) => {
-  const deletedCourse = await findBySubject(subject);
+  const deletedCourse = await getById(subject);
   await db('course_types').where({ subject }).del();
   return deletedCourse;
 };
 
 module.exports = {
   getAllProgramTypes,
-  findBySubject,
+  getById,
   addCourseType,
   updateCourseType,
   removeCourseType,

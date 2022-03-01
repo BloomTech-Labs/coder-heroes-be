@@ -21,16 +21,16 @@ router.get('/', authRequired, async function (req, res, next) {
 });
 
 //get  avalible course by subject name ==> this can be used by front end for making search bar too look for cource suing its name
-router.get('/:subject', authRequired, async function (req, res, next) {
-  const subject = req.params.subject;
+router.get('/:id', authRequired, async function (req, res, next) {
+  const id = Number(req.params.id);
   try {
-    const course = await Courses.findBySubject(subject);
-    if (course) {
-      res.status(200).json(course);
+    const program = await Courses.getById(id);
+    if (program) {
+      res.status(200).json(program);
     } else {
       next({
         status: 404,
-        message: 'Course with subject  ( ' + subject + ' ) not found .',
+        message: 'program with subject  ( ' + program + ' ) not found .',
       });
     }
   } catch (error) {
