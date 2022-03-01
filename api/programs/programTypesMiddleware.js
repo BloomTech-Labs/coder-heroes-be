@@ -1,4 +1,4 @@
-const Courses = require('./courseTypesModel');
+const Courses = require('./programTypesModel');
 const { programSchema } = require('./programSchema');
 const createError = require('http-errors');
 

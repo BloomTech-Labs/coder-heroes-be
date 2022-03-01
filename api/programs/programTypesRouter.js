@@ -1,5 +1,5 @@
 const express = require('express');
-const Courses = require('./courseTypesModel');
+const Programs = require('./programTypesModel');
 const authRequired = require('../middleware/authRequired');
 // const {
 //   roleAuthentication,
@@ -10,11 +10,11 @@ const {
   validateProgramObject,
   checkIfProgramIsUnique,
   checkProgramExists,
-} = require('./courseTypesMiddleware');
+} = require('./programTypesMiddleware');
 
 router.get('/', authRequired, async function (req, res, next) {
   try {
-    const programs = await Courses.getAllProgramTypes();
+    const programs = await Programs.getAll();
     res.status(200).json(programs);
   } catch (error) {
     next(error);
@@ -24,7 +24,7 @@ router.get('/', authRequired, async function (req, res, next) {
 router.get('/:id', authRequired, async function (req, res, next) {
   const id = Number(req.params.id);
   try {
-    const program = await Courses.getById(id);
+    const program = await Programs.getById(id);
     if (program) {
       res.status(200).json(program);
     } else {
@@ -45,7 +45,7 @@ router.post(
   checkIfProgramIsUnique,
   async (req, res, next) => {
     try {
-      const newCourse = await Courses.addCourseType(req.body);
+      const newCourse = await Programs.add(req.body);
       res.status(201).json(newCourse);
     } catch (error) {
       next(error);
@@ -61,7 +61,7 @@ router.put(
   async (req, res, next) => {
     const id = Number(req.params.id);
     try {
-      const [updatedCourse] = await Courses.updateCourseType(id, req.body);
+      const [updatedCourse] = await Programs.update(id, req.body);
       res.status(200).json(updatedCourse);
     } catch (error) {
       next(error);
@@ -76,7 +76,7 @@ router.delete(
   async (req, res, next) => {
     const id = Number(req.params.id);
     try {
-      const deletionMessage = await Courses.removeCourseType(id);
+      const deletionMessage = await Programs.remove(id);
       res.status(200).json(deletionMessage);
     } catch (error) {
       next(error);
