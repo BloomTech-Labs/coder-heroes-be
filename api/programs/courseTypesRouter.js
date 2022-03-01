@@ -30,7 +30,7 @@ router.get('/:id', authRequired, async function (req, res, next) {
     } else {
       next({
         status: 404,
-        message: 'program with subject  ( ' + program + ' ) not found .',
+        message: 'program with id ' + id + ' not found .',
       });
     }
   } catch (error) {
