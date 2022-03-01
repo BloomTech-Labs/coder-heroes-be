@@ -1,13 +1,13 @@
 const express = require('express');
 const Courses = require('./courseTypesModel');
 const authRequired = require('../middleware/authRequired');
-const {
-  roleAuthentication,
-  roles,
-} = require('../middleware/roleAuthentication');
+// const {
+//   roleAuthentication,
+//   roles,
+// } = require('../middleware/roleAuthentication'); needs to be refactored
 const router = express.Router();
 const {
-  checkCourseTypePayload,
+  validateProgramObject,
   checkIfProgramIsUnique,
 } = require('./courseTypesMiddleware');
 
@@ -20,7 +20,6 @@ router.get('/', authRequired, async function (req, res, next) {
   }
 });
 
-//get  avalible course by subject name ==> this can be used by front end for making search bar too look for cource suing its name
 router.get('/:id', authRequired, async function (req, res, next) {
   const id = Number(req.params.id);
   try {
@@ -40,9 +39,8 @@ router.get('/:id', authRequired, async function (req, res, next) {
 
 router.post(
   '/',
-  checkCourseTypePayload,
+  validateProgramObject,
   authRequired,
-  roleAuthentication(...roles.slice(2)),
   checkIfProgramIsUnique,
   async (req, res, next) => {
     try {
@@ -54,29 +52,24 @@ router.post(
   }
 );
 
-router.put(
-  '/',
-  authRequired,
-  checkCourseTypePayload,
-  async (req, res, next) => {
-    const subject = req.body.subject;
-    const course = await Courses.findBySubject(subject);
-    try {
-      if (course) {
-        await Courses.updateCourseType(course.subject, req.body);
-        const updatedCourse = await Courses.findBySubject(subject);
-        res.status(200).json(updatedCourse);
-      } else {
-        next({
-          status: 404,
-          message: 'course with subject ( ' + subject + ' ) not found .',
-        });
-      }
-    } catch (error) {
-      next(error);
+router.put('/', authRequired, validateProgramObject, async (req, res, next) => {
+  const subject = req.body.subject;
+  const course = await Courses.findBySubject(subject);
+  try {
+    if (course) {
+      await Courses.updateCourseType(course.subject, req.body);
+      const updatedCourse = await Courses.findBySubject(subject);
+      res.status(200).json(updatedCourse);
+    } else {
+      next({
+        status: 404,
+        message: 'course with subject ( ' + subject + ' ) not found .',
+      });
     }
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 router.delete('/:subject', authRequired, async (req, res, next) => {
   const subject = req.params.subject;
