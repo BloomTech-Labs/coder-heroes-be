@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 const {
   checkCourseTypePayload,
-  checkIfCourseIsUnique,
+  checkIfProgramIsUnique,
 } = require('./courseTypesMiddleware');
 
 router.get('/', authRequired, async function (req, res, next) {
@@ -43,7 +43,7 @@ router.post(
   checkCourseTypePayload,
   authRequired,
   roleAuthentication(...roles.slice(2)),
-  checkIfCourseIsUnique,
+  checkIfProgramIsUnique,
   async (req, res, next) => {
     try {
       const newCourse = await Courses.addCourseType(req.body);

@@ -1,12 +1,12 @@
 const Courses = require('./courseTypesModel');
 
-const checkIfCourseIsUnique = async (req, res, next) => {
-  const { subject } = req.body;
-  const course = await Courses.findBySubject(subject);
-  if (course) {
+const checkIfProgramIsUnique = async (req, res, next) => {
+  const { program_name } = req.body;
+  const program = await Courses.findByName(program_name);
+  if (program) {
     next({
       status: 400,
-      message: `Course with a name of ( ${subject} ) already exists.`,
+      message: `Program with a name of ( ${program_name} ) already exists.`,
     });
   } else {
     next();
@@ -34,6 +34,6 @@ const checkCourseTypePayload = (req, res, next) => {
 };
 
 module.exports = {
-  checkIfCourseIsUnique,
+  checkIfProgramIsUnique,
   checkCourseTypePayload,
 };
