@@ -12,6 +12,52 @@ const {
   checkProgramExists,
 } = require('./programTypesMiddleware');
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Programs:
+ *      type: object
+ *      required:
+ *        - program_id
+ *        - program_name
+ *        - program_description
+ *      example:
+ *        program_id: 1
+ *        program_name: 'CoderCamp'
+ *        program_description: 'Students build their own app based on their own interest'
+ * /program(s):
+ *  get:
+ *   description: Returns a list of all programs
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - programs
+ *   responses:
+ *     200:
+ *       description: array of programs
+ *       content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Programs'
+ *              example:
+ *                - program_id: 1
+ *                  program_name: 'Codercamp'
+ *                  program_description: 'Students build their own app based on their own interest'
+ *                - program_id: 2
+ *                  program_name: 'Codersitters'
+ *                  program_description: 'Coding through play, coding + babysitting (not just code, also creativity)'
+ *                - program_id: 3
+ *                  program_name: 'Coderyoga'
+ *                  program_description: 'Kids learn coding basics through yoga stories and exercise'
+ *     401:
+ *       $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *       $ref: '#/components/responses/UnauthorizedError'
+ */
+
 router.get('/', authRequired, async function (req, res, next) {
   try {
     const programs = await Programs.getAll();
