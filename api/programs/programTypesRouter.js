@@ -227,6 +227,35 @@ router.put(
   }
 );
 
+/**
+ * @swagger
+ * /programs/{program_id}:
+ *  delete:
+ *    summary: Remove a program
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - programs
+ *    parameters:
+ *      - $ref: '#/components/parameters/program_id'
+ *    responses:
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      200:
+ *        description: An object message about the deleted program
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  description: A message about the result
+ *                  example: Codersitters has been deleted successfully
+ */
+
 router.delete(
   '/:id',
   authRequired,
