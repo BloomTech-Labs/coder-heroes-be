@@ -164,6 +164,53 @@ router.post(
   }
 );
 
+/**
+ * @swagger
+ * components:
+ *  parameters:
+ *    program_id:
+ *        name: program_id
+ *        in: path
+ *        description: ID of the program to update
+ *        required: true
+ *        example: 2
+ *        schema:
+ *         type: integer
+ *
+ * /programs/{program_id}:
+ *  put:
+ *   description: Returns an updated program object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - programs
+ *   parameters:
+ *      - $ref: '#/components/parameters/program_id'
+ *   requestBody:
+ *      description: Program object to be updated
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Programs'
+ *          example:
+ *                  program_name: 'Codersitters'
+ *                  program_description: 'Coding through play, coding + babysitting (code and creativity)'
+ *   responses:
+ *     200:
+ *       description: program object
+ *       content:
+ *          application/json:
+ *              type: object
+ *              example:
+ *                  program_id: 2
+ *                  program_name: 'Codersitters'
+ *                  program_description: 'Coding through play, coding + babysitting (code and creativity)'
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+
 router.put(
   '/:id',
   authRequired,
