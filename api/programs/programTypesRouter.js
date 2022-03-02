@@ -115,6 +115,40 @@ router.get('/:id', authRequired, checkProgramExists, async function (req, res) {
   res.status(200).json(req.programFromDB);
 });
 
+/**
+ * @swagger
+ * /program(s):
+ *  post:
+ *   description: Returns a newly created program object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - programs
+ *   requestBody:
+ *      description: Program object to be created
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Programs'
+ *          example:
+ *                  program_name: 'Codersitters'
+ *                  program_description: 'Coding through play, coding + babysitting (not just code, also creativity)'
+ *   responses:
+ *     200:
+ *       description: program object
+ *       content:
+ *          application/json:
+ *              type: object
+ *              example:
+ *                  program_id: 2
+ *                  program_name: 'Codersitters'
+ *                  program_description: 'Coding through play, coding + babysitting (not just code, also creativity)'
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+
 router.post(
   '/',
   validateProgramObject,
