@@ -67,6 +67,50 @@ router.get('/', authRequired, async function (req, res, next) {
   }
 });
 
+/**
+ * @swagger
+ * components:
+ *  parameters:
+ *    program_id:
+ *        name: program_id
+ *        in: path
+ *        description: ID of the program to return
+ *        required: true
+ *        example: 1
+ *        schema:
+ *         type: integer
+ *
+ * /programs/{program_id}:
+ *  get:
+ *   description: Returns a program object
+ *   security:
+ *     - okta: []
+ *   tags:
+ *     - programs
+ *   parameters:
+ *      - $ref: '#/components/parameters/program_id'
+ *   responses:
+ *     200:
+ *       description: program object
+ *       content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Programs'
+ *              type: object
+ *              items:
+ *                $ref: '#/components/schemas/Programs'
+ *              example:
+ *                  program_id: 1
+ *                  program_name: 'Codercamp'
+ *                  program_description: 'Students build their own app based on their own interest'
+ *     401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     403:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *     404:
+ *       description: 'Program with id {program_id} not found.'
+ */
+
 router.get('/:id', authRequired, checkProgramExists, async function (req, res) {
   res.status(200).json(req.programFromDB);
 });
