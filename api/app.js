@@ -26,7 +26,7 @@ const parentRouter = require('./parent/parentRouter');
 const instructorRouter = require('./instructor/instructorRouter');
 const childrenRouter = require('./children/childrenRouter');
 const inboxRouter = require('./inbox/inboxRouter');
-const courseTypesRouter = require('./courseTypes/courseTypesRouter');
+const programTypesRouter = require('./programs/programTypesRouter');
 const classInstancesRouter = require('./classInstances/classInstancesRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
@@ -64,8 +64,8 @@ app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
 app.use(['/inbox', '/inboxes'], inboxRouter);
 app.use(
-  ['/course-type', '/course-types', '/course', '/courses'],
-  courseTypesRouter
+  ['/program-type', '/program-types', '/program', '/programs'],
+  programTypesRouter
 );
 app.use(['/class-instance', '/class-instances'], classInstancesRouter);
 app.use(['/children', '/child'], childrenRouter);

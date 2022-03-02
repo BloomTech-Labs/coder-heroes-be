@@ -197,22 +197,22 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | [PUT]    | /inbox/          | Returns an array filled with event objects with the specific `okta`. Updates an inbox.   |
 | [DELETE] | /inbox/:okta/    | Returns an array filled with event objects with the specific `okta`. Deletse an inbox.   |
 
-#### Course:
+#### Program:
 
-| Method   | URL              | Description                                                                                                     |
-| -------- | ---------------- | --------------------------------------------------------------------------------------------------------------- |
-| [GET]    | /course/         | Returns an array filled with event objects.                                                                     |
-| [GET]    | /course/:subject | Returns the event object with the specified `subject`.                                                          |
-| [POST]   | /course/         | Contains fields: `description`, `subject`, and `prereq`. Returns the event object with the specified `subject`. |
-| [PUT]    | /course/         | Updates the event with the specified `subject` using data from the `request body`. Returns the modified event   |
-| [DELETE] | /course/:subject | Removes the event with the specified `subject` and returns the deleted event.                                   |
+| Method   | URL          | Description                                                                                                  |
+| -------- | ------------ | ------------------------------------------------------------------------------------------------------------ |
+| [GET]    | /program/    | Returns an array filled with program objects.                                                                |
+| [GET]    | /program/:id | Returns the program object with the specified `id`.                                                          |
+| [POST]   | /program/    | Contains fields: `program_name` and `program_description`. Returns the newly created program object.         |
+| [PUT]    | /program/:id | Updates the program with the specified `id` using data from the `request body`. Returns the modified program |
+| [DELETE] | /program/:id | Removes the program with the specified `id` and returns deletion success message .                           |
 
 #### Class:
 
 | Method   | URL                       | Description                                                                 |
 | -------- | ------------------------- | --------------------------------------------------------------------------- |
 | [GET]    | /class-instance           | Returns an array filled with specific class objects                         |
-| [GET]    | /class-instance/:class-id | Returns the class object with the specified `id`. Creates a class.          |
+| [GET]    | /class-instance/:class-id | Returns the class object with the specified `id`.                           |
 | [PUT]    | /class-instance/:class-id | Returns the class object with the specified `id`. Updates a specific class. |
 | [DELETE] | /class-instance/:class-id | Returns the class object with the specified `id`. Deletes specific class.   |
 
