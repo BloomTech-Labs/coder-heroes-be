@@ -40,7 +40,7 @@ const getSchedule = (okta) => {
     .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
-    .leftJoin('classes', 'enrollments.class_id', 'classes.class_id')
+    .leftJoin('courses', 'enrollments.course_id', 'courses.course_id')
     .where('profiles.profile_id', okta);
 };
 
