@@ -25,6 +25,7 @@ module.exports = {
         description: 'Operations for data science service',
       },
       {
+        // 'courses'?
         name: 'classes',
         description: 'Operations for classes',
       },
