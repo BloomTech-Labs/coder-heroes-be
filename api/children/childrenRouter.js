@@ -73,7 +73,7 @@ router.post(
   checkChildExist,
   isChildAlreadyEnrolled,
   async (req, res) => {
-    // the req.body is only class_id  === > {class_id} , it will get modified in isChildAlreadyEnrolled middleware
+    // the req.body is only course_id  === > {course_id} , it will get modified in isChildAlreadyEnrolled middleware
     const enroll = await Children.addEnrolledCourse(req.wantToEnroll);
     res.status(201).json(enroll);
   }
