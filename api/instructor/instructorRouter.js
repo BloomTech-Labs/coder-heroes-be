@@ -5,16 +5,16 @@ const router = express.Router();
 const { checkInstructorExist } = require('./instructorMiddleware');
 
 router.get(
-  '/:profile_id/classes',
+  '/:profile_id/courses',
   authRequired,
   checkInstructorExist,
   function (req, res, next) {
     Instructors.findInstructorCourses(req.params.profile_id)
-      .then((classes) => {
-        if (classes) {
-          res.status(200).json(classes);
+      .then((courses) => {
+        if (courses) {
+          res.status(200).json(courses);
         } else {
-          res.status(404).json({ error: 'Instructor classes Not Found' });
+          res.status(404).json({ error: 'Instructor courses Not Found' });
         }
       })
       .catch(next);
