@@ -3,16 +3,14 @@ const createError = require('http-errors');
 const { courseSchema } = require('./coursesSchema');
 const { findByInstructorId } = require('../instructor/instructorModel');
 
-const checkCourseInstanceExists = async (req, res, next) => {
+const checkCourseExists = async (req, res, next) => {
   const course_id = parseInt(req.params.course_id);
   try {
-    const foundCourseInstance = await Courses.findByCourseInstanceId(course_id);
-    if (!foundCourseInstance) {
-      next(
-        createError(404, `Course Instance with id ${course_id} does not exist`)
-      );
+    const foundCourse = await Courses.findByCourseId(course_id);
+    if (!foundCourse) {
+      next(createError(404, `Course with id ${course_id} does not exist`));
     } else {
-      req.course_instance = foundCourseInstance;
+      req.course = foundCourse;
       next();
     }
   } catch (err) {
@@ -47,7 +45,7 @@ const checkInstructorExists = async (req, res, next) => {
 };
 
 module.exports = {
-  checkCourseInstanceExists,
+  checkCourseExists,
   validateCourseObject,
   checkInstructorExists,
 };
