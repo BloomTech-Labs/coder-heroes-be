@@ -1,6 +1,6 @@
-const Classes = require('./classInstancesModel');
+const Classes = require('./coursesModel');
 const createError = require('http-errors');
-const { classSchema } = require('../classInstances/classSchema');
+const { classSchema } = require('./coursesSchema');
 const { findByInstructorId } = require('../instructor/instructorModel');
 
 const checkClassInstanceExists = async (req, res, next) => {
