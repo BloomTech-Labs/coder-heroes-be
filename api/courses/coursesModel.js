@@ -1,41 +1,41 @@
 const db = require('../../data/db-config');
 
-const getAllClassInstances = async () => {
-  return await db('classes as c')
+const getAllCourseInstances = async () => {
+  return await db('courses as c')
     .select('c.*', 'p.program_name', 'i.instructor_id')
     .leftJoin('programs as p', 'p.program_id', 'c.program_id')
     .leftJoin('instructors as i', 'c.instructor_id', 'i.instructor_id');
 };
 
-const findByClassInstanceId = async (class_id) => {
-  return await db('classes as c')
+const findByCourseInstanceId = async (course_id) => {
+  return await db('courses as c')
     .select('c.*', 'p.program_name', 'i.instructor_id')
     .leftJoin('programs as p', 'p.program_id', 'c.program_id')
     .leftJoin('instructors as i', 'c.instructor_id', 'i.instructor_id')
-    .where('c.class_id', class_id)
+    .where('c.course_id', course_id)
     .first();
 };
 
-const addClassInstance = async (newClass) => {
-  const [createdClass] = await db('classes').insert(newClass).returning('*');
-  return createdClass;
+const addCourseInstance = async (newCourse) => {
+  const [createdCourse] = await db('courses').insert(newCourse).returning('*');
+  return createdCourse;
 };
 
-const updateClassInstance = async (class_id, newClass) => {
-  return await db('classes')
-    .where({ class_id })
-    .update(newClass)
+const updateCourseInstance = async (course_id, newCourse) => {
+  return await db('courses')
+    .where({ course_id })
+    .update(newCourse)
     .returning('*');
 };
 
-const removeClassInstance = async (class_id) => {
-  return await db('classes').where('class_id', '=', class_id).del();
+const removeCourseInstance = async (course_id) => {
+  return await db('courses').where('course_id', '=', course_id).del();
 };
 
 module.exports = {
-  getAllClassInstances,
-  findByClassInstanceId,
-  addClassInstance,
-  updateClassInstance,
-  removeClassInstance,
+  getAllCourseInstances,
+  findByCourseInstanceId,
+  addCourseInstance,
+  updateCourseInstance,
+  removeCourseInstance,
 };
