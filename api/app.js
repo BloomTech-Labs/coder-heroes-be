@@ -27,7 +27,7 @@ const instructorRouter = require('./instructor/instructorRouter');
 const childrenRouter = require('./children/childrenRouter');
 const inboxRouter = require('./inbox/inboxRouter');
 const programTypesRouter = require('./programs/programTypesRouter');
-const classInstancesRouter = require('./classInstances/classInstancesRouter');
+const coursesRouter = require('./course/coursesRouter');
 const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const stripeRouter = require('./payment/stripeRouter');
@@ -67,7 +67,7 @@ app.use(
   ['/program-type', '/program-types', '/program', '/programs'],
   programTypesRouter
 );
-app.use(['/class-instance', '/class-instances'], classInstancesRouter);
+app.use(['/course', '/courses'], coursesRouter);
 app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
