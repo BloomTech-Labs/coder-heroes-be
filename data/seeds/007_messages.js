@@ -15,7 +15,7 @@ exports.seed = function (knex) {
       sent_by_profile_id: 5,
     },
     {
-      title: 'When is class?',
+      title: 'When is course?',
       message: 'I noticed the time was funky and had to ask.',
       inbox_id: 8,
       sent_by_profile_id: 4,
@@ -28,7 +28,7 @@ exports.seed = function (knex) {
     },
     {
       title: 'Where is my achievement?',
-      message: "my achievement didn't pop up when I did class.",
+      message: "my achievement didn't pop up when I did course.",
       inbox_id: 5,
       sent_by_profile_id: 8,
     },
