@@ -15,7 +15,7 @@ exports.seed = function (knex) {
       sent_by_profile_id: 5,
     },
     {
-      title: 'When is course?',
+      title: 'When is class?',
       message: 'I noticed the time was funky and had to ask.',
       inbox_id: 8,
       sent_by_profile_id: 4,
