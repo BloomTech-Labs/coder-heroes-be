@@ -1,3 +1,11 @@
+/*
+  Roles:
+  1 - super_admin
+  2 - admin  
+  3 - instructor
+  4 - parent
+  5 - child
+*/
 // Only allows endpoint access for Super Admins (1), Admins (2), and Instructors (3)
 const roleAuthenticationInstructor = (req, res, next) => {
   const role_id = req.profile.role_id;
