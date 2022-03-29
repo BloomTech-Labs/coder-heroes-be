@@ -4,7 +4,7 @@ const roleAuthenticationInstructor = (req, res, next) => {
   if (role_id === 1 || role_id === 2 || role_id === 3) {
     next();
   } else {
-    res.status(401).json({ error: 'Access Denied.' });
+    res.status(401).json({ error: 'Unauthorized' });
   }
 };
 
