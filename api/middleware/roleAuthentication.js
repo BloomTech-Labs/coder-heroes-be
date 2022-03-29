@@ -16,4 +16,28 @@ const roleAuthenticationInstructor = (req, res, next) => {
   }
 };
 
-module.exports = { roleAuthenticationInstructor };
+// Only allows endpoint access for Super Admins (1), Admins (2), and Parents (4)
+const roleAuthenticationParent = (req, res, next) => {
+  const role_id = req.profile.role_id;
+  if (role_id === 1 || role_id === 2 || role_id === 4) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+// Only allows endpoint access for Super Admins (1), Admins (2), and Students (5)
+const roleAuthenticationStudent = (req, res, next) => {
+  const role_id = req.profile.role_id;
+  if (role_id === 1 || role_id === 2 || role_id === 5) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+module.exports = {
+  roleAuthenticationInstructor,
+  roleAuthenticationParent,
+  roleAuthenticationStudent,
+};
