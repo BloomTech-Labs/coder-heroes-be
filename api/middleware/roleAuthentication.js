@@ -1,15 +1,11 @@
-const { getRoleById } = require('../roles/rolesModel');
-
-const roleAuthentication = (...args) => (req, res, next) => {
-  req.profile.role = getRoleById(req.profile.role_id);
-  const { role } = req.profile;
-  if (args.includes(role)) {
+// Only allows endpoint access for Super Admins (1), Admins (2), and Instructors (3)
+const roleAuthenticationInstructor = (req, res, next) => {
+  const role_id = req.profile.role_id;
+  if (role_id === 1 || role_id === 2 || role_id === 3) {
     next();
   } else {
-    res.status(401).json({ error: 'No Access' });
+    res.status(401).json({ error: 'Access Denied.' });
   }
 };
 
-const roles = ['child', 'parent', 'instructor', 'admin', 'super_admin'];
-
-module.exports = { roleAuthentication, roles };
+module.exports = { roleAuthenticationInstructor };

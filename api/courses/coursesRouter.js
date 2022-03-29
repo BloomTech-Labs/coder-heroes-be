@@ -1,10 +1,9 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
 // const ownerAuthorization = require('../middleware/ownerAuthorization'); needs to be refactored
-// const {
-//   roleAuthentication,
-//   roles,
-// } = require('../middleware/roleAuthentication'); needs to be refactored
+const {
+  roleAuthenticationInstructor,
+} = require('../middleware/roleAuthentication');
 const Courses = require('./coursesModel');
 const router = express.Router();
 const {
@@ -299,10 +298,10 @@ router.get('/:course_id', authRequired, checkCourseExists, function (req, res) {
 
 // Need to fix error messaging; currently returns "Not found" error on submitting an invalid
 // class object
-// Need to set up role authorization
 router.post(
   '/',
   authRequired,
+  roleAuthenticationInstructor,
   validateCourseObject,
   checkInstructorExists,
   async (req, res, next) => {
