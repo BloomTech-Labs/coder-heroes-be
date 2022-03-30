@@ -11,11 +11,11 @@ exports.up = function (knex) {
         .inTable('children')
         .onDelete('CASCADE');
       table
-        .integer('class_id')
+        .integer('course_id')
         .unsigned()
         .notNullable()
-        .references('class_id')
-        .inTable('classes')
+        .references('course_id')
+        .inTable('courses')
         .onDelete('CASCADE');
     })
 

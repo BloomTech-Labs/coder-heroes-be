@@ -28,7 +28,7 @@ exports.seed = function (knex) {
     },
     {
       title: 'Where is my achievement?',
-      message: "my achievement didn't pop up when I did class.",
+      message: "my achievement didn't pop up when I did course.",
       inbox_id: 5,
       sent_by_profile_id: 8,
     },

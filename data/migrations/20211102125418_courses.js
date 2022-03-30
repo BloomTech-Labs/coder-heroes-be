@@ -6,10 +6,10 @@ exports.up = (knex) => {
       table.text('program_description').notNullable();
     })
 
-    .createTable('classes', (table) => {
-      table.increments('class_id');
-      table.string('class_name').notNullable();
-      table.string('class_description').notNullable();
+    .createTable('courses', (table) => {
+      table.increments('course_id');
+      table.string('course_name').notNullable();
+      table.string('course_description').notNullable();
       table.specificType('days_of_week', 'text ARRAY');
       table.integer('max_size').notNullable();
       table.integer('min_age').notNullable();
@@ -63,6 +63,6 @@ exports.up = (knex) => {
 exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists('instructors_program_types')
-    .dropTableIfExists('classes')
+    .dropTableIfExists('courses')
     .dropTableIfExists('programs');
 };

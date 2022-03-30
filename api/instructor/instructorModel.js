@@ -3,10 +3,10 @@ const db = require('../../data/db-config');
 const findInstructorCourses = async (profile_id) => {
   return db('instructors')
     .leftJoin(
-      'classes',
+      'courses',
       'instructors.instructor_id',
       '=',
-      'classes.instructor_id'
+      'courses.instructor_id'
     )
     .where('instructors.profile_id', profile_id);
 };

@@ -1,19 +1,19 @@
 const yup = require('yup');
 const moment = require('moment');
 
-const classSchema = yup.object().shape({
-  class_name: yup
+const courseSchema = yup.object().shape({
+  course_name: yup
     .string()
-    .typeError('class name needs to be a string')
-    .min(1, 'class name must be at least 1 char')
+    .typeError('course name needs to be a string')
+    .min(1, 'course name must be at least 1 char')
     .trim('whitespace alone is not accepted')
-    .required('you must provide a class name'),
-  class_description: yup
+    .required('you must provide a course name'),
+  course_description: yup
     .string()
-    .typeError('class description must be as string')
-    .min(5, 'class description must be at least 5 char')
+    .typeError('course description must be as string')
+    .min(5, 'course description must be at least 5 char')
     .trim('whitespace alone is not accepted')
-    .required('you must provide a class description'),
+    .required('you must provide a course description'),
   days_of_week: yup
     .array()
     .typeError('days of week must be submitted as an array')
@@ -68,5 +68,5 @@ const classSchema = yup.object().shape({
 });
 
 module.exports = {
-  classSchema,
+  courseSchema,
 };

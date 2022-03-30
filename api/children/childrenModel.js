@@ -16,10 +16,10 @@ const addChild = async (child) => {
 };
 
 const getEnrolledCourses = async (id) => {
-  // recives error if the id of the class doesn't exist exist  this have to modified lateron we need to make a midleware that checks fot the existing classes then runs this model'
+  // receives error if the id of the course doesn't exist exist  this have to modified later on we need to make a middleware that checks fot the existing courses then runs this model'
   const enrollments = await db('children')
     .join('enrollments', 'children.child_id', 'enrollments.child_id')
-    .join('classes', 'enrollments.class_id', 'classes.class_id')
+    .join('courses', 'enrollments.course_id', 'courses.course_id')
     .where('children.child_id', id);
 
   const enrolledCourses = {
@@ -29,9 +29,9 @@ const getEnrolledCourses = async (id) => {
     parent_id: enrollments[0].parent_id,
     enrolled_courses: enrollments.map((x) => {
       const container = {};
-      container.class_id = x.class_id;
+      container.course_id = x.course_id;
       container.completed = x.completed;
-      container.class_size = x.size;
+      container.course_size = x.size;
       container.open_seats_remaining = x.open_seats_remaining;
       container.instructor_id = x.instructor_id;
       container.course_type_id = x.course_type_id;
@@ -47,7 +47,7 @@ const getEnrolledCourses = async (id) => {
 };
 
 const addEnrolledCourse = async (course) => {
-  // need to added middleware to the router that checks if the class exists because if it doesnt we get no response back from sever
+  // need to added middleware to the router that checks if the course exists because if it doesn't we get no response back from sever
   await db('enrollments').insert(course);
   return await getEnrolledCourses(course.child_id);
 };

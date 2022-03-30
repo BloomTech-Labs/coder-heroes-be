@@ -1,18 +1,16 @@
-const Classes = require('./classInstancesModel');
+const Courses = require('./coursesModel');
 const createError = require('http-errors');
-const { classSchema } = require('../classInstances/classSchema');
+const { courseSchema } = require('./coursesSchema');
 const { findByInstructorId } = require('../instructor/instructorModel');
 
-const checkClassInstanceExists = async (req, res, next) => {
-  const class_id = parseInt(req.params.class_id);
+const checkCourseExists = async (req, res, next) => {
+  const course_id = parseInt(req.params.course_id);
   try {
-    const foundClassInstance = await Classes.findByClassInstanceId(class_id);
-    if (!foundClassInstance) {
-      next(
-        createError(404, `Class Instance with id ${class_id} does not exist`)
-      );
+    const foundCourse = await Courses.findByCourseId(course_id);
+    if (!foundCourse) {
+      next(createError(404, `Course with id ${course_id} does not exist`));
     } else {
-      req.class_instance = foundClassInstance;
+      req.course = foundCourse;
       next();
     }
   } catch (err) {
@@ -20,13 +18,13 @@ const checkClassInstanceExists = async (req, res, next) => {
   }
 };
 
-const validateClassObject = async (req, res, next) => {
+const validateCourseObject = async (req, res, next) => {
   try {
-    const validatedClass = await classSchema.validate(req.body, {
+    const validatedCourse = await courseSchema.validate(req.body, {
       strict: false,
       stripUnknown: true,
     });
-    req.body = validatedClass;
+    req.body = validatedCourse;
     next();
   } catch (err) {
     next(createError(422, err.message));
@@ -47,7 +45,7 @@ const checkInstructorExists = async (req, res, next) => {
 };
 
 module.exports = {
-  checkClassInstanceExists,
-  validateClassObject,
+  checkCourseExists,
+  validateCourseObject,
   checkInstructorExists,
 };

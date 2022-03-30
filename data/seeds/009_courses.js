@@ -1,8 +1,8 @@
 exports.seed = function (knex) {
-  return knex('classes').insert([
+  return knex('courses').insert([
     {
-      class_name: 'App Building Fundamentals',
-      class_description:
+      course_name: 'App Building Fundamentals',
+      course_description:
         'A month-long course where students with design, build, and deploy an app from beginning to end!',
       days_of_week: ['Monday'],
       max_size: 20,
@@ -18,8 +18,8 @@ exports.seed = function (knex) {
       number_of_sessions: 4,
     },
     {
-      class_name: 'Mindful Design',
-      class_description:
+      course_name: 'Mindful Design',
+      course_description:
         'Students will learn about creativity and web design basics',
       days_of_week: ['Wednesday', 'Friday'],
       max_size: 12,
