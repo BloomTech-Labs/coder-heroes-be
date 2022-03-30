@@ -19,7 +19,8 @@
     "migrateh": "heroku run knex migrate:latest -a coder-heroes-api --knexfile config/knexfile.js",
     "rollbackh": "heroku run knex migrate:rollback -a coder-heroes-api --knexfile config/knexfile.js",
     "databaseh": "heroku pg:psql -a coder-heroes-api --knexfile config/knexfile.js",
-    "deploy": "git push heroku main"
+    "deploy": "git push heroku main",
+    "update": "npx knex --knexfile config/knexfile.js migrate:rollback && npx knex --knexfile config/knexfile.js migrate:latest && npx knex --knexfile config/knexfile.js seed:run"
   },
   "lint-staged": {
     "api/**/*.js": [
