@@ -11,4 +11,6 @@ router.get('/', authRequired, (req, res, next) => {
     .catch(() => next);
 });
 
+// need POST, PUT, and DELETE endpoints
+
 module.exports = router;
