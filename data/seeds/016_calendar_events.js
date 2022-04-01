@@ -1,5 +1,5 @@
 exports.seed = function (knex) {
-  return knex('table_name').insert([
+  return knex('calendar_events').insert([
     {
       date: '15/03/2022',
       type: 'warning',
