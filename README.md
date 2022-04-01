@@ -12,11 +12,21 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  key: INCREMENT,
-  okta: STRING,
+  profile_id: INCREMENT,
+  okta_id: STRING,
   name: STRING,
   email: STRING,
+  role_id: INTEGER,
   avatarUrl: STRING,
+}
+```
+
+<h1>Super Admins</h1>
+
+```
+{
+  super_admin_id: INCREMENT,
+  profile_id: INTEGER,
 }
 ```
 
@@ -24,8 +34,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  user_id: INTEGER,
+  admin_id: INCREMENT,
+  profile_id: INTEGER,
 }
 ```
 
@@ -33,8 +43,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  user_id: INTEGER,
+  parent_id: INCREMENT,
+  profile_id: INTEGER,
 }
 ```
 
@@ -42,11 +52,11 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  user_id: INTEGER,
-  parent_id: INTEGER,
+  child_id: INCREMENT,
+  profile_id: INTEGER,
   username: STRING,
   age: INTEGER,
+  parent_id: INTEGER,
 }
 ```
 
@@ -54,10 +64,13 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  user_id: INTEGER,
+  instructor_id: INCREMENT,
+  rating: INTEGER,
+  availability: STRING,
   bio: STRING,
-  rating: INTEGER
+  profile_id: INTEGER,
+  status: STRING (default: 'pending'),
+  approved_by: INTEGER (references admin_id),
 }
 ```
 
@@ -65,8 +78,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  user_id: INTEGER,
+  inbox_id: INCREMENT,
+  profile_id: INTEGER,
 }
 ```
 
@@ -74,13 +87,23 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  inbox_id: INTEGER,
-  sender_id: INTEGER,
+  messages_id: INCREMENT,
   sent_at: TIMESTAMP,
   title: STRING,
-  message: STRING,
   read: BOOLEAN,
+  message: STRING,
+  sent_by_profile_id: INTEGER,
+  inbox_id: INTEGER,
+}
+```
+
+<h1>Programs</h1>
+
+```
+{
+  program_id: INCREMENT,
+  program_name: STRING,
+  program_description: STRING,
 }
 ```
 
@@ -88,21 +111,31 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  description: STRING,
-  subject: STRING,
-  prereq: TEXT ARRAY,
+  course_id: INCREMENT,
+  course_name: STRING,
+  course_description: STRING,
+  days_of_week: ARRAY (strings),
+  max_size: INTEGER,
+  min_age: INTEGER,
+  max_age: INTEGER,
+  instructor_id: INTEGER,
+  program_id: INTEGER,
+  start_time: TIME,
+  end_time: TIME,
+  start_date: DATE,
+  end_date: DATE,
+  location: STRING,
+  number_of_sessions: INTEGER,
 }
 ```
 
-<h1>Schedules</h1>
+<h1>Instructors' Program Types (Programs instructors are approved to teach)</h1>
 
 ```
 {
-  id: INCREMENT,
-  course_id: INTEGER,
+  instructors_program_types_id: INCREMENT,
   instructor_id: INTEGER,
-  size: INTEGER,
+  program_id: INTEGER,
 }
 ```
 
@@ -110,22 +143,10 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
+  enrollments_id: INCREMENT,
+  completed: BOOLEAN (default: false),
   child_id: INTEGER,
   course_id: INTEGER,
-}
-```
-
-<h1>Instructors List</h1>
-
-```
-{
-  id: INCREMENT,
-  instructor_id: INTEGER,
-  course_id: INTEGER,
-  approved: BOOLEAN,
-  approved_by: INTEGER,
-  availability: STRING,
 }
 ```
 
@@ -133,10 +154,11 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
-  il_id: INTEGER,
+  resource_id: INCREMENT,
   resource: STRING,
+  description: STRING,
   task: BOOLEAN,
+  instructor_id: INTEGER,
 }
 ```
 
@@ -144,7 +166,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 ```
 {
-  id: INCREMENT,
+  newsfeed_id: INCREMENT,
   title: STRING,
   link: STRING,
   description: STRING,
@@ -157,7 +179,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | Method   | URL                         | Description                                                                                                              |
 | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [GET]    | /profile/                   | Returns an array filled with event objects.                                                                              |
-| [GET]    | /profile/:okta/             | Returns an event object with the specified `okta`.                                                                       |
+| [GET]    | /profile/:okta_id/             | Returns an event object with the specified `okta id`.                                                                       |
 | [GET]    | /profiles/users/:profile_id | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
 | [GET]    | /profile/role/role:id       | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
 | [POST]   | /profile/                   | Requires a name, password, and email. Registers a new user.                                                              |
@@ -168,34 +190,34 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 | Method | URL                    | Description                                                         |
 | ------ | ---------------------- | ------------------------------------------------------------------- |
-| [GET]  | /parent/:id/children/  | Returns an array filled with event objects with the specified `id`. |
-| [GET]  | /parent/:id/schedules/ | Returns an array filled with event objects with the specified `id`. |
+| [GET]  | /parent/:profile_id/children/  | Returns an array filled with children event objects with the specified `profile_id`. |
+| [GET]  | /parent/:profile_id/schedules/ | Returns an array filled with schedules event objects with the specified `profile_id`. |
 
 #### Instructor:
 
 | Method | URL                      | Description                                                         |
 | ------ | ------------------------ | ------------------------------------------------------------------- |
-| [GET]  | /instructor/:id/courses/ | Returns an array filled with event objects with the specified `id`. |
+| [GET]  | /instructor/:profile_id/courses/ | Returns an array filled with instructor event objects with the specified `profile_id`. (BUGGED) |
 
 #### User:
 
 | Method | URL              | Description                                                             |
 | ------ | ---------------- | ----------------------------------------------------------------------- |
 | [GET]  | /user/           | Returns an event object with the specified `okta` and `type`.           |
-| [GET]  | /user/inbox/     | Returns an event object with the specified `okta`.                      |
+| [GET]  | /user/inbox/     | Returns an event object with the specified `okta`. (NOT IMPLEMENTED)                      |
 | [GET]  | /user/schedules/ | Returns an event object with the specified `okta`.                      |
 | [PUT]  | /user/           | Returns an event object with the specified `id`. Updates specific user. |
 
-#### inbox:
+#### Inbox:
 
 | Method   | URL              | Description                                                                              |
 | -------- | ---------------- | ---------------------------------------------------------------------------------------- |
-| [GET]    | /inbox/          | Returns an array filled with event objects.                                              |
-| [GET]    | /inbox/:okta/    | Returns an array filled with event objects with the specific `okta`. Retrieves an inbox. |
-| [POST]   | /inbox/          | Returns the event object with the specified `user_id`. Creates an inbox.                 |
+| [GET]    | /inbox/          | Returns an array filled with inbox event objects.                                              |
+| [GET]    | /inbox/:profile_id/    | Retrieves an inbox with the specified inbox id (incorrectly labeled as profile_id). |
+| [POST]   | /inbox/          | Creates an inbox and returns the newly created inbox.                 |
 | [POST]   | /inbox/messages/ | Returns the event object with the specified `inbox_id`. Sends a message.                 |
-| [PUT]    | /inbox/          | Returns an array filled with event objects with the specific `okta`. Updates an inbox.   |
-| [DELETE] | /inbox/:okta/    | Returns an array filled with event objects with the specific `okta`. Deletse an inbox.   |
+| [PUT]    | /inbox/:profile_id   | Returns an array filled with event objects with the specific `profile_id`. Updates an inbox.   |
+| [DELETE] | /inbox/:profile_id/    | Returns an array filled with event objects with the specific `okta`. Deletes an inbox.   |
 
 #### Program:
 
@@ -207,16 +229,16 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | [PUT]    | /program/:id | Updates the program with the specified `id` using data from the `request body`. Returns the modified program |
 | [DELETE] | /program/:id | Removes the program with the specified `id` and returns deletion success message .                           |
 
-#### Class:
+#### Course:
 
 | Method   | URL                       | Description                                                                 |
 | -------- | ------------------------- | --------------------------------------------------------------------------- |
-| [GET]    | /class-instance           | Returns an array filled with specific class objects                         |
-| [GET]    | /class-instance/:class-id | Returns the class object with the specified `id`.                           |
-| [PUT]    | /class-instance/:class-id | Returns the class object with the specified `id`. Updates a specific class. |
-| [DELETE] | /class-instance/:class-id | Returns the class object with the specified `id`. Deletes specific class.   |
+| [GET]    | /course          | Returns an array containing all course objects                         |
+| [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                           |
+| [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`. |
+| [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion   |
 
-#### Schedule:
+#### Schedule (Not Implemented):
 
 | Method   | URL                 | Description                                                                  |
 | -------- | ------------------- | ---------------------------------------------------------------------------- |
@@ -231,19 +253,21 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 | Method   | URL                       | Description                                                                        |
 | -------- | ------------------------- | ---------------------------------------------------------------------------------- |
+| [GET]    | /children                  | Returns an array containing all existing children.   
+| [GET]    | /children/:id | Returns the child with the given 'id'.   
 | [GET]    | /children/:id/enrollments | Returns an array filled with event objects with the specified `id`.                |
 | [POST]   | /children/:id/enrollments | Returns the event object with the specified `id`. Enrolls a student.               |
-| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. |
-| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course.   |
+| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. (Not Implemented)|
+| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course. (Not Implemented)  |
 
 #### Newsfeed:
 
 | Method   | URL            | Description                                                                |
 | -------- | -------------- | -------------------------------------------------------------------------- |
-| [GET]    | /newsfeed/     | Returns an array filled with event objects.                                |
-| [GET]    | /newsfeed/:id/ | Returns the event object with the specified `id`.                          |
-| [POST]   | /newsfeed/     | Returns the event object with the specified `id`. Creates a new obect.     |
-| [PUT]    | /newsfeed/     | Returns the event object with the specified `id`. Updates specific object. |
-| [DELETE] | /newsfeed/:id/ | Returns the event object with the specified `id`. Deletes specific object. |
+| [GET]    | /newsfeed/     | Returns an array containing all newsfeed objects.                                |
+| [GET]    | /newsfeed/:newsfeed_id/ | Returns the event object with the specified `newsfeed_id`.                          |
+| [POST]   | /newsfeed/     | Creates a new newsfeed object and returns the newly created newsfeed.     |
+| [PUT]    | /newsfeed/:newsfeed_id     | Updates the newsfeed object with the given newsfeed_id and returns the newly updated newsfeed |
+| [DELETE] | /newsfeed/:newsfeed_id/ | Deletes the newsfeed object with the given newsfeed_id and returns the deleted newsfeed. |
 
 <br />
