@@ -228,7 +228,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 }
 ```
 
-<h2>Instructors' Program Types (Programs instructors are approved to teach)</h2>
+<h2>Instructors' Program Types</h2>
+<p><b>Join Table:</b> Programs instructors are approved to teach
 
 ```
 {
@@ -239,6 +240,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 ```
 
 <h2>Enrollments</h2>
+<p><b>Join Table:</b> Courses signed up for by children
 
 ```
 {
