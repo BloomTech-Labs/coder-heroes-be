@@ -27,8 +27,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [GET]    | /profile/                   | Returns an array of all existing profiles.                                                                              |
 | [GET]    | /profile/:okta_id/       | Returns the profile object with the specified `okta_id`.                                                                       |
-| [GET]    | /profiles/users/:profile_id (BUG: /profiles/users route does not exist) | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
-| [GET]    | /profile/role/:role_id (BUGGED)      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
+| [GET]    | /profiles/users/:profile_id <b>(BUG: /profiles/users route does not exist)</b> | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
+| [GET]    | /profile/role/:role_id <b>(BUG: does not return any data)</b>      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
 | [POST]   | /profile/                   | Requires a name, password, and email. Registers a new user.                                                              |
 | [PUT]    | /profile/                   | Returns an event object with the specified `okta`. Updates specific profile.                                             |
 | [DELETE] | /profile/:okta_id/             | Returns an event object with the specified `okta`. Deletes specific profile.                                             |
@@ -38,7 +38,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | Method | URL              | Description                                                             |
 | ------ | ---------------- | ----------------------------------------------------------------------- |
 | [GET]  | /user/           | Returns an event object with the specified `okta` and `type`.           |
-| [GET]  | /user/inbox/     | Returns an event object with the specified `okta`. (NOT IMPLEMENTED)    |
+| [GET]  | /user/inbox/     | Returns an event object with the specified `okta`. <b>(NOT IMPLEMENTED)</b>    |
 | [GET]  | /user/schedules/ | Returns an event object with the specified `okta`.                      |
 | [PUT]  | /user/           | Returns an event object with the specified `id`. Updates specific user. |
 
@@ -74,8 +74,8 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | [GET]    | /children/:id | Returns the child with the given 'id'.   
 | [GET]    | /children/:id/enrollments | Returns an array filled with event objects with the specified `id`.                |
 | [POST]   | /children/:id/enrollments | Returns the event object with the specified `id`. Enrolls a student.               |
-| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. (Not Implemented)|
-| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course. (Not Implemented)  |
+| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. <b>(Not Implemented)</b>|
+| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course. <b>(Not Implemented)</b>|
 
 
 <h1>Instructors</h1>
@@ -94,7 +94,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 
 | Method | URL                      | Description                                                         |
 | ------ | ------------------------ | ------------------------------------------------------------------- |
-| [GET]  | /instructor/:profile_id/courses/ | Returns an array filled with instructor event objects with the specified `profile_id`. (BUGGED) |
+| [GET]  | /instructor/:profile_id/courses/ | Returns an array filled with instructor event objects with the specified `profile_id`. <b>(BUG: does not return data)</b> |
 
 <h1>Programs</h1>
 
@@ -175,7 +175,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | Method   | URL              | Description                                                                              |
 | -------- | ---------------- | ---------------------------------------------------------------------------------------- |
 | [GET]    | /inbox/          | Returns an array filled with inbox event objects.                                              |
-| [GET]    | /inbox/:profile_id/    | Retrieves an inbox with the specified inbox id (incorrectly labeled as profile_id). |
+| [GET]    | /inbox/:profile_id/    | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
 | [POST]   | /inbox/          | Creates an inbox and returns the newly created inbox.                 |
 | [POST]   | /inbox/messages/ | Returns the event object with the specified `inbox_id`. Sends a message.                 |
 | [PUT]    | /inbox/:profile_id   | Returns an array filled with event objects with the specific `profile_id`. Updates an inbox.   |
