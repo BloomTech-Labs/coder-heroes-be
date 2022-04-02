@@ -33,7 +33,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | [PUT]    | /profile/                   | Returns an event object with the specified `okta`. Updates specific profile.                                             |
 | [DELETE] | /profile/:okta_id/             | Returns an event object with the specified `okta`. Deletes specific profile.                                             |
 #### User:
-<p>These endpoints are user-focused. As opposed to the more flexible Profile endpoints where profile_id must be specified, these endpoints retrieve data specific only to the user profile that is making the API request.</p>
+<p>These endpoints are user-focused. As opposed to the more flexible Profile endpoints where <b>profile_id</b> must be specified, these endpoints retrieve data specific only to the user profile that is making the API request by using the logged-in user's <b>profile_id</b>.</p>
 
 | Method | URL              | Description                                                             |
 | ------ | ---------------- | ----------------------------------------------------------------------- |
