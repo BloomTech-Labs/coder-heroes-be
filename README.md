@@ -27,7 +27,7 @@ Updated table Source: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
 | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [GET]    | /profile/                   | Returns an array of all existing profiles.                                                                              |
 | [GET]    | /profile/:okta_id/       | Returns the profile object with the specified `okta_id`.                                                                       |
-| [GET]    | /profiles/users/:profile_id <b>(BUG: /profiles/users route does not exist)</b> | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
+| [GET]    | /profiles/users/:profile_id <b>(BUG: /profiles/users route does not exist; app.js only connects to /profiles/user)</b> | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
 | [GET]    | /profile/role/:role_id <b>(BUG: does not return any data)</b>      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
 | [POST]   | /profile/                   | Requires a name, password, and email. Registers a new user.                                                              |
 | [PUT]    | /profile/                   | Returns an event object with the specified `okta`. Updates specific profile.                                             |
