@@ -15,10 +15,18 @@ const checkInstructorExist = async (req, res, next) => {
 };
 
 const getInstructorId = async (req, res, next) => {
-  req.instructor_id = await Instructors.findInstructorIdByProfileId(
+  const instructor_id = await Instructors.findInstructorIdByProfileId(
     req.profile.profile_id
   );
-  next();
+  if (instructor_id) {
+    req.instructor_id = instructor_id;
+    next();
+  } else {
+    next({
+      status: 404,
+      message: 'Active profile is not an instructor',
+    });
+  }
 };
 
 module.exports = {
