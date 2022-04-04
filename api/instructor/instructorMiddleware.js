@@ -19,7 +19,7 @@ const getInstructorId = async (req, res, next) => {
     req.profile.profile_id
   );
   if (instructor_id) {
-    req.instructor_id = instructor_id;
+    req.instructor_id = instructor_id.instructor_id;
     next();
   } else {
     next({
