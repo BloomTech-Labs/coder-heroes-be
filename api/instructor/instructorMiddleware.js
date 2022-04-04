@@ -14,6 +14,14 @@ const checkInstructorExist = async (req, res, next) => {
   }
 };
 
+const getInstructorId = async (req, res, next) => {
+  req.instructor_id = await Instructors.findInstructorIdByProfileId(
+    req.profile.profile_id
+  );
+  next();
+};
+
 module.exports = {
   checkInstructorExist,
+  getInstructorId,
 };
