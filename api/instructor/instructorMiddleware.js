@@ -14,6 +14,9 @@ const checkInstructorExist = async (req, res, next) => {
   }
 };
 
+// Retrieves the instructor id of the currently active account by way of the active account's profile id.
+// req.instructor_id is set to null if the active user is not an instructor
+// ../middleware/authRequired.js must be called before calling this middleware
 const getInstructorId = async (req, res, next) => {
   const instructor_id = await Instructors.findInstructorIdByProfileId(
     req.profile.profile_id
@@ -22,10 +25,8 @@ const getInstructorId = async (req, res, next) => {
     req.instructor_id = instructor_id.instructor_id;
     next();
   } else {
-    next({
-      status: 404,
-      message: 'Active profile is not an instructor',
-    });
+    req.instructor_id = null;
+    next();
   }
 };
 
