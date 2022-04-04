@@ -16,7 +16,15 @@ const findByInstructorId = async (instructor_id) => {
   return instructor;
 };
 
+const findInstructorIdByProfileId = (profile_id) => {
+  return db('instructors')
+    .where({ profile_id })
+    .first()
+    .select('instructors.instructor_id');
+};
+
 module.exports = {
   findInstructorCourses,
   findByInstructorId,
+  findInstructorIdByProfileId,
 };
