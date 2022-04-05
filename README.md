@@ -1,10 +1,3 @@
-Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
-
-[Loom Video PT1](https://www.loom.com/share/4543abe4659540698c327058362f90f3)
-[Loom Video PT2](https://www.loom.com/share/c4e8c8f38cb14fdb8ac43e6a2342f159)
-[Loom Video PT3](https://www.loom.com/share/39128df605f44263b1b4a5b8ddbcddb3)
-[Loom Video PT4](https://www.loom.com/share/7da5fc043d3149afb05876c28df9bd3d)
-
 <p><b>*NOTE:</b> "schedules" as used in endpoints refer to <b>childrens'</b> <b>enrollments</b> to <b>courses</b>; "schedule" specific endpoints join the <b>children</b>, <b>enrollments</b>, and <b>courses</b> tables and return data matching the given <b>profile_id</b></p>
 
 <h1>Profiles</h1>
@@ -259,5 +252,12 @@ Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86
   instructor_id: INTEGER (required, foreign key),
 }
 ```
+
+Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86 <b>*Currently Outdated</b>
+
+[Loom Video PT1](https://www.loom.com/share/4543abe4659540698c327058362f90f3)
+[Loom Video PT2](https://www.loom.com/share/c4e8c8f38cb14fdb8ac43e6a2342f159)
+[Loom Video PT3](https://www.loom.com/share/39128df605f44263b1b4a5b8ddbcddb3)
+[Loom Video PT4](https://www.loom.com/share/7da5fc043d3149afb05876c28df9bd3d)
 
 <br />
