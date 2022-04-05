@@ -1,10 +1,9 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
 // const ownerAuthorization = require('../middleware/ownerAuthorization'); needs to be refactored
-// const {
-//   roleAuthentication,
-//   roles,
-// } = require('../middleware/roleAuthentication'); needs to be refactored
+const {
+  roleAuthenticationInstructor,
+} = require('../middleware/roleAuthentication');
 const Courses = require('./coursesModel');
 const router = express.Router();
 const {
@@ -300,6 +299,7 @@ router.get('/:course_id', authRequired, checkCourseExists, function (req, res) {
 router.post(
   '/',
   authRequired,
+  roleAuthenticationInstructor,
   validateCourseObject,
   checkInstructorExists,
   async (req, res, next) => {
@@ -307,7 +307,7 @@ router.post(
     try {
       const inserted = await Courses.addCourse(course);
       res.status(200).json({
-        message: 'New Course Instance Added.',
+        message: 'New course added.',
         created_course: inserted,
       });
     } catch (err) {
