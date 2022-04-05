@@ -298,7 +298,6 @@ router.get('/:course_id', authRequired, checkCourseExists, function (req, res) {
 
 // Need to fix error messaging; currently returns "Not found" error on submitting an invalid
 // class object
-// Need to set up role authorization
 router.post(
   '/',
   authRequired,
