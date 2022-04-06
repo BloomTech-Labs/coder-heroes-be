@@ -6,6 +6,12 @@ exports.up = function (knex) {
     table.string('type').notNullable();
     table.string('content').notNullable();
     table.string('details');
+    table
+      .integer('profile_id')
+      .notNullable()
+      .references('profile_id')
+      .inTable('profiles')
+      .onDelete('CASCADE');
   });
 };
 
