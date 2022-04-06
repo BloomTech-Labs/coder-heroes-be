@@ -18,11 +18,11 @@ const checkInstructorExist = async (req, res, next) => {
 // req.instructor_id is set to null if the active user is not an instructor
 // ../middleware/authRequired.js must be called before calling this middleware
 const getInstructorId = async (req, res, next) => {
-  const instructor_id = await Instructors.findInstructorIdByProfileId(
+  const instructor = await Instructors.findInstructorIdByProfileId(
     req.profile.profile_id
   );
-  if (instructor_id) {
-    req.instructor_id = instructor_id.instructor_id;
+  if (instructor) {
+    req.instructor_id = instructor.instructor_id;
     next();
   } else {
     req.instructor_id = null;
