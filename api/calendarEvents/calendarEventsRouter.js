@@ -23,18 +23,9 @@ router.get('/user', authRequired, (req, res, next) => {
     .catch(next);
 });
 
-router.get(
-  '/:event_id',
-  authRequired,
-  checkCalendarEventExists,
-  (req, res, next) => {
-    CalendarEvents.findCalendarEventById(req.params.event_id)
-      .then((event) => {
-        res.status(200).json(event);
-      })
-      .catch(next);
-  }
-);
+router.get('/:event_id', authRequired, checkCalendarEventExists, (req, res) => {
+  res.status(200).json(req.calendarEvent);
+});
 
 router.post('/', authRequired, (req, res, next) => {
   const { date, time, type, content, details } = req.body;
