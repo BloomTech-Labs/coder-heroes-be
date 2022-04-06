@@ -11,7 +11,12 @@ const addCalendarEvent = async (newCalendarEvent) => {
   return createdCalendarEvent;
 };
 
+const delCalendarEventById = async (event_id) => {
+  return await db('calendar_events').where('event_id', event_id).del();
+};
+
 module.exports = {
   getAllCalendarEvents,
   addCalendarEvent,
+  delCalendarEventById,
 };
