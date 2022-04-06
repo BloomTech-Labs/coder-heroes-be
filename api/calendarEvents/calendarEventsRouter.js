@@ -24,7 +24,23 @@ router.get(
       .catch(next);
   }
 );
-// need POST, PUT, and DELETE endpoints
+// need POST and PUT endpoints
+
+router.post('/', authRequired, (req, res, next) => {
+  const { date, time, type, content, details } = req.body;
+  CalendarEvents.addCalendarEvent({
+    date,
+    time,
+    type,
+    content,
+    details,
+    profile_id: req.profile.profile_id,
+  })
+    .then((newEvent) => {
+      res.status(201).json({ newEvent, message: 'new event created' });
+    })
+    .catch(next);
+});
 
 router.delete(
   '/:event_id',
