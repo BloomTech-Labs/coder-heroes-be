@@ -24,7 +24,6 @@ router.get(
       .catch(next);
   }
 );
-// need POST and PUT endpoints
 
 router.post('/', authRequired, (req, res, next) => {
   const { date, time, type, content, details } = req.body;
@@ -37,7 +36,31 @@ router.post('/', authRequired, (req, res, next) => {
     profile_id: req.profile.profile_id,
   })
     .then((newEvent) => {
-      res.status(201).json({ newEvent, message: 'new event created' });
+      res.status(201).json({
+        message: 'new event created',
+        newEvent,
+      });
+    })
+    .catch(next);
+});
+
+router.put('/:event_id', authRequired, (req, res, next) => {
+  console.log(req.profile.profile_id);
+  const updatedCalendarEvent = {
+    date: req.body.date,
+    time: req.body.time,
+    type: req.body.type,
+    content: req.body.content,
+    details: req.body.details,
+    profile_id: req.profile.profile_id,
+  };
+
+  CalendarEvents.updateCalendarEvent(req.params.event_id, updatedCalendarEvent)
+    .then((updated) => {
+      res.status(200).json({
+        message: `Calendar event with event_id: ${req.params.event_id} updated`,
+        updated,
+      });
     })
     .catch(next);
 });
