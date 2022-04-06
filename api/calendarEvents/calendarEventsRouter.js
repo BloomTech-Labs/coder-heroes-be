@@ -12,6 +12,17 @@ router.get('/', authRequired, (req, res, next) => {
     .catch(next);
 });
 
+router.get('/user', authRequired, (req, res, next) => {
+  CalendarEvents.getCalendarEventsByProfileId(req.profile.profile_id)
+    .then((events) => {
+      res.status(200).json({
+        message: `User with profile ID of ${req.profile.profile_id}`,
+        events,
+      });
+    })
+    .catch(next);
+});
+
 router.get(
   '/:event_id',
   authRequired,
