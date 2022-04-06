@@ -6,6 +6,7 @@ exports.seed = function (knex) {
       type: 'warning',
       content: 'This is warning event.',
       details: 'Test information 1',
+      profile_id: 1,
     },
     {
       date: '15/03/2022',
@@ -13,6 +14,7 @@ exports.seed = function (knex) {
       type: 'success',
       content: 'This is usual event.',
       details: 'Test information 2',
+      profile_id: 1,
     },
     {
       date: '16/03/2022',
@@ -20,6 +22,7 @@ exports.seed = function (knex) {
       type: 'error',
       content: 'This is error event 1.',
       details: 'Test information 3',
+      profile_id: 1,
     },
     {
       date: '16/03/2022',
@@ -27,6 +30,7 @@ exports.seed = function (knex) {
       type: 'error',
       content: 'This is error event 2.',
       details: 'Test information 4',
+      profile_id: 1,
     },
     {
       date: '16/03/2022',
@@ -34,6 +38,7 @@ exports.seed = function (knex) {
       type: 'error',
       content: 'This is error event 3.',
       details: 'Test information 5',
+      profile_id: 1,
     },
     {
       date: '12/04/2022',
@@ -41,6 +46,7 @@ exports.seed = function (knex) {
       type: 'success',
       content: 'This is usual event1.',
       details: 'Test information 6',
+      profile_id: 1,
     },
     {
       date: '12/04/2022',
@@ -48,6 +54,7 @@ exports.seed = function (knex) {
       type: 'success',
       content: 'This is usual event2.',
       details: 'Test information 7',
+      profile_id: 1,
     },
   ]);
 };
