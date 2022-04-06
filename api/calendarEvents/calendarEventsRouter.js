@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const authRequired = require('../middleware/authRequired');
-const { checkCalendarEventExists } = require('./calendarEventsMiddleware');
+const {
+  checkCalendarEventExists,
+  validateCalendarEvent,
+} = require('./calendarEventsMiddleware');
 
 const CalendarEvents = require('./calendarEventsModel');
 
@@ -27,16 +30,8 @@ router.get('/:event_id', authRequired, checkCalendarEventExists, (req, res) => {
   res.status(200).json(req.calendarEvent);
 });
 
-router.post('/', authRequired, (req, res, next) => {
-  const { date, time, type, content, details } = req.body;
-  CalendarEvents.addCalendarEvent({
-    date,
-    time,
-    type,
-    content,
-    details,
-    profile_id: req.profile.profile_id,
-  })
+router.post('/', authRequired, validateCalendarEvent, (req, res, next) => {
+  CalendarEvents.addCalendarEvent(req.validatedCalendarEvent)
     .then((newEvent) => {
       res.status(201).json({
         message: 'new event created',
@@ -46,26 +41,25 @@ router.post('/', authRequired, (req, res, next) => {
     .catch(next);
 });
 
-router.put('/:event_id', authRequired, (req, res, next) => {
-  console.log(req.profile.profile_id);
-  const updatedCalendarEvent = {
-    date: req.body.date,
-    time: req.body.time,
-    type: req.body.type,
-    content: req.body.content,
-    details: req.body.details,
-    profile_id: req.profile.profile_id,
-  };
-
-  CalendarEvents.updateCalendarEvent(req.params.event_id, updatedCalendarEvent)
-    .then((updated) => {
-      res.status(200).json({
-        message: `Calendar event with event_id: ${req.params.event_id} updated`,
-        updated,
-      });
-    })
-    .catch(next);
-});
+router.put(
+  '/:event_id',
+  authRequired,
+  checkCalendarEventExists,
+  validateCalendarEvent,
+  (req, res, next) => {
+    CalendarEvents.updateCalendarEvent(
+      req.params.event_id,
+      req.validatedCalendarEvent
+    )
+      .then((updated) => {
+        res.status(200).json({
+          message: `Calendar event with event_id: ${req.params.event_id} updated`,
+          updated,
+        });
+      })
+      .catch(next);
+  }
+);
 
 router.delete(
   '/:event_id',
