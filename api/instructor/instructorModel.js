@@ -11,11 +11,11 @@ const findByInstructorId = async (instructor_id) => {
   return instructor;
 };
 
-const findInstructorIdByProfileId = async (profile_id) => {
-  return await db('instructors')
-    .select('instructor_id')
-    .where('profile_id', profile_id)
-    .first();
+const findInstructorIdByProfileId = (profile_id) => {
+  return db('instructors')
+    .where({ profile_id })
+    .first()
+    .select('instructors.instructor_id');
 };
 
 module.exports = {
