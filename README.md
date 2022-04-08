@@ -84,7 +84,7 @@
 
 | Method | URL                      | Description                                                         |
 | ------ | ------------------------ | ------------------------------------------------------------------- |
-| [GET]  | /instructor/:profile_id/courses/ | Returns an array filled with instructor event objects with the specified `profile_id`. <b>(BUG: does not return data)</b> |
+| [GET]  | /instructor/courses/ | Returns an array containing all course event objects belonging to the currently logged in instructor. |
 
 <h1>Programs</h1>
 
