@@ -40,13 +40,27 @@ const io = require('socket.io')(http, { cors: { origin: '*' } });
 
 app.set('io', io);
 
+let interval;
+
 io.on('connection', (socket) => {
   console.log('user is connected');
 
+  if (interval) {
+    clearInterval(interval);
+  }
+  interval = setInterval(() => getApiAndEmit(socket), 1000);
+
   socket.on('disconnect', () => {
     console.log('user has disconnected');
+    clearInterval(interval);
   });
 });
+
+const getApiAndEmit = (socket) => {
+  const response = new Date();
+
+  socket.emit('FromAPI', response);
+};
 
 http.listen(4001, () => console.log('http listening on port 4001'));
 
