@@ -58,7 +58,10 @@ io.on('connection', (socket) => {
   });
 });
 
-http.listen(4001, () => console.log('http listening on port 4001'));
+const SOCKET_PORT = process.env.SOCKET_PORT || 4001;
+http.listen(process.env.SOCKET_PORT || 4001, () =>
+  console.log(`http listening on port ${SOCKET_PORT}`)
+);
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
