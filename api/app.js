@@ -35,6 +35,21 @@ const calendarEventsRouter = require('./calendarEvents/calendarEventsRouter');
 
 const app = express();
 
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, { cors: { origin: '*' } });
+
+app.set('io', io);
+
+io.on('connection', (socket) => {
+  console.log('user is connected');
+
+  socket.on('disconnect', () => {
+    console.log('user has disconnected');
+  });
+});
+
+http.listen(4001, () => console.log('http listening on port 4001'));
+
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
   // application specific logging, throwing an error, or other logic here
