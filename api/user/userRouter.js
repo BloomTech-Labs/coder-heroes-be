@@ -5,8 +5,8 @@ const User = require('./userModel');
 const router = express.Router();
 
 router.get('/', authRequired, function (req, res) {
-  const { role, profile_id } = req.profile;
-  User.findUserData(role, profile_id)
+  const { role_id, profile_id } = req.profile;
+  User.findUserData(role_id, profile_id)
     .then((user) => {
       res.status(200).json(user);
     })
