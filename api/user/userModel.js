@@ -11,8 +11,8 @@ const _findUserData = async (role_id, profile_id) => {
       .where('super_admins.profile_id', profile_id);
   } else if (role_id === 2) {
     return db('profiles')
-      .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
-      .where('parents.profile_id', profile_id);
+      .leftJoin('admins', 'profiles.profile_id', 'admins.profile_id')
+      .where('admins.profile_id', profile_id);
   } else if (role_id === 3) {
     return db('profiles')
       .leftJoin('instructors', 'profiles.profile_id', 'instructors.profile_id')
