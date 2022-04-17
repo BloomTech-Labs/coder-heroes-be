@@ -14,10 +14,10 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:profile_id', authRequired, function (req, res) {
-  Inboxes.findByInboxId(req.params.profile_id)
+router.get('/user', authRequired, function (req, res) {
+  Inboxes.findByInboxId(req.profile.profile_id)
     .then((inbox) => {
-      if (!req.params.profile_id) {
+      if (!req.profile.profile_id) {
         res.status(404).json({ message: 'Inbox not found' });
       } else {
         res.status(200).json(inbox);
