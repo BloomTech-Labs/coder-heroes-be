@@ -44,6 +44,16 @@ router.post('/', async (req, res) => {
     });
 });
 
+router.get('/messages/:inbox_id', authRequired, (req, res, next) => {
+  Inboxes.getInboxMessages(req.params.inbox_id)
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 router.post('/messages', authRequired, async (req, res) => {
   Inboxes.addMessage(req.body)
     .then((message) => {

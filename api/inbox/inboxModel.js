@@ -34,6 +34,11 @@ const removeInbox = async (profile_id) => {
   return db('inboxes').where('profile_id', profile_id).delete();
 };
 
+const getInboxMessages = async (inbox_id) => {
+  const messages = await db('messages').where('inbox_id', inbox_id);
+  return messages;
+};
+
 module.exports = {
   getInboxes,
   findByProfileId,
@@ -42,4 +47,5 @@ module.exports = {
   addMessage,
   updateInbox,
   removeInbox,
+  getInboxMessages,
 };
