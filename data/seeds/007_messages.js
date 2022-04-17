@@ -32,5 +32,11 @@ exports.seed = function (knex) {
       inbox_id: 5,
       sent_by_profile_id: 8,
     },
+    {
+      title: 'socket test',
+      message: 'data emission test',
+      inbox_id: 2,
+      sent_by_profile_id: 3,
+    },
   ]);
 };
