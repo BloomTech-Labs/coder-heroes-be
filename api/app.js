@@ -38,7 +38,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http, { cors: { origin: '*' } });
 
-app.set('io', io);
+app.locals.io = io;
 
 const { emitMessages } = require('./inbox/messagesFeed');
 
