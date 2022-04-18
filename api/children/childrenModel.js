@@ -4,15 +4,57 @@ const getChildren = async () => {
   return await db('children');
 };
 
-const findByChildId = async (id) => {
-  return db('children')
-    .join('profiles', 'children.profile_id', 'profiles.profile_id')
-    .where('child_id', id)
-    .first();
+const findByChildId = async (child_id) => {
+  return db('children').where({ child_id });
 };
 
-const addChild = async (child) => {
-  return await db('children').insert(child).returning('*');
+const findChildParent = async (child_id) => {
+  return db('children')
+    .leftJoin('parents', 'parents.parent_id', 'children.parent_id')
+    .where('children.child_id', child_id)
+    .returning('parents.profile_id');
+};
+
+const addChild = async (
+  parent_profile_id,
+  { name, username, age, avatarUrl }
+) => {
+  let { parent_id } = await db('parents')
+    .where('profile_id', parent_profile_id)
+    .first();
+  let [profile_id] = await db('profiles')
+    .insert({
+      email: null,
+      name,
+      okta_id: null,
+      role_id: 5,
+      avatarUrl,
+    })
+    .returning('profile_id');
+  await db('children').insert({
+    profile_id,
+    username,
+    age,
+    parent_id,
+  });
+  return {
+    name,
+    profile_id,
+    parent_id,
+  };
+};
+
+const updateChild = async (child_id, changes) => {
+  return db('children').update(changes).where({ child_id }).returning('*');
+};
+
+const removeChild = async (child_id) => {
+  let [child] = await db('children')
+    .leftJoin('profiles', 'profiles.profile_id', 'children.profile_id')
+    .where('children.child_id', child_id)
+    .returning('profiles.name');
+  await db('children').del().where({ child_id });
+  return child;
 };
 
 const getEnrolledCourses = async (id) => {
@@ -56,6 +98,9 @@ module.exports = {
   getEnrolledCourses,
   addEnrolledCourse,
   findByChildId,
+  findChildParent,
   addChild,
   getChildren,
+  updateChild,
+  removeChild,
 };

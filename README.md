@@ -58,12 +58,15 @@
 }
 ```
 
-| Method   | URL                       | Description                                                                        |
-| -------- | ------------------------- | ---------------------------------------------------------------------------------- |
-| [GET]    | /children                  | Returns an array containing all existing children.   
-| [GET]    | /children/:id | Returns the child with the given 'id'.   
-| [GET]    | /children/:id/enrollments | Returns an array filled with event objects with the specified `id`.                |
-| [POST]   | /children/:id/enrollments | Returns the event object with the specified `id`. Enrolls a student.               |
+| Method   | URL                       | Description                                                                       |
+| -------- | ------------------------- | --------------------------------------------------------------------------------- |
+| [GET]    | /children                  | Returns an array containing all existing children.|
+| [POST]   | /children                       | Requires a username, name, and age. Returns the name, profile_id, and parent_id.|
+| [GET]    | /children/:child_id | Returns the child with the given 'id'.|
+| [PUT]    | /children/:child_id             | Returns the updated child object|
+| [DELETE] | /children/:child_id             | Returns the name of the child deleted|
+| [GET]    | /children/:child_id/enrollments | Returns an array filled with event objects with the specified `id`.               |
+| [POST]   | /children/:child_id/enrollments | Returns the event object with the specified `id`. Enrolls a student.              |
 | [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. <b>(Not Implemented)</b>|
 | [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course. <b>(Not Implemented)</b>|
 
