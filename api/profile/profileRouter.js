@@ -10,7 +10,7 @@ const {
 } = require('./profileMiddleware');
 
 router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
-  const role_id = req.params.role_id;
+  const role_id = req.profile.role_id;
   Profiles.findByRoleId(role_id)
     .then((roleList) => {
       res.status(200).json(roleList);

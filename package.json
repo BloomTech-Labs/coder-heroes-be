@@ -9,6 +9,7 @@
     "migrate": "knex migrate:latest --knexfile config/knexfile.js",
     "rollback": "knex migrate:rollback --knexfile config/knexfile.js",
     "watch:dev": "nodemon",
+    "server": "supervisor server.js",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "format": "npx prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
@@ -97,6 +98,7 @@
     "lint-staged": "^10.4.2",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "supervisor": "^0.12.0"
   }
 }
