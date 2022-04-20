@@ -9,7 +9,7 @@
     "migrate": "knex migrate:latest --knexfile config/knexfile.js",
     "rollback": "knex migrate:rollback --knexfile config/knexfile.js",
     "watch:dev": "nodemon",
-    "server": "supervisor server.js",
+    "watch:dev:windows": "supervisor server.js",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "format": "npx prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
