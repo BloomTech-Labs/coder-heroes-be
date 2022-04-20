@@ -226,7 +226,13 @@ router.get('/', authRequired, function (req, res, next) {
  */
 
 router.get('/:course_id', authRequired, checkCourseExists, function (req, res) {
-  res.status(200).json(req.courses);
+  Courses.findByCourseId(req.params.course_id)
+    .then((course) => {
+      res.status(200).json(course);
+    })
+    .catch(() => {
+      res.status(500).json(`Course was not found`);
+    });
 });
 
 /**
