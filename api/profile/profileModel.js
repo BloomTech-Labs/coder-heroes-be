@@ -45,6 +45,7 @@ const findOrCreateProfile = async (profileObj) => {
 };
 
 const findByRoleId = async (role_id) => {
+  role_id = Number(role_id);
   switch (role_id) {
     case 1:
       return await db('profiles').where('profiles.role_id', role_id);
