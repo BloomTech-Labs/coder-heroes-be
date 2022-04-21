@@ -75,6 +75,7 @@ const findByProfileId = async (profile_id) => {
 };
 
 const findByProfileAndRoleId = async (profile_id, role_id) => {
+  role_id = Number(role_id);
   switch (role_id) {
     case 1:
       return await db('profiles')
