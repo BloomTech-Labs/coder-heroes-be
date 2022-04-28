@@ -53,19 +53,20 @@ router.post('/', authRequired, checkChildObject, async function (
   }
 });
 
-router.get('/:id/enrollments', authRequired, checkChildExist, async function (
-  req,
-  res,
-  next
-) {
-  try {
-    const { id } = req.params;
-    const enrollments = await Children.getEnrolledCourses(id);
-    res.status(200).json(enrollments);
-  } catch (error) {
-    next(error);
+router.get(
+  '/:child_id/enrollments',
+  authRequired,
+  checkChildExist,
+  async function (req, res, next) {
+    try {
+      const { child_id } = req.params;
+      const enrollments = await Children.getEnrolledCourses(child_id);
+      res.status(200).json(enrollments);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.post(
   '/:id/enrollments',
