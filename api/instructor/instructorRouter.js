@@ -16,6 +16,18 @@ router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
     .catch(next);
 });
 
+router.get('/profile/:profile_id', authRequired, (req, res) => {
+  Instructors.findInstructorIdByProfileId(req.params.profile_id)
+    .then((instructor) => {
+      if (instructor) {
+        res.status(200).json(instructor);
+      } else {
+        res.status(404).json({ error: 'Instructor not found.' });
+      }
+    })
+    .catch(errorhandler);
+});
+
 router.use('*', errorhandler);
 //eslint-disable-next-line
 function errorhandler(err, req, res, next) {
