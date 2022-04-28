@@ -19,7 +19,12 @@ const getEnrolledCourses = async (id) => {
   // receives error if the id of the course doesn't exist exist  this have to modified later on we need to make a middleware that checks fot the existing courses then runs this model'
   const enrollments = await db('children')
     .join('enrollments', 'children.child_id', 'enrollments.child_id')
-    .join('courses', 'enrollments.course_id', 'courses.course_id')
+    .join(
+      'courses',
+      'enrollments.course_id',
+      'courses.course_id',
+      'courses.course_name'
+    )
     .where('children.child_id', id);
 
   const enrolledCourses = {
