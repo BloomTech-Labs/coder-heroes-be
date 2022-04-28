@@ -17,7 +17,7 @@ router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
 });
 
 router.get('/profile/:profile_id', authRequired, (req, res) => {
-  Instructors.findInstructorIdByProfileId(req.params.profile_id)
+  Instructors.findInstructorProfileByProfileId(req.params.profile_id)
     .then((instructor) => {
       if (instructor) {
         res.status(200).json(instructor);
