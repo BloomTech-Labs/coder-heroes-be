@@ -2,7 +2,7 @@ const Children = require('./childrenModel');
 
 const checkChildExist = async (req, res, next) => {
   const { child_id } = req.params;
-  const [foundChild] = await Children.findByChildId(child_id);
+  const foundChild = await Children.findByChildId(child_id);
   if (!foundChild) {
     next({ status: 404, message: `child with id ${child_id} is not found ` });
   } else {

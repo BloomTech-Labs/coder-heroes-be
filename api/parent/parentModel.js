@@ -1,5 +1,18 @@
 const db = require('../../data/db-config');
 
+const findById = (profile_id) => {
+  return db('parents').where({ profile_id }).first();
+};
+
+const findOrCreateParent = async (profile_id) => {
+  const profile = await findById(profile_id);
+  if (profile) {
+    return profile;
+  } else {
+    return db('parents').insert({ profile_id }).returning('*');
+  }
+};
+
 const getParentChildren = async (profile_id) => {
   return db('parents')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
@@ -18,4 +31,6 @@ const getChildSchedules = (profile_id) => {
 module.exports = {
   getParentChildren,
   getChildSchedules,
+  findById,
+  findOrCreateParent,
 };
