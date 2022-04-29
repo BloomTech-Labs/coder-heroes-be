@@ -20,7 +20,7 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:id', authRequired, checkChildExist, async function (
+router.get('/:child_id', authRequired, checkChildExist, async function (
   req,
   res,
   next
@@ -69,7 +69,7 @@ router.get(
 );
 
 router.post(
-  '/:id/enrollments',
+  '/:child_id/enrollments',
   authRequired,
   checkChildExist,
   isChildAlreadyEnrolled,
