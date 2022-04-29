@@ -1,6 +1,6 @@
 const db = require('../../data/db-config');
 
-const findUserData = async (role_id, profile_id) => {
+const _findUserData = async (role_id, profile_id) => {
   if (role_id === 1) {
     return db('profiles')
       .leftJoin(
@@ -11,8 +11,8 @@ const findUserData = async (role_id, profile_id) => {
       .where('super_admins.profile_id', profile_id);
   } else if (role_id === 2) {
     return db('profiles')
-      .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
-      .where('parents.profile_id', profile_id);
+      .leftJoin('admins', 'profiles.profile_id', 'admins.profile_id')
+      .where('admins.profile_id', profile_id);
   } else if (role_id === 3) {
     return db('profiles')
       .leftJoin('instructors', 'profiles.profile_id', 'instructors.profile_id')
@@ -28,6 +28,13 @@ const findUserData = async (role_id, profile_id) => {
   }
 };
 
+const findUserData = async (role_id, profile_id) => {
+  return _findUserData(role_id, profile_id).then((users) => {
+    //FindUser should return only one user , so we make sure that
+    // a single user is returned instead of an array of 1 user
+    return Array.isArray(users) ? users[0] : users;
+  });
+};
 const getInbox = (okta) => {
   return db('profiles')
     .leftJoin('inboxes', 'profiles.profile_id', 'inboxes.profile_id')

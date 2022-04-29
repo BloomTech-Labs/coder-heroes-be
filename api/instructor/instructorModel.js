@@ -3,7 +3,9 @@ const db = require('../../data/db-config');
 const findInstructorCourses = async (instructor_id) => {
   return db('courses as c')
     .leftJoin('instructors as i', 'i.instructor_id', 'c.course_id')
-    .where('c.instructor_id', instructor_id);
+    .leftJoin('programs as p', 'p.program_id', 'c.program_id')
+    .where('c.instructor_id', instructor_id)
+    .select('c.*', 'p.program_id', 'p.program_name');
 };
 
 const findByInstructorId = async (instructor_id) => {
