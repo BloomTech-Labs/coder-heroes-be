@@ -19,9 +19,10 @@ const getEnrolledCourses = async (child_id) => {
   const enrollments = await db('children')
     .join('enrollments', 'children.child_id', 'enrollments.child_id')
     .join('courses', 'enrollments.course_id', 'courses.course_id')
-    .join('profiles', 'profiles.profiles_id', 'instructors.profile_id')
+    .join('instructors', 'instructors.instructor_id', 'courses.instructor_id')
+    .join('profiles', 'profiles.profile_id', 'instructors.profile_id')
     .where('children.child_id', child_id)
-    .select('enrollments.*, courses.*', 'profiles.name as instructor_name');
+    .select('enrollments.*', 'courses.*', 'profiles.name as instructor_name');
   const child = await findByChildId(child_id);
 
   return {
