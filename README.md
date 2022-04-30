@@ -15,22 +15,24 @@
 
 | Method   | URL                         | Description                                                                                                              |
 | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| [GET]    | /profile/                   | Returns an array of all existing profiles.                                                                              |
-| [GET]    | /profile/:okta_id/       | Returns the profile object with the specified `okta_id`.                                                                       |
-| [GET]    | /profiles/users/:profile_id <b>(BUG: /profiles/users route does not exist; app.js only connects to /profiles/user)</b> | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
-| [GET]    | /profile/role/:role_id <b>(BUG: does not return any data)</b>      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
+| [GET]    | /profile/                   | Returns an array of all existing profiles.                                                                               |
+| [GET]    | /profile/:okta_id/          | Returns the profile object with the specified `okta_id`.                                                                 |
+| [GET]    | /profiles/users/:profile_id | Returns the profile object with the specified `profile id`                                                               |
+| [GET]    | /profile/role/:role_id      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
 | [POST]   | /profile/                   | Requires a name, password, and email. Registers a new user.                                                              |
 | [PUT]    | /profile/                   | Returns an event object with the specified `okta`. Updates specific profile.                                             |
-| [DELETE] | /profile/:okta_id/             | Returns an event object with the specified `okta`. Deletes specific profile.                                             |
+| [DELETE] | /profile/:okta_id/          | Returns an event object with the specified `okta`. Deletes specific profile.                                             |
+
 #### User:
+
 <p>These endpoints are user-focused. As opposed to the more flexible Profile endpoints where <b>profile_id</b> must be specified, these endpoints retrieve data specific only to the user profile that is making the API request by using the logged-in user's <b>profile_id</b>.</p>
 
-| Method | URL              | Description                                                             |
-| ------ | ---------------- | ----------------------------------------------------------------------- |
-| [GET]  | /user/           | Returns an event object with the specified `okta` and `type`.           |
-| [GET]  | /user/inbox/     | Returns an event object with the specified `okta`. <b>(NOT IMPLEMENTED)</b>    |
-| [GET]  | /user/schedules/ | Returns an event object with the specified `okta`.                      |
-| [PUT]  | /user/           | Returns an event object with the specified `id`. Updates specific user. |
+| Method | URL              | Description                                                                 |
+| ------ | ---------------- | --------------------------------------------------------------------------- |
+| [GET]  | /user/           | Returns an event object with the specified `okta` and `type`.               |
+| [GET]  | /user/inbox/     | Returns an event object with the specified `okta`. <b>(NOT IMPLEMENTED)</b> |
+| [GET]  | /user/schedules/ | Returns an event object with the specified `okta`.                          |
+| [PUT]  | /user/           | Returns an event object with the specified `id`. Updates specific user.     |
 
 <h1>Parents</h1>
 
@@ -41,9 +43,9 @@
 }
 ```
 
-| Method | URL                    | Description                                                         |
-| ------ | ---------------------- | ------------------------------------------------------------------- |
-| [GET]  | /parent/:profile_id/children/  | Returns an array filled with children event objects with the specified `profile_id`. |
+| Method | URL                            | Description                                                                           |
+| ------ | ------------------------------ | ------------------------------------------------------------------------------------- |
+| [GET]  | /parent/:profile_id/children/  | Returns an array filled with children event objects with the specified `profile_id`.  |
 | [GET]  | /parent/:profile_id/schedules/ | Returns an array filled with schedules event objects with the specified `profile_id`. |
 
 <h1>Children</h1>
@@ -85,8 +87,8 @@
 }
 ```
 
-| Method | URL                      | Description                                                         |
-| ------ | ------------------------ | ------------------------------------------------------------------- |
+| Method | URL                  | Description                                                                                           |
+| ------ | -------------------- | ----------------------------------------------------------------------------------------------------- |
 | [GET]  | /instructor/courses/ | Returns an array containing all course event objects belonging to the currently logged in instructor. |
 
 <h1>Programs</h1>
@@ -129,12 +131,12 @@
 }
 ```
 
-| Method   | URL                       | Description                                                                 |
-| -------- | ------------------------- | --------------------------------------------------------------------------- |
-| [GET]    | /course          | Returns an array containing all course objects                         |
-| [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                           |
-| [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`. |
-| [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion   |
+| Method   | URL                | Description                                                                                                                            |
+| -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [GET]    | /course            | Returns an array containing all course objects                                                                                         |
+| [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                                                                              |
+| [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`.                                                          |
+| [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion |
 
 <h1>Newsfeed</h1>
 
@@ -148,13 +150,13 @@
 }
 ```
 
-| Method   | URL            | Description                                                                |
-| -------- | -------------- | -------------------------------------------------------------------------- |
-| [GET]    | /newsfeed/     | Returns an array containing all newsfeed objects.                                |
-| [GET]    | /newsfeed/:newsfeed_id/ | Returns the event object with the specified `newsfeed_id`.                          |
-| [POST]   | /newsfeed/     | Creates a new newsfeed object and returns the newly created newsfeed.     |
-| [PUT]    | /newsfeed/:newsfeed_id     | Updates the newsfeed object with the given newsfeed_id and returns the newly updated newsfeed |
-| [DELETE] | /newsfeed/:newsfeed_id/ | Deletes the newsfeed object with the given newsfeed_id and returns the deleted newsfeed. |
+| Method   | URL                     | Description                                                                                   |
+| -------- | ----------------------- | --------------------------------------------------------------------------------------------- |
+| [GET]    | /newsfeed/              | Returns an array containing all newsfeed objects.                                             |
+| [GET]    | /newsfeed/:newsfeed_id/ | Returns the event object with the specified `newsfeed_id`.                                    |
+| [POST]   | /newsfeed/              | Creates a new newsfeed object and returns the newly created newsfeed.                         |
+| [PUT]    | /newsfeed/:newsfeed_id  | Updates the newsfeed object with the given newsfeed_id and returns the newly updated newsfeed |
+| [DELETE] | /newsfeed/:newsfeed_id/ | Deletes the newsfeed object with the given newsfeed_id and returns the deleted newsfeed.      |
 
 <h1>Inboxes</h1>
 
@@ -165,14 +167,14 @@
 }
 ```
 
-| Method   | URL              | Description                                                                              |
-| -------- | ---------------- | ---------------------------------------------------------------------------------------- |
-| [GET]    | /inbox/          | Returns an array filled with inbox event objects.                                              |
-| [GET]    | /inbox/:profile_id/    | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
-| [POST]   | /inbox/          | Creates an inbox and returns the newly created inbox.                 |
-| [POST]   | /inbox/messages/ | Returns the event object with the specified `inbox_id`. Sends a message.                 |
-| [PUT]    | /inbox/:profile_id   | Returns an array filled with event objects with the specific `profile_id`. Updates an inbox.   |
-| [DELETE] | /inbox/:profile_id/    | Returns an array filled with event objects with the specific `okta`. Deletes an inbox.   |
+| Method   | URL                 | Description                                                                                                                      |
+| -------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [GET]    | /inbox/             | Returns an array filled with inbox event objects.                                                                                |
+| [GET]    | /inbox/:profile_id/ | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
+| [POST]   | /inbox/             | Creates an inbox and returns the newly created inbox.                                                                            |
+| [POST]   | /inbox/messages/    | Returns the event object with the specified `inbox_id`. Sends a message.                                                         |
+| [PUT]    | /inbox/:profile_id  | Returns an array filled with event objects with the specific `profile_id`. Updates an inbox.                                     |
+| [DELETE] | /inbox/:profile_id/ | Returns an array filled with event objects with the specific `okta`. Deletes an inbox.                                           |
 
 <h1>Calendar Events</h1>
 
@@ -188,15 +190,14 @@
 }
 ```
 
-
-| Method   | URL              | Description                                                                              |
-| -------- | ---------------- | ---------------------------------------------------------------------------------------- |
-| [GET]    | /calendar-events/          | Returns an array filled with calendar event objects.                                              |
-| [GET]    | /calendar-events/user/    | Retrieves calendar event objects with the profile_id of logged in user |
-| [GET]    | /calendar-events/:event_id/    | Retrieves calendar event object with the specified event_id |
-| [POST]   | /calendar-events/          | Creates a calendar event and returns the newly created calendar event.                 |
-| [PUT]    | /calendar-events/:event_id   | Updates and returns the updated calendar event object with the specific `event_id`.   |
-| [DELETE] | /calendar-events/:event_id/    | Deletes a calendar event and returns a success message on successful deletion.    |
+| Method   | URL                         | Description                                                                         |
+| -------- | --------------------------- | ----------------------------------------------------------------------------------- |
+| [GET]    | /calendar-events/           | Returns an array filled with calendar event objects.                                |
+| [GET]    | /calendar-events/user/      | Retrieves calendar event objects with the profile_id of logged in user              |
+| [GET]    | /calendar-events/:event_id/ | Retrieves calendar event object with the specified event_id                         |
+| [POST]   | /calendar-events/           | Creates a calendar event and returns the newly created calendar event.              |
+| [PUT]    | /calendar-events/:event_id  | Updates and returns the updated calendar event object with the specific `event_id`. |
+| [DELETE] | /calendar-events/:event_id/ | Deletes a calendar event and returns a success message on successful deletion.      |
 
 <h1>Schedule (Not Implemented)</h1>
 
@@ -208,7 +209,6 @@
 | [POST]   | /schedule/sessions/ | Returns the event object with the specified `id`. Creates a session.         |
 | [PUT]    | /schedule/          | Returns the event object with the specified `id`. Updates specific schedule. |
 | [DELETE] | /schedule/:id/      | Returns the event object with the specified `id`. Deletes specific schedule. |
-
 
 <h1>Data Tables Without Existing Endpoints</h1>
 
@@ -279,7 +279,7 @@
 }
 ```
 
-Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86 <b>*Currently Outdated</b>
+Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86 <b>\*Currently Outdated</b>
 
 [Loom Video PT1](https://www.loom.com/share/4543abe4659540698c327058362f90f3)
 [Loom Video PT2](https://www.loom.com/share/c4e8c8f38cb14fdb8ac43e6a2342f159)

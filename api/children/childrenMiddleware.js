@@ -37,7 +37,10 @@ const isChildParent = async (req, res, next) => {
   if (parent.profile_id === profile_id) {
     next();
   } else {
-    next({ status: 403, message: 'This is not your child please stay away!' });
+    next({
+      status: 403,
+      message: `This child does not belong to parent with profile id ${profile_id}`,
+    });
   }
 };
 
