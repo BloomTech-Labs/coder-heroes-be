@@ -39,7 +39,7 @@ const isChildParent = async (req, res, next) => {
   } else {
     next({
       status: 403,
-      message: `This child does not belong to parent with profile id ${profile_id}`,
+      message: `Child with id ${child_id} does not belong to parent with profile id ${profile_id}`,
     });
   }
 };
