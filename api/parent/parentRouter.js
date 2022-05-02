@@ -4,9 +4,9 @@ const Parents = require('./parentModel');
 const router = express.Router();
 
 router.get('/:profile_id/children', authRequired, function (req, res) {
-  const id = req.params.profile_id;
+  const { profile_id } = req.params;
 
-  Parents.getParentChildren(id)
+  Parents.getParentChildren(profile_id)
     .then((children) => {
       if (children) {
         res.status(200).json(children);
