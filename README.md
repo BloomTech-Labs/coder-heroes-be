@@ -21,17 +21,6 @@
 | [GET]  | /profiles/users/:profile_id | Returns the profile object with the specified `profile id`                                                               |
 | [GET]  | /profile/role/:role_id      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
 
-| [POST] | /profile/register | Posts a new user in the database and in the Okta Dashboard.
-
-NOTE: these are the password requirements: at least 8 characters, a lowercase letter, an uppercase letter, a number, no parts of your username.  
-The required fields include the following: {
-firstName: string,
-lastName: string,
-email: string,
-password: string,
-role_id: int,
-}
-  
 | [PUT] | /profile/ | Returns an event object with the specified `okta`. Updates specific profile. |
 | [DELETE] | /profile/:okta_id/ | Returns an event object with the specified `okta`. Deletes specific profile. |
 
@@ -45,6 +34,17 @@ role_id: int,
 | [GET]  | /user/inbox/     | Returns an event object with the specified `okta`. <b>(NOT IMPLEMENTED)</b> |
 | [GET]  | /user/schedules/ | Returns an event object with the specified `okta`.                          |
 | [PUT]  | /user/           | Returns an event object with the specified `id`. Updates specific user.     |
+| [POST] | /user/register   | Posts a new user in the database and in the Okta Dashboard.                 |
+
+NOTE: these are the password requirements: at least 8 characters, a lowercase letter, an uppercase letter, a number, no parts of your username.  
+The required fields include the following: {
+firstName: string,
+lastName: string,
+email: string,
+password: string,
+role_id: int,
+avatarUr(not required): string,
+}
 
 <h1>Parents</h1>
 
