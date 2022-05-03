@@ -38,7 +38,7 @@ const checkProfileObject = (req, res, next) => {
         'strings sent in the request body must not exceed a length of 255 characters',
     });
   if (typeof avatarUrl !== 'string' || avatarUrl.length > 255)
-    req.body.avatarUrl = null;
+    req.body.avatarUrl = undefined;
 
   next();
 };

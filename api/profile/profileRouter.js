@@ -7,6 +7,7 @@ const {
   checkProfileObject,
   checkRoleExist,
   checkProfileExists,
+  checkProfileExist,
 } = require('./profileMiddleware');
 
 router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
@@ -24,17 +25,17 @@ router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
 router.get(
   '/users/:profile_id',
   authRequired,
-  checkProfileExists,
+  checkProfileExist,
   async function (req, res, next) {
-    try {
-      const { profile_id, role_id } = req.profile;
-      const profileInfo = await Profiles.findByProfileAndRoleId(
-        profile_id,
-        role_id
-      );
-      res.status(200).json(profileInfo);
-    } catch (error) {
-      next(error);
+    const profile_id = req.params.profile_id;
+    const foundProfile = await Profiles.findByProfileId(profile_id);
+    if (!foundProfile) {
+      next({
+        status: 404,
+        message: `Profile with profile_id ${profile_id} is not found.`,
+      });
+    } else {
+      res.status(200).json(foundProfile);
     }
   }
 );

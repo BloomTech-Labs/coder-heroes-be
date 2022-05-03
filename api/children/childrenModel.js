@@ -1,4 +1,5 @@
 const db = require('../../data/db-config');
+const { findOrCreateParent } = require('../parent/parentModel');
 
 const getChildren = async () => {
   return await db('children');
@@ -11,8 +12,44 @@ const findByChildId = async (child_id) => {
     .first();
 };
 
-const addChild = async (child) => {
-  return await db('children').insert(child).returning('*');
+const addChild = async (
+  parent_profile_id,
+  { name, username, age, avatarUrl }
+) => {
+  let { parent_id } = findOrCreateParent(parent_profile_id);
+  let [profile_id] = await db('profiles')
+    .insert({
+      email: null,
+      name,
+      okta_id: null,
+      role_id: 5,
+      avatarUrl,
+    })
+    .returning('profile_id');
+  await db('children').insert({
+    profile_id,
+    username,
+    age,
+    parent_id,
+  });
+  return {
+    name,
+    profile_id,
+    parent_id,
+  };
+};
+
+const updateChild = async (child_id, changes) => {
+  return db('children').update(changes).where({ child_id }).returning('*');
+};
+
+const removeChild = async (child_id) => {
+  let [child] = await db('children')
+    .leftJoin('profiles', 'profiles.profile_id', 'children.profile_id')
+    .where('children.child_id', child_id)
+    .returning('profiles.name');
+  await db('children').del().where({ child_id });
+  return child;
 };
 
 const getEnrolledCourses = async (child_id) => {
@@ -24,7 +61,7 @@ const getEnrolledCourses = async (child_id) => {
     .where('children.child_id', child_id)
     .select('enrollments.*', 'courses.*', 'profiles.name as instructor_name');
   const child = await findByChildId(child_id);
-
+  
   return {
     ...child,
     enrollments,
@@ -41,6 +78,9 @@ module.exports = {
   getEnrolledCourses,
   addEnrolledCourse,
   findByChildId,
+  findChildParent,
   addChild,
   getChildren,
+  updateChild,
+  removeChild,
 };

@@ -2,8 +2,12 @@ const express = require('express');
 const Children = require('./childrenModel');
 const authRequired = require('../middleware/authRequired');
 const {
+  roleAuthenticationParent,
+} = require('../middleware/roleAuthentication');
+const {
   checkChildExist,
   isChildAlreadyEnrolled,
+  isChildParent,
   checkChildObject,
 } = require('./childrenMiddleware');
 
@@ -15,10 +19,26 @@ router.get('/', authRequired, function (req, res) {
       res.status(200).json(child);
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({ message: err.message });
     });
 });
+
+
+router.post(
+  '/',
+  authRequired,
+  roleAuthenticationParent,
+  checkChildObject,
+  async function (req, res, next) {
+    const { profile_id } = req.profile;
+    try {
+      let child = await Children.addChild(profile_id, req.body);
+      res.status(201).json(child);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get('/:child_id', authRequired, checkChildExist, async function (
   req,
@@ -32,26 +52,39 @@ router.get('/:child_id', authRequired, checkChildExist, async function (
   }
 });
 
-router.post('/', authRequired, checkChildObject, async function (
-  req,
-  res,
-  next
-) {
-  const { profile_id } = req.body;
-  try {
-    await Children.findByChildId(profile_id).then(async (user) => {
-      if (user.length === 0) {
-        await Children.addChild({ profile_id }).then((inserted) =>
-          res.status(200).json({ message: 'Child added.', parent: inserted[0] })
-        );
-      } else {
-        res.status(400).json({ message: 'Child already exists.' });
-      }
-    });
-  } catch (error) {
-    next(error);
+router.put(
+  '/:child_id',
+  authRequired,
+  roleAuthenticationParent,
+  checkChildExist,
+  isChildParent,
+  async function (req, res, next) {
+    const { child_id } = req.params;
+    try {
+      let [child] = await Children.updateChild(child_id, req.body);
+      res.status(200).json(child);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
+
+router.delete(
+  '/:child_id',
+  authRequired,
+  roleAuthenticationParent,
+  checkChildExist,
+  isChildParent,
+  async function (req, res, next) {
+    const { child_id } = req.params;
+    try {
+      let { name } = await Children.removeChild(child_id);
+      res.status(200).json({ name });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get(
   '/:child_id/enrollments',
