@@ -5,7 +5,6 @@ const User = require('./userModel');
 const router = express.Router();
 const oktaClient = require('../../lib/oktaClient');
 
-const PARENT_ROLE_ID = 4;
 /* Create a new User (register). */
 router.post('/register', (req, res) => {
   if (!req.body) return res.sendStatus(400);
@@ -29,7 +28,7 @@ router.post('/register', (req, res) => {
         email: user.profile.email,
         name: user.profile.firstName + ' ' + user.profile.lastName,
         okta_id: user.id,
-        role_id: PARENT_ROLE_ID,
+        role_id: req.body.role_id,
       }).then(() => user);
     })
     .then((user) => {
