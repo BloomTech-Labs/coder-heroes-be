@@ -83,10 +83,10 @@
 }
 ```
 
-| Method | URL                            | Description                                                                                           |
-| ------ | ------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| [GET]  | /instructor/courses/           | Returns an array containing all course event objects belonging to the currently logged in instructor. |
-| [GET]  | /instructor/profile/profile_id | Returns a profile object of a specific instructor .                                                   |
+| Method | URL                             | Description                                                                                           |
+| ------ | ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [GET]  | /instructor/courses/            | Returns an array containing all course event objects belonging to the currently logged in instructor. |
+| [GET]  | /instructor/profile/:profile_id | Returns a profile object of a specific instructor .                                                   |
 
 <h1>Programs</h1>
 

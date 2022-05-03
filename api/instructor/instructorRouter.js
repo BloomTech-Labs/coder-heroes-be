@@ -16,7 +16,7 @@ router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
     .catch(next);
 });
 
-router.get('/profile/:profile_id', authRequired, (req, res) => {
+router.get('/profile/:profile_id', authRequired, (req, res, next) => {
   Instructors.findInstructorProfileByProfileId(req.params.profile_id)
     .then((instructor) => {
       if (instructor) {
@@ -25,7 +25,7 @@ router.get('/profile/:profile_id', authRequired, (req, res) => {
         res.status(404).json({ error: 'Instructor not found.' });
       }
     })
-    .catch(errorhandler);
+    .catch(next);
 });
 
 router.use('*', errorhandler);
