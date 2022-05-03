@@ -23,7 +23,6 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-
 router.post(
   '/',
   authRequired,

@@ -5,6 +5,13 @@ const getChildren = async () => {
   return await db('children');
 };
 
+const findChildParent = async (child_id) => {
+  return db('children')
+    .leftJoin('parents', 'parents.parent_id', 'children.parent_id')
+    .where('children.child_id', child_id)
+    .returning('parents.profile_id');
+};
+
 const findByChildId = async (child_id) => {
   return db('children')
     .join('profiles', 'children.profile_id', 'profiles.profile_id')
@@ -61,7 +68,7 @@ const getEnrolledCourses = async (child_id) => {
     .where('children.child_id', child_id)
     .select('enrollments.*', 'courses.*', 'profiles.name as instructor_name');
   const child = await findByChildId(child_id);
-  
+
   return {
     ...child,
     enrollments,
