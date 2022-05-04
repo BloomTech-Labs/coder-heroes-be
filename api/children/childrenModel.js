@@ -20,7 +20,7 @@ const addChild = async (
   parent_profile_id,
   { name, username, age, avatarUrl }
 ) => {
-  let { parent_id } = findOrCreateParent(parent_profile_id);
+  let { parent_id } = await findOrCreateParent(parent_profile_id);
   let [profile_id] = await db('profiles')
     .insert({
       email: null,
