@@ -9,7 +9,7 @@ const findOrCreateParent = async (profile_id) => {
   if (profile) {
     return profile;
   } else {
-    const [parent] = db('parents').insert({ profile_id }).returning('*');
+    const [parent] = await db('parents').insert({ profile_id }).returning('*');
     return parent;
   }
 };
