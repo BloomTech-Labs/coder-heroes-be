@@ -1,6 +1,6 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-// const Profiles = require('../profile/profileModel');
+const Profiles = require('../profile/profileModel');
 const User = require('./userModel');
 const router = express.Router();
 const oktaClient = require('../../lib/oktaClient');
@@ -23,6 +23,14 @@ router.post('/register', (req, res) => {
   };
   oktaClient
     .createUser(newUser)
+    .then((user) => {
+      return Profiles.create({
+        email: user.profile.email,
+        name: user.profile.firstName + ' ' + user.profile.lastName,
+        okta_id: user.id,
+        role_id: req.body.role_id,
+      }).then(() => user);
+    })
     .then((user) => {
       res.status(201);
       res.send(user);
