@@ -44,7 +44,11 @@ const addChild = async (
 };
 
 const updateChild = async (child_id, changes) => {
-  return db('children').update(changes).where({ child_id }).returning('*');
+  const [child] = await db('children')
+    .update(changes)
+    .where({ child_id })
+    .returning('*');
+  return child;
 };
 
 const removeChild = async (child_id) => {
