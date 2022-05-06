@@ -32,6 +32,7 @@ const dsRouter = require('./dsService/dsRouter');
 const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const stripeRouter = require('./payment/stripeRouter');
 const calendarEventsRouter = require('./calendarEvents/calendarEventsRouter');
+const gettingStartedRouter = require('./getting_started/gettingStartedRouter');
 
 const app = express();
 
@@ -74,6 +75,7 @@ app.use(['/newsfeed', '/news'], newsfeedRouter);
 app.use('/data', dsRouter);
 app.use(['/payments', '/payment'], stripeRouter);
 app.use(['/calendar-events'], calendarEventsRouter);
+app.use('/getting_started', gettingStartedRouter);
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
   next(createError(404));
