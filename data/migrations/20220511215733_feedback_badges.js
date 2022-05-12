@@ -29,6 +29,7 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTableIfExists('feedback_badges')
-    .dropTableIfExists('student_badges');
+    .dropTableIfExists('student_badges')
+    .dropTableIfExists('feedback_badges');
+
 };
