@@ -16,20 +16,11 @@ const findByCourseId = async (course_id) => {
     .first();
 };
 
-const findByInstructorId = async (instructor_id) => {
-  return await db('courses as c')
-    .select('c.*', 'p.program_name', 'i.instructor_id')
-    .leftJoin('programs as p', 'p.program_id', 'c.program_id')
-    .leftJoin('instructors as i', 'c.instructor_id', 'i.instructor_id')
-    .where('c.instructor_id', instructor_id);
-};
-
-const findInstructorIdByEmail = async (instructor_email) => {
-  return await db('instructors as i')
-    .select('i.instructor_id')
-    .leftJoin('profiles as p', 'i.profile_id', 'p.profile_id')
-    .where('p.email', instructor_email)
-    .first();
+const getStudentsById = async (course_id) => {
+  return await db('children as c')
+    .leftJoin('enrollments as e', 'c.child_id', 'e.child_id')
+    .leftJoin('courses as co', 'co.course_id', 'e.course_id')
+    .where('co.course_id', course_id);
 };
 
 const addCourse = async (newCourse) => {
@@ -51,8 +42,7 @@ const removeCourse = async (course_id) => {
 module.exports = {
   getAllCourses,
   findByCourseId,
-  findByInstructorId,
-  findInstructorIdByEmail,
+  getStudentsById,
   addCourse,
   updateCourse,
   removeCourse,
