@@ -5,15 +5,18 @@ const getChildren = async () => {
   return await db('children');
 };
 
-const findByChildId = async (child_id) => {
-  return db('children').where({ child_id }).first();
-};
-
 const findChildParent = async (child_id) => {
   return db('children')
     .leftJoin('parents', 'parents.parent_id', 'children.parent_id')
     .where('children.child_id', child_id)
     .returning('parents.profile_id');
+};
+
+const findByChildId = async (child_id) => {
+  return db('children')
+    .join('profiles', 'children.profile_id', 'profiles.profile_id')
+    .where('child_id', child_id)
+    .first();
 };
 
 const addChild = async (
@@ -57,15 +60,15 @@ const removeChild = async (child_id) => {
 };
 
 const getEnrolledCourses = async (child_id) => {
-  // receives error if the id of the course doesn't exist exist  this have to modified later on we need to make a middleware that checks fot the existing courses then runs this model'
   const enrollments = await db('children')
     .join('enrollments', 'children.child_id', 'enrollments.child_id')
     .join('courses', 'enrollments.course_id', 'courses.course_id')
     .join('instructors', 'instructors.instructor_id', 'courses.instructor_id')
     .join('profiles', 'profiles.profile_id', 'instructors.profile_id')
     .where('children.child_id', child_id)
-    .select('courses.*', 'enrollments.*', 'profiles.name as instructor_name');
-  let child = await findByChildId(child_id);
+    .select('enrollments.*', 'courses.*', 'profiles.name as instructor_name');
+  const child = await findByChildId(child_id);
+
   return {
     ...child,
     enrollments,
