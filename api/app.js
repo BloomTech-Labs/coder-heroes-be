@@ -33,6 +33,7 @@ const newsfeedRouter = require('./newsfeed/newsfeedRouter');
 const stripeRouter = require('./payment/stripeRouter');
 const calendarEventsRouter = require('./calendarEvents/calendarEventsRouter');
 const gettingStartedRouter = require('./getting_started/gettingStartedRouter');
+const classroomRouter = require('./classroom/classroomRouter');
 
 const app = express();
 
@@ -72,6 +73,7 @@ app.use(
 app.use(['/course', '/courses'], coursesRouter);
 app.use(['/children', '/child'], childrenRouter);
 app.use(['/newsfeed', '/news'], newsfeedRouter);
+app.use('/classroom', classroomRouter);
 app.use('/data', dsRouter);
 app.use(['/payments', '/payment'], stripeRouter);
 app.use(['/calendar-events'], calendarEventsRouter);
