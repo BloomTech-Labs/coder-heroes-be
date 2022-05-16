@@ -4,9 +4,9 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 
 router.get('/', authRequired, function (req, res) {
-  Inboxes.getInboxes()
-    .then((inbox) => {
-      res.status(200).json(inbox);
+  Inboxes.getConversations()
+    .then((conversation) => {
+      res.status(200).json(conversation);
     })
     .catch((err) => {
       console.log(err);
@@ -15,12 +15,12 @@ router.get('/', authRequired, function (req, res) {
 });
 
 router.get('/:profile_id', authRequired, function (req, res) {
-  Inboxes.findByInboxId(req.params.profile_id)
-    .then((inbox) => {
+  Inboxes.findByConversationId(req.params.profile_id)
+    .then((conversation) => {
       if (!req.params.profile_id) {
-        res.status(404).json({ message: 'Inbox not found' });
+        res.status(404).json({ message: 'Conversation not found' });
       } else {
-        res.status(200).json(inbox);
+        res.status(200).json(conversation);
       }
     })
     .catch((err) => {
@@ -30,12 +30,12 @@ router.get('/:profile_id', authRequired, function (req, res) {
 });
 
 router.post('/', async (req, res) => {
-  Inboxes.addInbox(req.body)
-    .then((inbox) => {
+  Inboxes.addConversation(req.body)
+    .then((conversation) => {
       if (!req.body.profile_id) {
         res.status(401).json({ message: 'Requires profile id' });
       } else {
-        res.status(201).json(inbox);
+        res.status(201).json(conversation);
       }
     })
     .catch((err) => {
@@ -64,16 +64,16 @@ router.post('/messages', authRequired, async (req, res) => {
 });
 
 router.put('/:profile_id', authRequired, (req, res) => {
-  Inboxes.updateInbox(req.params.profile_id, req.body)
-    .then((inbox) => {
+  Inboxes.updateConversation(req.params.profile_id, req.body)
+    .then((conversation) => {
       if (!req.params.profile_id) {
-        res.status(404).json({ message: 'Inbox not found' });
+        res.status(404).json({ message: 'Conversation not found' });
       } else if (!req.body) {
         res.status(401).json({ message: 'Please enter nessesary information' });
       } else if (!req.body.profile_id) {
         res.status(401).json({ message: 'Please provide profile_id' });
       } else {
-        res.status(201).json(inbox);
+        res.status(201).json(conversation);
       }
     })
     .catch((err) => {
@@ -83,12 +83,12 @@ router.put('/:profile_id', authRequired, (req, res) => {
 });
 
 router.delete('/:profile_id', authRequired, (req, res) => {
-  Inboxes.removeInbox(req.params.profile_id)
-    .then((inbox) => {
+  Inboxes.removeConversation(req.params.profile_id)
+    .then((conversation) => {
       if (!req.params.profile_id) {
-        res.status(401).json({ message: 'Inbox not found' });
+        res.status(401).json({ message: 'Conversation not found' });
       } else {
-        res.status(200).json(inbox);
+        res.status(200).json(conversation);
       }
     })
     .catch((err) => {

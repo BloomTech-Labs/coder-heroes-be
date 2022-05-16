@@ -1,5 +1,5 @@
 exports.seed = function (knex) {
-  return knex('inboxes').insert([
+  return knex('conversations').insert([
     { profile_id: 1 },
     { profile_id: 2 },
     { profile_id: 3 },
