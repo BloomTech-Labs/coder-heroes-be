@@ -63,14 +63,14 @@ router.post('/messages', authRequired, async (req, res) => {
     });
 });
 
-router.put('/:profile_id', authRequired, (req, res) => {
-  Inboxes.updateConversation(req.params.profile_id, req.body)
+router.put('/:messages_id', authRequired, (req, res) => {
+  Inboxes.updateConversation(req.params.messages_id, req.body)
     .then((conversation) => {
-      if (!req.params.profile_id) {
+      if (!req.params.messages_id) {
         res.status(404).json({ message: 'Conversation not found' });
       } else if (!req.body) {
         res.status(401).json({ message: 'Please enter nessesary information' });
-      } else if (!req.body.profile_id) {
+      } else if (!req.body.messages_id) {
         res.status(401).json({ message: 'Please provide profile_id' });
       } else {
         res.status(201).json(conversation);
@@ -92,8 +92,7 @@ router.delete('/:profile_id', authRequired, (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
+      res.status(500).json(err);
     });
 });
 

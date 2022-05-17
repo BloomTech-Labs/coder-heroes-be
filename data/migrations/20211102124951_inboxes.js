@@ -4,7 +4,6 @@ exports.up = (knex) => {
       table.increments('conversation_id');
       table
         .integer('profile_id')
-        .unique()
         .notNullable()
         .references('profile_id')
         .inTable('profiles')
@@ -34,5 +33,7 @@ exports.up = (knex) => {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('messages').dropTableIfExists('conversations');
+  return knex.schema
+    .dropTableIfExists('messages')
+    .dropTableIfExists('conversations');
 };

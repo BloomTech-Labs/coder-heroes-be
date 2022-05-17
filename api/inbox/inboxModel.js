@@ -12,12 +12,7 @@ const findByProfileId = async (profile_id) => {
 };
 
 const findByConversationId = async (conversation_id) => {
-  // const idk = await db('conversations')
-  // .select('conversation_id', 'profile_id')
-  // .where('conversation_id', conversation_id)
-  // .first();
-
-  const messages = await db('messages')
+  return db('messages')
     .select(
       'messages_id',
       'sent_at',
@@ -27,14 +22,6 @@ const findByConversationId = async (conversation_id) => {
       'conversation_id'
     )
     .where('conversation_id', conversation_id);
-
-  return messages;
-
-  // return idk;
-  // return db('conversations')
-  //   .select('conversation_id', 'profile_id')
-  //   .where('conversation_id', conversation_id)
-  //   .first();
 };
 
 const addConversation = async (conversation) => {
