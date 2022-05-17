@@ -3,14 +3,17 @@ const authRequired = require('../middleware/authRequired');
 const Classroom = require('./classroomModel');
 const router = express.Router();
 
-router.get('/:course_id', authRequired, function (req, res, next) {
+router.get('/:course_id', authRequired, function (req, res) {
   const course_id = parseInt(req.params.course_id);
-  res.status(201).json({ message: 'you found it!' });
+  console.log(`${course_id} called here`);
   Classroom.getStudentsById(course_id)
     .then((students) => {
+      console.log('here');
       res.status(200).json(students);
     })
-    .catch(next);
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 });
 
 router.get('/badges', authRequired, function (req, res, next) {

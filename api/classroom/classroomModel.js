@@ -2,6 +2,7 @@ const db = require('../../data/db-config');
 
 const getStudentsByClassId = async (course_id) => {
   return await db('children as c')
+    .select('c.*', 'co.course_name')
     .leftJoin('enrollments as e', 'c.child_id', 'e.child_id')
     .leftJoin('courses as co', 'co.course_id', 'e.course_id')
     .where('co.course_id', course_id);
