@@ -147,6 +147,7 @@ avatarUr(not required): string,
 | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /course            | Returns an array containing all course objects                                                                                         |
 | [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                                                                              |
+| [POST]   | /course            | --needs to be fleshed out-- |
 | [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`.                                                          |
 | [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion |
 
