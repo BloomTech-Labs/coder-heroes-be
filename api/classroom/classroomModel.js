@@ -27,9 +27,22 @@ const assignBadgeByIds = async (pair) => {
     .insert(pair);
 };
 
+const getStudentBadgeId = async (badge_id, child_id) => {
+  return await db('student_badges')
+    .select('student_badge_id')
+    .where('child_id', child_id)
+    .where('badge_id', badge_id);
+};
+
+const removeBadge = async (id) => {
+  return await db('student_badges').where('student_badge_id', id).del();
+};
+
 module.exports = {
   getStudentsByClassId,
   getBadges,
   getBadgesByChildId,
   assignBadgeByIds,
+  getStudentBadgeId,
+  removeBadge,
 };
