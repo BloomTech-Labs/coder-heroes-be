@@ -12,16 +12,24 @@ const findByProfileId = async (profile_id) => {
 };
 
 const findByConversationId = async (conversation_id) => {
-  return db('messages')
-    .select(
-      'messages_id',
-      'sent_at',
-      'title',
-      'message',
-      'sent_by_profile_id',
-      'conversation_id'
-    )
+  const test = await db('conversations')
+    .select('conversation_id')
     .where('conversation_id', conversation_id);
+  console.log('test.length: ', test.length);
+  if (test.length) {
+    return db('messages')
+      .select(
+        'messages_id',
+        'sent_at',
+        'title',
+        'message',
+        'sent_by_profile_id',
+        'conversation_id'
+      )
+      .where('conversation_id', conversation_id);
+  } else {
+    return test;
+  }
 };
 
 const addConversation = async (conversation) => {
@@ -32,14 +40,12 @@ const addMessage = async (message) => {
   return db('messages').insert(message);
 };
 
-const updateConversation = (profile_id, conversation) => {
-  return db('conversations')
-    .where('profile_id', profile_id)
-    .update(conversation);
+const updateMessage = (messages_id, message) => {
+  return db('messages').where('messages_id', messages_id).update(message);
 };
 
-const removeConversation = async (profile_id) => {
-  return db('conversations').where('profile_id', profile_id).delete();
+const removeConversation = async (conversation_id) => {
+  return db('conversations').where('conversation_id', conversation_id).delete();
 };
 
 module.exports = {
@@ -48,6 +54,6 @@ module.exports = {
   findByConversationId,
   addConversation,
   addMessage,
-  updateConversation,
+  updateMessage,
   removeConversation,
 };
