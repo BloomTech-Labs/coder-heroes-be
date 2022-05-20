@@ -1,0 +1,99 @@
+From 404d221757d4367da620dcedabcfbd878f3c6557 Mon Sep 17 00:00:00 2001
+From: kylerostler <93017344+kylerostler@users.noreply.github.com>
+Date: Wed, 18 May 2022 12:44:02 -0600
+Subject: [PATCH] Got all routes working added delete.
+
+--Fixed assign endpoint to send correct information to backend.
+--Created delete endpoint to remove badge relationship from join table.
+--Created getStudentBadgeId to get badge from join table.
+--Created removeBadge to take a studentBadgeId and remove from join
+table.
+
+Co-authored-by: Will Phillips <42WPhillips42@gmail.com>
+---
+ README.md                        |  1 +
+ api/classroom/classroomModel.js  | 13 +++++++++++++
+ api/classroom/classroomRouter.js | 23 +++++++++++++++++++++--
+ 3 files changed, 35 insertions(+), 2 deletions(-)
+
+diff --git a/README.md b/README.md
+index 2379e18..0b80e18 100644
+--- a/README.md
++++ b/README.md
+@@ -147,6 +147,7 @@ avatarUr(not required): string,
+ | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+ | [GET]    | /course            | Returns an array containing all course objects                                                                                         |
+ | [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                                                                              |
++| [POST]   | /course            | --needs to be fleshed out-- |
+ | [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`.                                                          |
+ | [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion |
+ 
+diff --git a/api/classroom/classroomModel.js b/api/classroom/classroomModel.js
+index 678e453..bdd5c7c 100644
+--- a/api/classroom/classroomModel.js
++++ b/api/classroom/classroomModel.js
+@@ -27,9 +27,22 @@ const assignBadgeByIds = async (pair) => {
+     .insert(pair);
+ };
+ 
++const getStudentBadgeId = async (badge_id, child_id) => {
++  return await db('student_badges')
++    .select('student_badge_id')
++    .where('child_id', child_id)
++    .where('badge_id', badge_id);
++};
++
++const removeBadge = async (id) => {
++  return await db('student_badges').where('student_badge_id', id).del();
++};
++
+ module.exports = {
+   getStudentsByClassId,
+   getBadges,
+   getBadgesByChildId,
+   assignBadgeByIds,
++  getStudentBadgeId,
++  removeBadge,
+ };
+diff --git a/api/classroom/classroomRouter.js b/api/classroom/classroomRouter.js
+index 12ce2a8..6ad0cec 100644
+--- a/api/classroom/classroomRouter.js
++++ b/api/classroom/classroomRouter.js
+@@ -34,8 +34,8 @@ router.get('/badges/:child_id', authRequired, function (req, res, next) {
+ });
+ 
+ router.post('/assign', authRequired, function (req, res, next) {
+-  const child_id = req.params.child_id;
+-  const badge_id = req.params.badge_id;
++  const child_id = req.body.child_id;
++  const badge_id = req.body.badge_id;
+   Classroom.assignBadgeByIds({ child_id, badge_id })
+     .then((pair) => {
+       res.status(200).json(pair);
+@@ -43,4 +43,23 @@ router.post('/assign', authRequired, function (req, res, next) {
+     .catch(next);
+ });
+ 
++router.delete('/remove', authRequired, async function (req, res, next) {
++  const child_id = parseInt(req.body.child_id);
++  const badge_id = parseInt(req.body.badge_id);
++  const student_badge_id = await Classroom.getStudentBadgeId(
++    badge_id,
++    child_id
++  );
++  console.log(child_id, badge_id, student_badge_id);
++  try {
++    Classroom.removeBadge(student_badge_id[0].student_badge_id).then(() => {
++      res.status(200).json({
++        message: 'Student badge removed',
++      });
++    });
++  } catch (err) {
++    next(err);
++  }
++});
++
+ module.exports = router;
+-- 
+2.33.1.windows.1
+
