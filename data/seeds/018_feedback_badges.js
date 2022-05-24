@@ -1,36 +1,36 @@
 exports.seed = function (knex) {
     return knex('feedback_badges').insert([
           {
-            name: 'Analytical',
-            image: 'analytical',
+            name: 'Bright Idea!',
+            image: 'brightidea',
           },
           {
-            name: 'Artsy',
-            image: 'artsy',
+            name: 'Caring Helper!',
+            image: 'caringhelper',
           },
           {
-            name: 'Brave',
-            image: 'brave',
+            name: 'Cool Coder!',
+            image: 'coolcoder',
           },
           {
-            name: 'Coding',
-            image: 'coding',
+            name: 'Daily Champion!',
+            image: 'dailychampion',
           },
           {
-            name: 'Helped',
-            image: 'helped',
+            name: 'Designer!',
+            image: 'designer',
           },
           {
-            name: 'Helpful',
-            image: 'helpful',
+            name: 'Organized!',
+            image: 'organized',
           },
           {
-            name: 'Live',
-            image: 'live',
+            name: 'Personal Growth!',
+            image: 'personalgrowth',
           },
           {
-            name: 'Solved',
-            image: 'solved',
+            name: 'Team Player!',
+            image: 'teamplayer',
           },
     ]);
 }
