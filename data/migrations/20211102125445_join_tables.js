@@ -32,7 +32,6 @@ exports.up = function (knex) {
         .inTable('instructors')
         .onDelete('CASCADE');
     });
-
 };
 
 exports.down = function (knex) {
