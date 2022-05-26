@@ -5,10 +5,8 @@ const router = express.Router();
 
 router.get('/students/:course_id', authRequired, function (req, res) {
   const course_id = parseInt(req.params.course_id);
-  console.log(`${course_id} called here`);
   Classroom.getStudentsByClassId(course_id)
     .then((students) => {
-      console.log('here');
       res.status(200).json(students);
     })
     .catch((err) => {
@@ -54,7 +52,6 @@ router.delete('/remove/:badge_id/:child_id', authRequired, async function (
     badge_id,
     child_id
   );
-  console.log(child_id, badge_id, student_badge_id);
   try {
     Classroom.removeBadge(student_badge_id[0].student_badge_id).then(() => {
       res.status(200).json({
