@@ -2,22 +2,27 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Instructors = require('./instructorModel');
 const router = express.Router();
-const {
-  getInstructorId,
-  checkInstructorExist,
-} = require('./instructorMiddleware');
+const { checkInstructorExist } = require('./instructorMiddleware');
 
-router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
-  Instructors.findInstructorCourses(req.instructor_id)
-    .then((courses) => {
-      if (courses) {
-        res.status(200).json(courses);
-      } else {
-        res.status(404).json({ error: 'You do not have any active courses.' });
-      }
-    })
-    .catch(next);
-});
+router.get(
+  '/courses/:instructor_id',
+  authRequired,
+  checkInstructorExist,
+
+  (req, res, next) => {
+    Instructors.findInstructorCourses(req.params.instructor_id)
+      .then((courses) => {
+        if (courses.length >= 1) {
+          res.status(200).json(courses);
+        } else {
+          res
+            .status(404)
+            .json({ error: 'You do not have any active courses.' });
+        }
+      })
+      .catch(next);
+  }
+);
 
 router.get(
   '/:instructor_id',
