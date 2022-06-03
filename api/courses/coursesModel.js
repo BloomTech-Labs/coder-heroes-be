@@ -16,6 +16,13 @@ const findByCourseId = async (course_id) => {
     .first();
 };
 
+const getStudentsById = async (course_id) => {
+  return await db('children as c')
+    .leftJoin('enrollments as e', 'c.child_id', 'e.child_id')
+    .leftJoin('courses as co', 'co.course_id', 'e.course_id')
+    .where('co.course_id', course_id);
+};
+
 const addCourse = async (newCourse) => {
   const [createdCourse] = await db('courses').insert(newCourse).returning('*');
   return createdCourse;
@@ -35,6 +42,7 @@ const removeCourse = async (course_id) => {
 module.exports = {
   getAllCourses,
   findByCourseId,
+  getStudentsById,
   addCourse,
   updateCourse,
   removeCourse,
