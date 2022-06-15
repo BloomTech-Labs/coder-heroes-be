@@ -41,26 +41,26 @@ router.post('/assign', authRequired, function (req, res, next) {
     .catch(next);
 });
 
-router.delete('/remove/:badge_id/:child_id', authRequired, async function (
-  req,
-  res,
-  next
-) {
-  const child_id = parseInt(req.params.child_id);
-  const badge_id = parseInt(req.params.badge_id);
-  const student_badge_id = await Classroom.getStudentBadgeId(
-    badge_id,
-    child_id
-  );
-  try {
-    Classroom.removeBadge(student_badge_id[0].student_badge_id).then(() => {
-      res.status(200).json({
-        message: 'Student badge removed',
+router.delete(
+  '/remove/:badge_id/:child_id',
+  authRequired,
+  async function (req, res, next) {
+    const child_id = parseInt(req.params.child_id);
+    const badge_id = parseInt(req.params.badge_id);
+    const student_badge_id = await Classroom.getStudentBadgeId(
+      badge_id,
+      child_id
+    );
+    try {
+      Classroom.removeBadge(student_badge_id[0].student_badge_id).then(() => {
+        res.status(200).json({
+          message: 'Student badge removed',
+        });
       });
-    });
-  } catch (err) {
-    next(err);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = router;

@@ -1,10 +1,9 @@
 exports.up = (knex) => {
   return knex.schema
-    .createTable('inboxes', function (table) {
-      table.increments('inbox_id');
+    .createTable('conversations', function (table) {
+      table.increments('conversation_id');
       table
         .integer('profile_id')
-        .unique()
         .notNullable()
         .references('profile_id')
         .inTable('profiles')
@@ -24,15 +23,17 @@ exports.up = (knex) => {
         .inTable('profiles')
         .onDelete('CASCADE');
       table
-        .integer('inbox_id')
+        .integer('conversation_id')
         .unsigned()
         .notNullable()
-        .references('inbox_id')
-        .inTable('inboxes')
+        .references('conversation_id')
+        .inTable('conversations')
         .onDelete('CASCADE');
     });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('messages').dropTableIfExists('inboxes');
+  return knex.schema
+    .dropTableIfExists('messages')
+    .dropTableIfExists('conversations');
 };

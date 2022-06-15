@@ -1,45 +1,59 @@
 const db = require('../../data/db-config');
 
-const getInboxes = async () => {
-  return db('inboxes');
+const getConversations = async () => {
+  return db('conversations');
 };
 
 const findByProfileId = async (profile_id) => {
-  return db('inboxes')
-    .select('inbox_id', 'profile_id')
+  return db('conversations')
+    .select('conversation_id', 'profile_id')
     .where('profile_id', profile_id)
     .first();
 };
 
-const findByInboxId = async (inbox_id) => {
-  return db('inboxes')
-    .select('inbox_id', 'profile_id')
-    .where('inbox_id', inbox_id)
-    .first();
+const findByConversationId = async (conversation_id) => {
+  const test = await db('conversations')
+    .select('conversation_id')
+    .where('conversation_id', conversation_id);
+  console.log('test.length: ', test.length);
+  if (test.length) {
+    return db('messages')
+      .select(
+        'messages_id',
+        'sent_at',
+        'title',
+        'message',
+        'sent_by_profile_id',
+        'conversation_id'
+      )
+      .where('conversation_id', conversation_id);
+  } else {
+    return test;
+  }
 };
 
-const addInbox = async (inbox) => {
-  return db('inboxes').insert(inbox);
+const addConversation = async (conversation) => {
+  return db('conversations').insert(conversation);
 };
 
 const addMessage = async (message) => {
   return db('messages').insert(message);
 };
 
-const updateInbox = (profile_id, inbox) => {
-  return db('inboxes').where('profile_id', profile_id).update(inbox);
+const updateMessage = (messages_id, message) => {
+  return db('messages').where('messages_id', messages_id).update(message);
 };
 
-const removeInbox = async (profile_id) => {
-  return db('inboxes').where('profile_id', profile_id).delete();
+const removeConversation = async (conversation_id) => {
+  return db('conversations').where('conversation_id', conversation_id).delete();
 };
 
 module.exports = {
-  getInboxes,
+  getConversations,
   findByProfileId,
-  findByInboxId,
-  addInbox,
+  findByConversationId,
+  addConversation,
   addMessage,
-  updateInbox,
-  removeInbox,
+  updateMessage,
+  removeConversation,
 };

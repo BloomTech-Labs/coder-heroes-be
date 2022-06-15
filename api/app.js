@@ -65,7 +65,7 @@ app.use(['/profile', '/profiles'], profileRouter);
 app.use(['/parent', '/parents'], parentRouter);
 app.use(['/instructor', '/instructors'], instructorRouter);
 app.use(['/user'], userRouter);
-app.use(['/inbox', '/inboxes'], inboxRouter);
+app.use(['/conversation', '/conversations'], inboxRouter);
 app.use(
   ['/program-type', '/program-types', '/program', '/programs'],
   programTypesRouter

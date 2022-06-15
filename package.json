@@ -5,6 +5,7 @@
   "license": "MIT",
   "repository": "github:Lambda-School-Labs/labs-api-starter",
   "scripts": {
+    "server": "nodemon server.js",
     "start": "node server.js",
     "migrate": "knex migrate:latest --knexfile config/knexfile.js",
     "rollback": "knex migrate:rollback --knexfile config/knexfile.js",
