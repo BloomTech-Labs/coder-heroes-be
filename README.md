@@ -14,15 +14,15 @@
 }
 ```
 
-| Method | URL                         | Description                                                                                                              |     |
-| ------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --- |
-| [GET]  | /profile/                   | Returns an array of all existing profiles.                                                                               |
-| [GET]  | /profile/:okta_id/          | Returns the profile object with the specified `okta_id`.                                                                 |
-| [GET]  | /profiles/users/:profile_id | Returns the profile object with the specified `profile id`                                                               |
-| [GET]  | /profile/role/:role_id      | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
-
-| [PUT] | /profile/ | Returns an event object with the specified `okta`. Updates specific profile. |
-| [DELETE] | /profile/:okta_id/ | Returns an event object with the specified `okta`. Deletes specific profile. |
+| Method   | URL                                                                                                                    | Description                                                                                                              |
+| -------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [GET]    | /profile/                                                                                                              | Returns an array of all existing profiles.                                                                               |
+| [GET]    | /profile/:okta_id/                                                                                                     | Returns the profile object with the specified `okta_id`.                                                                 |
+| [GET]    | /profiles/users/:profile_id <b>(BUG: /profiles/users route does not exist; app.js only connects to /profiles/user)</b> | Returns an array filled with event objects that contains information based on profile_id and role_id.                    |
+| [GET]    | /profile/role/:role_id <b>(BUG: does not return any data)</b>                                                          | Returns an array filled with event objects that contain information based on role_id for all profiles of a role_id type. |
+| [POST]   | /profile/                                                                                                              | Requires a name, password, and email. Registers a new user.                                                              |
+| [PUT]    | /profile/                                                                                                              | Returns an event object with the specified `okta`. Updates specific profile.                                             |
+| [DELETE] | /profile/:okta_id/                                                                                                     | Returns an event object with the specified `okta`. Deletes specific profile.                                             |
 
 #### User:
 
@@ -147,6 +147,7 @@ avatarUr(not required): string,
 | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /course            | Returns an array containing all course objects                                                                                         |
 | [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                                                                              |
+| [POST]   | /course            | --needs to be fleshed out-- |
 | [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`.                                                          |
 | [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion |
 
@@ -170,23 +171,23 @@ avatarUr(not required): string,
 | [PUT]    | /newsfeed/:newsfeed_id  | Updates the newsfeed object with the given newsfeed_id and returns the newly updated newsfeed |
 | [DELETE] | /newsfeed/:newsfeed_id/ | Deletes the newsfeed object with the given newsfeed_id and returns the deleted newsfeed.      |
 
-<h1>Inboxes</h1>
+<h1>Conversations</h1>
 
 ```
 {
-  inbox_id: INCREMENT (primary key, auto-increments, generated by database),
+  conversation_id: INCREMENT (primary key, auto-increments, generated by database),
   profile_id: INTEGER (required, foreign key),
 }
 ```
 
 | Method   | URL                 | Description                                                                                                                      |
 | -------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [GET]    | /inbox/             | Returns an array filled with inbox event objects.                                                                                |
-| [GET]    | /inbox/:profile_id/ | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
-| [POST]   | /inbox/             | Creates an inbox and returns the newly created inbox.                                                                            |
-| [POST]   | /inbox/messages/    | Returns the event object with the specified `inbox_id`. Sends a message.                                                         |
-| [PUT]    | /inbox/:profile_id  | Returns an array filled with event objects with the specific `profile_id`. Updates an inbox.                                     |
-| [DELETE] | /inbox/:profile_id/ | Returns an array filled with event objects with the specific `okta`. Deletes an inbox.                                           |
+| [GET]    | /conversation_id/             | Returns an array filled with inbox event objects.                                                                                |
+| [GET]    | /conversation_id/:profile_id/ | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
+| [POST]   | /conversation_id/             | Creates an inbox and returns the newly created inbox.                                                                            |
+| [POST]   | /conversation_id/messages/    | Returns the event object with the specified `inbox_id`. Sends a message.                                                         |
+| [PUT]    | /conversation_id/:profile_id  | Returns an array filled with event objects with the specific `profile_id`. Updates an inbox.                                     |
+| [DELETE] | /conversation_id/:profile_id/ | Returns an array filled with event objects with the specific `okta`. Deletes an inbox.                                           |
 
 <h1>Calendar Events</h1>
 

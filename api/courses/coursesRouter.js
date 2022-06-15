@@ -225,8 +225,16 @@ router.get('/', authRequired, function (req, res, next) {
  *       description: 'Course Instance with id {course_id} does not exist'
  */
 
-router.get('/:course_id', authRequired, checkCourseExists, function (req, res) {
+router.get('/:course_id', authRequired, checkCourseExists, (req, res) => {
   res.status(200).json(req.course);
+});
+
+router.get('/students/:course_id', authRequired, function (req, res, next) {
+  Courses.getStudentsById()
+    .then((students) => {
+      res.status(200).json(students);
+    })
+    .catch(next);
 });
 
 /**
