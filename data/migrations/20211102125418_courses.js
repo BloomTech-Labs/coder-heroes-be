@@ -62,7 +62,7 @@ exports.up = (knex) => {
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTableIfExists('instructors_program_types')
-    .dropTableIfExists('courses')
-    .dropTableIfExists('programs');
+    .raw('DROP TABLE instructors_program_types CASCADE')
+    .raw('DROP TABLE courses CASCADE')
+    .raw('DROP TABLE programs CASCADE');
 };

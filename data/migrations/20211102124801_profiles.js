@@ -79,7 +79,7 @@ exports.up = (knex) => {
 
 exports.down = (knex) => {
   return knex.schema
-    .dropTableIfExists('instructors')
+    .raw('DROP TABLE instructors CASCADE')
     .dropTableIfExists('children')
     .dropTableIfExists('parents')
     .dropTableIfExists('admins')

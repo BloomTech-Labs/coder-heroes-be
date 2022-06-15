@@ -1,8 +1,45 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-// const Profiles = require('../profile/profileModel');
+const Profiles = require('../profile/profileModel');
 const User = require('./userModel');
 const router = express.Router();
+const oktaClient = require('../../lib/oktaClient');
+
+/* Create a new User (register). */
+router.post('/register', (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const newUser = {
+    profile: {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      login: req.body.email,
+    },
+    credentials: {
+      password: {
+        value: req.body.password,
+      },
+    },
+  };
+  oktaClient
+    .createUser(newUser)
+    .then((user) => {
+      return Profiles.create({
+        email: user.profile.email,
+        name: user.profile.firstName + ' ' + user.profile.lastName,
+        okta_id: user.id,
+        role_id: req.body.role_id,
+      }).then(() => user);
+    })
+    .then((user) => {
+      res.status(201);
+      res.send(user);
+    })
+    .catch((err) => {
+      res.status(400);
+      res.send(err);
+    });
+});
 
 router.get('/', authRequired, function (req, res) {
   const { role_id, profile_id } = req.profile;

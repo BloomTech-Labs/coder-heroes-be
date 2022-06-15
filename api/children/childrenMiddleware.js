@@ -1,9 +1,10 @@
 const Children = require('./childrenModel');
+
 const checkChildExist = async (req, res, next) => {
-  const id = req.params.id;
-  const foundChild = await Children.findByChildId(id);
+  const { child_id } = req.params;
+  const foundChild = await Children.findByChildId(child_id);
   if (!foundChild) {
-    next({ status: 404, message: `child with id ${id} is not found ` });
+    next({ status: 404, message: `child with id ${child_id} is not found ` });
   } else {
     req.child = foundChild;
     next();
@@ -29,17 +30,40 @@ const isChildAlreadyEnrolled = async (req, res, next) => {
   }
 };
 
-const checkChildObject = async (req, res, next) => {
-  const { profile_id } = req.body;
-  if (!profile_id) next({ status: 400, message: 'profile_id is required' });
-  if (typeof profile_id !== 'number')
-    next({ status: 400, message: 'profile_id must be of type number' });
-  const profile = await Children.findByChildId(profile_id);
-  if (!profile)
+const isChildParent = async (req, res, next) => {
+  const { child_id } = req.params;
+  const { profile_id } = req.profile;
+  const [parent] = await Children.findChildParent(child_id);
+  if (parent.profile_id === profile_id) {
+    next();
+  } else {
     next({
-      status: 400,
-      message: `profile with id ${profile_id} does not exist`,
+      status: 403,
+      message: `Child with id ${child_id} does not belong to parent with profile id ${profile_id}`,
     });
+  }
+};
+
+const checkChildObject = async (req, res, next) => {
+  let requiredFields = [
+    ['name', 'string'],
+    ['username', 'string'],
+    ['age', 'number'],
+  ];
+
+  for (let field of requiredFields) {
+    if (!req.body[field[0]])
+      res.status(400).json({ message: `${field[0]} is required` });
+    if (typeof req.body[field[0]] !== field[1])
+      res.status(400).json({ message: `${field[0]} must be a ${field[1]}` });
+  }
+
+  if (
+    typeof req.body.avatarUrl !== 'string' ||
+    req.body.avatarUrl.length > 255
+  ) {
+    req.body.avatarUrl = undefined;
+  }
 
   next();
 };
@@ -47,5 +71,6 @@ const checkChildObject = async (req, res, next) => {
 module.exports = {
   checkChildExist,
   isChildAlreadyEnrolled,
+  isChildParent,
   checkChildObject,
 };
