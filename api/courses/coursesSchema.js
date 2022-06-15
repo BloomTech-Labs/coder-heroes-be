@@ -44,12 +44,14 @@ const courseSchema = yup.object().shape({
     .typeError('end_time must be a string')
     .trim('whitespace alone is not accepted')
     .required('end_time is required')
-    .test('is_greater', 'end time should be greater than start time', function (
-      value
-    ) {
-      const { start_time } = this.parent;
-      return moment(value, 'HH:mm').isAfter(moment(start_time, 'HH:mm'));
-    }),
+    .test(
+      'is_greater',
+      'end time should be greater than start time',
+      function (value) {
+        const { start_time } = this.parent;
+        return moment(value, 'HH:mm').isAfter(moment(start_time, 'HH:mm'));
+      }
+    ),
   start_date: yup.date().required('date is required'),
   end_date: yup
     .date()

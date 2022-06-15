@@ -39,17 +39,18 @@ router.post(
   }
 );
 
-router.get('/:child_id', authRequired, checkChildExist, async function (
-  req,
-  res,
-  next
-) {
-  try {
-    res.status(200).json(req.child);
-  } catch (error) {
-    next(error);
+router.get(
+  '/:child_id',
+  authRequired,
+  checkChildExist,
+  async function (req, res, next) {
+    try {
+      res.status(200).json(req.child);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.put(
   '/:child_id',
@@ -85,19 +86,20 @@ router.delete(
   }
 );
 
-router.get('/:id/enrollments', authRequired, checkChildExist, async function (
-  req,
-  res,
-  next
-) {
-  try {
-    const { id } = req.params;
-    const enrollments = await Children.getEnrolledCourses(id);
-    res.status(200).json(enrollments);
-  } catch (error) {
-    next(error);
+router.get(
+  '/:id/enrollments',
+  authRequired,
+  checkChildExist,
+  async function (req, res, next) {
+    try {
+      const { id } = req.params;
+      const enrollments = await Children.getEnrolledCourses(id);
+      res.status(200).json(enrollments);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.post(
   '/:id/enrollments',

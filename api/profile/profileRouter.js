@@ -146,12 +146,14 @@ router.get('/', authRequired, function (req, res) {
  *        description: 'Profile not found'
  */
 
-router.get('/:okta_id', authRequired, checkProfileExists(true), function (
-  req,
-  res
-) {
-  res.status(200).json(req.user);
-});
+router.get(
+  '/:okta_id',
+  authRequired,
+  checkProfileExists(true),
+  function (req, res) {
+    res.status(200).json(req.user);
+  }
+);
 
 /*p*
  * @swagger
