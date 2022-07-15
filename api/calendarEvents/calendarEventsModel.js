@@ -34,6 +34,22 @@ const delCalendarEventById = async (event_id) => {
   return await db('calendar_events').where('event_id', event_id).del();
 };
 
+const addCourse = async (newCourse) => {
+  const [createdCourse] = await db('courses').insert(newCourse).returning('*');
+  return createdCourse;
+};
+
+const updateCourse = async (course_id, updatedCourse) => {
+  return await db('courses')
+    .where({ course_id })
+    .update(updatedCourse)
+    .returning('*');
+};
+
+const removeCourse = async (course_id) => {
+  return await db('courses').where('course_id', '=', course_id).del();
+};
+
 module.exports = {
   getAllCalendarEvents,
   findCalendarEventById,
@@ -41,4 +57,7 @@ module.exports = {
   addCalendarEvent,
   updateCalendarEvent,
   delCalendarEventById,
+  addCourse,
+  updateCourse,
+  removeCourse,
 };
