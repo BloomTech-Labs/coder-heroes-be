@@ -44,6 +44,17 @@ const checkInstructorExists = async (req, res, next) => {
   }
 };
 
+// const checkAge = (req, res, next) => {
+
+// }
+
+// const checkIfCourseExist = (req, res, next) => {
+
+// }
+// const checkIfCourseFull = (req, res, next) => {
+
+// }
+
 module.exports = {
   checkCourseExists,
   validateCourseObject,
