@@ -157,7 +157,7 @@ const {
  *       $ref: '#/components/responses/UnauthorizedError'
  */
 
-router.get('/', authRequired, function (req, res, next) {
+router.get('/', function (req, res, next) {
   Courses.getAllCourses()
     .then((scheduleList) => {
       res.status(200).json(scheduleList);
@@ -165,7 +165,7 @@ router.get('/', authRequired, function (req, res, next) {
     .catch(next);
 });
 
-/**
+/**z
  * @swagger
  * components:
  *  parameters:

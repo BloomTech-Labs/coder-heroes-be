@@ -44,25 +44,8 @@ const checkInstructorExists = async (req, res, next) => {
   }
 };
 
-const checkAge = (req, res, next) => {
-  console.log('check age middleware');
-  next();
-};
-
-const checkIfCourseExist = (req, res, next) => {
-  console.log('check if course exist middleware');
-  next();
-};
-const checkIfCourseFull = (req, res, next) => {
-  console.log('check if course is full middleware');
-  next();
-};
-
 module.exports = {
   checkCourseExists,
   validateCourseObject,
   checkInstructorExists,
-  checkAge,
-  checkIfCourseExist,
-  checkIfCourseFull,
 };
