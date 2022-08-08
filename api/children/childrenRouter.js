@@ -85,6 +85,7 @@ router.delete(
     }
   }
 );
+
 // req.params has bug, bc ID is not specified... so other funtion won't work properly... investgate further
 // middleware for enrollments ready to implement  checkChildExist2, checkIfCourseExist, checkChildAge, checkCourseSize
 router.get(
