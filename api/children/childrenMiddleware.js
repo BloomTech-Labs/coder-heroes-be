@@ -1,4 +1,5 @@
 const Children = require('./childrenModel');
+const Course = require('../courses/coursesModel');
 
 const checkChildExist = async (req, res, next) => {
   const { child_id } = req.params;
@@ -8,6 +9,80 @@ const checkChildExist = async (req, res, next) => {
   } else {
     req.child = foundChild;
     next();
+  }
+};
+// Had to rewrite checkIfChild exist due to bug in initial function, investgate further
+const checkChildExist2 = async (req, res, next) => {
+  try {
+    const child = await Children.findByChildId(req.params.id);
+    if (!child) {
+      res.status(404).json({
+        message: 'no such child',
+      });
+    } else {
+      req.child = child;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: 'Problem finding child',
+    });
+  }
+};
+
+const checkIfCourseExist = async (req, res, next) => {
+  try {
+    const course_id = req.query.course_id;
+    const course = await Course.findByCourseId(course_id);
+    if (!course) {
+      res.status(404).json({
+        message: 'no such course',
+      });
+    } else {
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: 'Problem finding course',
+    });
+  }
+};
+
+const checkChildAge = async (req, res, next) => {
+  try {
+    const course_id = req.query.course_id;
+    const course = await Course.findByCourseId(course_id);
+    const child = await Children.findByChildId(req.params.id);
+    if (child.age < course.min_age || child.age > course.max_age) {
+      res.status(404).json({
+        message: 'Child is not the right age for this course',
+      });
+    } else {
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: 'Problem checking age',
+    });
+  }
+};
+
+// Function is awaiting data from how many are enrolled
+const checkCourseSize = async (req, res, next) => {
+  try {
+    const course_id = req.query.course_id;
+    const course = await Course.findByCourseId(course_id);
+    if (course.max_size == course.enrolled) {
+      res.status(404).json({
+        message: 'Course is at max size! Sorry, try a different course',
+      });
+    } else {
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: 'Problem checking course size',
+    });
   }
 };
 
@@ -73,4 +148,8 @@ module.exports = {
   isChildAlreadyEnrolled,
   isChildParent,
   checkChildObject,
+  checkChildExist2,
+  checkIfCourseExist,
+  checkChildAge,
+  checkCourseSize,
 };
