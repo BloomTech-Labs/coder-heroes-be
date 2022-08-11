@@ -12,6 +12,7 @@ exports.up = (knex) => {
       table.string('course_description').notNullable();
       table.specificType('days_of_week', 'text ARRAY');
       table.integer('max_size').notNullable();
+      table.integer('enrolled_students').notNullable();
       table.integer('min_age').notNullable();
       table.integer('max_age').notNullable();
       table
@@ -35,8 +36,9 @@ exports.up = (knex) => {
       table.time('end_time').notNullable();
       table.date('start_date').notNullable();
       table.date('end_date').notNullable();
-      table.string('location').notNullable();
       table.integer('number_of_sessions').notNullable();
+      table.string('difficulty').notNullable();
+      table.string('session_type').notNullable();
     })
     .createTable('instructors_program_types', (table) => {
       //programs that instructors have been approved to teach
