@@ -30,7 +30,7 @@ router.post('/register', (req, res) => {
         email: user.profile.email,
         name: user.profile.firstName + ' ' + user.profile.lastName,
         okta_id: user.id,
-        role_id: 3,
+        role_id: req.body.role_id,
       }).then(() => user);
     })
     .then((user) => {

@@ -9,7 +9,7 @@ const {
   checkInstructorExist,
 } = require('./instructorMiddleware');
 
-/* Create a new Instructor profile (register). */
+/* Create a new Instructor profile */
 router.post('/register', (req, res) => {
   if (!req.body) return res.sendStatus(400);
   const newInstructor = {
