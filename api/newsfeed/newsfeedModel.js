@@ -1,7 +1,7 @@
 const db = require('../../data/db-config');
 
 const getNewsfeed = async () => {
-  return await db('newsfeed');
+  return await db('newsfeed').orderBy('posted_at', 'desc');
 };
 
 const findByNewsfeedId = async (newsfeed_id) => {
