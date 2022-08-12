@@ -1,4 +1,4 @@
-exports.seed = function (knex) {
+exports.seed = function (knex) {/* eslint-disable */
     return knex('newsfeed').insert([
         {
             title: 'Check out these coding camps!',
@@ -19,7 +19,7 @@ exports.seed = function (knex) {
         {
             title: 'Robot dog learns to walk in one hour',
             link: 'https://www.sciencedaily.com/releases/2022/07/220718122229.htm',
-            description: "Like a newborn animal, a four-legged robot stumbles around during its first walking attempts. But while a foal or a giraffe needs much longer to master walking, the robot learns to move forward fluently in just one hour. A computer program acts as the artificial presentation of the animal's spinal cord, and learns to optimize the robot's movement in a short time. The artificial neural network is not yet ideally adjusted at the beginning, but rapidly self-adjusts."
+            description: 'Like a newborn animal, a four-legged robot stumbles around during its first walking attempts. But while a foal or a giraffe needs much longer to master walking, the robot learns to move forward fluently in just one hour. A computer program acts as the artificial presentation of the animal\'s spinal cord, and learns to optimize the robot\'s movement in a short time. The artificial neural network is not yet ideally adjusted at the beginning, but rapidly self-adjusts.'
         },
     ]);
 };

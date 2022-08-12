@@ -1,4 +1,4 @@
-const db = require('../../data/db-config');
+const db = require('../../data/db-config'); /* eslint-disable */
 
 const getNewsfeed = async () => {
   return await db('newsfeed').orderBy('posted_at', 'desc');

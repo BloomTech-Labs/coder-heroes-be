@@ -1,4 +1,4 @@
-exports.up = (knex) => {
+exports.up = (knex) => {/* eslint-disable */
     return knex.schema.createTable('newsfeed', function (table) {
         table.increments('newsfeed_id');
         table.string('title').notNullable();
