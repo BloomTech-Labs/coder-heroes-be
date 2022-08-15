@@ -1,18 +1,47 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
+const {
+  roleAuthenticationParent,
+} = require('../middleware/roleAuthentication.js');
+const {
+  checkChildObject,
+  checkChildExist,
+} = require('../children/ChildrenMiddleware');
 const Parents = require('./parentModel');
 const Children = require('../children/childrenModel');
 const router = express.Router();
 
-router.post('/', authRequired, async function (req, res, next) {
-  const { profile_id } = req.profile;
-  try {
-    let child = await Children.addChild(profile_id, req.body);
-    res.status(201).json(child);
-  } catch (error) {
-    next(error);
+router.post(
+  '/',
+  authRequired,
+  roleAuthenticationParent,
+  checkChildObject,
+  async function (req, res, next) {
+    const { profile_id } = req.profile;
+    try {
+      let child = await Children.addChild(profile_id, req.body);
+      res.status(201).json(child);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
+
+router.put(
+  '/:child id',
+  authRequired,
+  roleAuthenticationParent,
+  checkChildExist,
+  async function (req, res, next) {
+    const { child_id } = req.params;
+    try {
+      let [child] = await Children.updateChild(child_id, req.body);
+      res.status(200).json(child);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get('/:profile_id/children', authRequired, function (req, res) {
   const { profile_id } = req.params;
