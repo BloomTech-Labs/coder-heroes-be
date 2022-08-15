@@ -28,7 +28,7 @@ router.post(
 );
 
 router.put(
-  '/:child id',
+  '/:child_id',
   authRequired,
   roleAuthenticationParent,
   checkChildExist,
@@ -37,6 +37,23 @@ router.put(
     try {
       let [child] = await Children.updateChild(child_id, req.body);
       res.status(200).json(child);
+      console.log(res);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.delete(
+  '/:child_id',
+  authRequired,
+  roleAuthenticationParent,
+  checkChildExist,
+  async function (req, res, next) {
+    const { child_id } = req.params;
+    try {
+      let { name } = await Children.removeChild(child_id);
+      res.status(200).json({ name });
     } catch (error) {
       next(error);
     }
