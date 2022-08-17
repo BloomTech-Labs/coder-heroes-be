@@ -37,7 +37,6 @@ router.put(
     try {
       let [child] = await Children.updateChild(child_id, req.body);
       res.status(200).json(child);
-      console.log(res);
     } catch (error) {
       next(error);
     }
@@ -54,6 +53,19 @@ router.delete(
     try {
       let { name } = await Children.removeChild(child_id);
       res.status(200).json({ name });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
+  '/:child_id',
+  authRequired,
+  checkChildExist,
+  async function (req, res, next) {
+    try {
+      res.status(200).json(req.child);
     } catch (error) {
       next(error);
     }
