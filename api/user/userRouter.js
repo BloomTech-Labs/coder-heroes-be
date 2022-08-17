@@ -15,22 +15,16 @@ router.post('/register', (req, res) => {
       email: req.body.email,
       login: req.body.email,
     },
-    credentials: {
-      password: {
-        value: req.body.password,
-      },
-    },
   };
-  console.log(newUser); // now sending to Okta
   oktaClient
     .createUser(newUser)
     .then((user) => {
-      console.log('user from okta:', user);
       return Profiles.create({
         email: user.profile.email,
         name: user.profile.firstName + ' ' + user.profile.lastName,
         okta_id: user.id,
         role_id: req.body.role_id,
+        pending: false,
       }).then(() => user);
     })
     .then((user) => {
@@ -38,7 +32,6 @@ router.post('/register', (req, res) => {
       res.send(user);
     })
     .catch((err) => {
-      console.log(err);
       res.status(400);
       res.send(err);
     });
