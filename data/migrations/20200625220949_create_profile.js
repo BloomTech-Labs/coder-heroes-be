@@ -19,6 +19,7 @@ exports.up = (knex) => {
       table
         .string('avatarUrl')
         .defaultTo('https://i.stack.imgur.com/frlIf.png');
+      table.string('pending');
     });
 };
 

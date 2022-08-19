@@ -2,10 +2,44 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const Instructors = require('./instructorModel');
 const router = express.Router();
+const Profiles = require('../profile/profileModel');
+const oktaClient = require('../../lib/oktaClient');
 const {
   getInstructorId,
   checkInstructorExist,
 } = require('./instructorMiddleware');
+
+/* Create a new Instructor profile */
+router.post('/register', (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  const newInstructor = {
+    profile: {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      login: req.body.email,
+    },
+  }; // now sending to Okta
+  oktaClient
+    .createUser(newInstructor)
+    .then((instructor) => {
+      return Profiles.create({
+        email: instructor.profile.email,
+        name: instructor.profile.firstName + ' ' + instructor.profile.lastName,
+        okta_id: instructor.id,
+        role_id: 3,
+        pending: true,
+      }).then(() => instructor);
+    })
+    .then((instructor) => {
+      res.status(201);
+      res.send(instructor);
+    })
+    .catch((err) => {
+      res.status(400);
+      res.send(err);
+    });
+});
 
 router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
   Instructors.findInstructorCourses(req.instructor_id)

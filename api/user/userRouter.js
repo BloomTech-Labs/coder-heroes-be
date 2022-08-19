@@ -15,11 +15,6 @@ router.post('/register', (req, res) => {
       email: req.body.email,
       login: req.body.email,
     },
-    credentials: {
-      password: {
-        value: req.body.password,
-      },
-    },
   };
   oktaClient
     .createUser(newUser)
@@ -29,6 +24,7 @@ router.post('/register', (req, res) => {
         name: user.profile.firstName + ' ' + user.profile.lastName,
         okta_id: user.id,
         role_id: req.body.role_id,
+        pending: false,
       }).then(() => user);
     })
     .then((user) => {
