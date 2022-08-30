@@ -2,7 +2,7 @@ const db = require('../../data/db-config');
 
 const getAllCourses = async () => {
   return await db('courses as c')
-    .select('c.*', 'p.program_name', 'i.instructor_id')
+    .select('c.*', 'p.program_name', 'i.instructor_id', 'i.instructor_name')
     .leftJoin('programs as p', 'p.program_id', 'c.program_id')
     .leftJoin('instructors as i', 'c.instructor_id', 'i.instructor_id');
 };
