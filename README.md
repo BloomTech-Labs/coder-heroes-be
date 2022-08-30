@@ -140,6 +140,7 @@ avatarUr(not required): string,
   end_date: DATE (required),
   location: STRING (required),
   number_of_sessions: INTEGER (required),
+  instructor_name: STRING (required)
 }
 ```
 
