@@ -56,7 +56,7 @@ exports.up = (knex) => {
 
     .createTable('instructors', function (table) {
       table.increments('instructor_id');
-      table.string('instructor_name').notNullable()
+      table.string('instructor_name').notNullable();
       table.integer('rating').notNullable();
       table.string('availability');
       table.string('bio').notNullable();
