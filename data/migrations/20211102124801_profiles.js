@@ -67,6 +67,7 @@ exports.up = (knex) => {
         .inTable('profiles')
         .onDelete('CASCADE');
       table.string('status').notNullable().defaultTo('pending');
+      table.date('created_on').defaultTo(knex.fn.now());
       table
         .integer('approved_by')
         .defaultTo(null)

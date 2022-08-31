@@ -10,6 +10,7 @@ exports.up = (knex) => {
       table.increments('course_id');
       table.string('course_name').notNullable();
       table.string('course_description').notNullable();
+      table.date('created_on').defaultTo(knex.fn.now());
       table.specificType('days_of_week', 'text ARRAY');
       table.integer('max_size').notNullable();
       table.integer('enrolled_students').notNullable();
