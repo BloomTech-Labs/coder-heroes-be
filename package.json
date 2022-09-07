@@ -10,6 +10,7 @@
     "migrate": "knex migrate:latest --knexfile config/knexfile.js",
     "rollback": "knex migrate:rollback --knexfile config/knexfile.js",
     "watch:dev": "nodemon",
+    "email": "node api/email/emailTest.js",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "format": "npx prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
@@ -64,6 +65,7 @@
   "dependencies": {
     "@okta/jwt-verifier": "^2.0.0",
     "@okta/okta-sdk-nodejs": "^6.4.0",
+    "@sendgrid/mail": "^7.7.0",
     "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",

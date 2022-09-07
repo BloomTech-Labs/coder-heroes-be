@@ -72,18 +72,17 @@ avatarUr(not required): string,
 }
 ```
 
-| Method   | URL                       | Description                                                                       |
-| -------- | ------------------------- | --------------------------------------------------------------------------------- |
-| [GET]    | /children                  | Returns an array containing all existing children.|
-| [POST]   | /children                       | Requires a username, name, and age. Returns the name, profile_id, and parent_id.|
-| [GET]    | /children/:child_id | Returns the child with the given 'id'.|
-| [PUT]    | /children/:child_id             | Returns the updated child object|
-| [DELETE] | /children/:child_id             | Returns the name of the child deleted|
-| [GET]    | /children/:child_id/enrollments | Returns an array filled with event objects with the specified `id`.               |
-| [POST]   | /children/:child_id/enrollments | Returns the event object with the specified `id`. Enrolls a student.              |
-| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. <b>(Not Implemented)</b>|
-| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course. <b>(Not Implemented)</b>|
-
+| Method   | URL                             | Description                                                                                                 |
+| -------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [GET]    | /children                       | Returns an array containing all existing children.                                                          |
+| [POST]   | /children                       | Requires a username, name, and age. Returns the name, profile_id, and parent_id.                            |
+| [GET]    | /children/:child_id             | Returns the child with the given 'id'.                                                                      |
+| [PUT]    | /children/:child_id             | Returns the updated child object                                                                            |
+| [DELETE] | /children/:child_id             | Returns the name of the child deleted                                                                       |
+| [GET]    | /children/:child_id/enrollments | Returns an array filled with event objects with the specified `id`.                                         |
+| [POST]   | /children/:child_id/enrollments | Returns the event object with the specified `id`. Enrolls a student.                                        |
+| [PUT]    | /children/enrollments/          | Returns the event object with the specified `id`. Updates a student's enrollments. <b>(Not Implemented)</b> |
+| [DELETE] | /children/enrollments/:id       | Returns the event object with the specified `id`. Unenrolls student from course. <b>(Not Implemented)</b>   |
 
 <h1>Instructors</h1>
 
@@ -147,7 +146,7 @@ avatarUr(not required): string,
 | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /course            | Returns an array containing all course objects                                                                                         |
 | [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                                                                              |
-| [POST]   | /course            | --needs to be fleshed out-- |
+| [POST]   | /course            | --needs to be fleshed out--                                                                                                            |
 | [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`.                                                          |
 | [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion |
 
@@ -180,8 +179,8 @@ avatarUr(not required): string,
 }
 ```
 
-| Method   | URL                 | Description                                                                                                                      |
-| -------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Method   | URL                           | Description                                                                                                                      |
+| -------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /conversation_id/             | Returns an array filled with inbox event objects.                                                                                |
 | [GET]    | /conversation_id/:profile_id/ | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
 | [POST]   | /conversation_id/             | Creates an inbox and returns the newly created inbox.                                                                            |
@@ -300,3 +299,19 @@ Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86 <b>\*Curr
 [Loom Video PT4](https://www.loom.com/share/7da5fc043d3149afb05876c28df9bd3d)
 
 <br />
+
+<h2>Email Service</h2>
+In api/email, the emailHelper.js file contains the function to send a message, called sendEmail. Any function that wants to use sendEmail will need to import it into their file (see profileRouter.js). Parameters can be passed into it, like toEmail, name, template_id or other parameters. The parameters to use are created in the file that's calling the sendEmail function.
+
+To set up SendGrid:
+
+- Create an account with SendGrid
+- Create an API (replace YOUR_API_KEY with the API you receive from SendGrid into the below terminal command)
+- In your terminal, do these commands:
+  echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
+  echo "sendgrid.env" >> .gitignore
+  source ./sendgrid.env
+
+SendGrid will look at its own .env file for the API key and any other environment variables you wish to send it, such as the SENDGRID_FROM_EMAIL. (Send new keys via the first and third commands listed above. The second one only adds sendgrid.env to .gitignore so you don't share secrets.) When accessing SendGrid's env file, use process.env.NAME_OF_VARIABLE.
+
+Templates exist on SendGrid's site, under "Dynamic Templates." When requesting an email be sent, you'll use the template_id as one of the parameters you pass to SendEmail.

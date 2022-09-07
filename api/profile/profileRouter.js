@@ -2,6 +2,7 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Profiles = require('./profileModel');
+const { sendEmail } = require('../email/emailHelper');
 const router = express.Router();
 const {
   checkProfileObject,
@@ -36,6 +37,14 @@ router.get(
       });
     } else {
       res.status(200).json(foundProfile);
+      const instructorWelcomeMessage = {
+        to: 'lisamdespain@gmail.com',
+        // to: foundProfile.email, // Change to your recipient
+        from: process.env.SENDGRID_FROM_EMAIL, // Change to your verified sender
+        template_id: 'd-a4de80911362438bb35d481efa068398',
+        name: foundProfile.name,
+      };
+      sendEmail(instructorWelcomeMessage);
     }
   }
 );
