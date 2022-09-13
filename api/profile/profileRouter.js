@@ -205,7 +205,6 @@ router.post('/', checkProfileObject, async (req, res) => {
       });
     }
     if (prof[0].role_id === 3 || prof[0].role_id === '3') {
-      console.log(prof.profile_id);
       const instructorWelcomeMessage = {
         dynamic_template_data: {
           name: prof[0].name,
