@@ -2,7 +2,7 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Profiles = require('./profileModel');
-const { sendEmail } = require('../email/emailHelper');
+const { sendEmail, addToList } = require('../email/emailHelper');
 const router = express.Router();
 const {
   checkProfileObject,
@@ -37,14 +37,6 @@ router.get(
       });
     } else {
       res.status(200).json(foundProfile);
-      const instructorWelcomeMessage = {
-        to: 'lisamdespain@gmail.com',
-        // to: foundProfile.email, // Change to your recipient
-        from: process.env.SENDGRID_FROM_EMAIL, // Change to your verified sender
-        template_id: 'd-a4de80911362438bb35d481efa068398',
-        name: foundProfile.name,
-      };
-      sendEmail(instructorWelcomeMessage);
     }
   }
 );
@@ -168,7 +160,7 @@ router.get(
  * @swagger
  * /profile:
  *  post:
- *    summary: Add a profile
+ *    summary: Add a profile, send a welcome email, add to contact list (all by default, then specified per role)
  *    security:
  *      - okta: []
  *    tags:
@@ -202,23 +194,86 @@ router.get(
  */
 router.post('/', checkProfileObject, async (req, res) => {
   const profile = req.body;
-  try {
-    await Profiles.findById(profile.okta_id).then(async (pf) => {
-      if (pf == undefined) {
-        await Profiles.create(profile).then((profile) =>
-          res
-            .status(200)
-            .json({ message: 'profile created', profile: profile[0] })
-        );
-      } else {
-        res.status(400).json({ message: 'profile already exists' });
-      }
-    });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: e.message });
+  const profileExists = await Profiles.findById(profile.okta_id);
+  if (profileExists) {
+    res.status(400).json({ message: 'profile already exists' });
+  } else {
+    const prof = await Profiles.create(profile);
+    if (!prof) {
+      res.status(404).json({
+        message: 'There was an error saving the profile to the database.',
+      });
+    }
+    if (prof[0].role_id === 3 || prof[0].role_id === '3') {
+      console.log(prof.profile_id);
+      const instructorWelcomeMessage = {
+        dynamic_template_data: {
+          name: prof[0].name,
+        },
+        to: prof[0].email,
+        from: 'someone@somewhere.com', // verified sender in SendGrid account. Try to put this in env - hardcoded here because it wasn't working there.
+        template_id: 'd-a4de80911362438bb35d481efa068398',
+      };
+      const instructorList = {
+        list_ids: ['e7b598d9-23ca-48df-a62b-53470b5d1d86'],
+        email: prof[0].email,
+        name: prof[0].name,
+      };
+      sendEmail(instructorWelcomeMessage);
+      addToList(instructorList);
+      res.status(200).json({
+        message: 'instructor profile created',
+        profile: prof[0],
+      });
+    } else if (prof[0].role_id === 4 || prof[0].role_id === '4') {
+      const parentWelcomeMessage = {
+        dynamic_template_data: {
+          name: prof[0].name,
+        },
+        to: prof[0].email,
+        from: 'someone@somewhere.com',
+        template_id: 'd-19b895416ae74cea97e285c4401fcc1f',
+      };
+      const parentList = {
+        list: 'e7b598d9-23ca-48df-a62b-53470b5d1d86',
+        email: prof[0].email,
+        name: prof[0].name,
+      };
+      sendEmail(parentWelcomeMessage);
+      addToList(parentList);
+      res.status(200).json({
+        message: 'parent profile created',
+        profile: prof[0],
+      });
+    } else if (prof[0].role_id === 5 || prof[0].role_id === '5') {
+      const studentWelcomeMessage = {
+        dynamic_template_data: {
+          name: prof[0].name,
+        },
+        to: prof[0].email,
+        from: 'someone@somewhere.com',
+        template_id: 'd-a6dacc6241f9484a96554a13bbdcd971',
+      };
+      const studentList = {
+        list: '4dd72555-266f-4f8e-b595-ecc1f7ff8f28',
+        email: prof[0].email,
+        name: prof[0].name,
+      };
+      sendEmail(studentWelcomeMessage);
+      addToList(studentList);
+      res.status(200).json({
+        message: 'parent profile created',
+        profile: prof[0],
+      });
+    } else {
+      res.status(200).json({
+        message: 'profile created',
+        profile: prof[0],
+      });
+    }
   }
 });
+
 /**
  * @swagger
  * /profile:
