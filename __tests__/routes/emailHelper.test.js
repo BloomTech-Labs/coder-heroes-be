@@ -15,7 +15,8 @@ const newStudent = {
     name: 'New Student Here',
   },
   to: 'someperson@somewhere.com',
-  from: 'someperson@somewhere.com', // verified sender in SendGrid account
+  // The from email must be the email address of a verified sender in SendGrid account. If/when you verify the domain, an email coming from the domain is likely good enough.
+  from: 'someperson@somewhere.com',
   template_id: 'd-a6dacc6241f9484a96554a13bbdcd971',
 };
 

@@ -198,76 +198,76 @@ router.post('/', checkProfileObject, async (req, res) => {
   if (profileExists) {
     res.status(400).json({ message: 'profile already exists' });
   } else {
-    const prof = await Profiles.create(profile);
-    if (!prof) {
+    const newProfile = await Profiles.create(profile);
+    if (!newProfile) {
       res.status(404).json({
         message: 'There was an error saving the profile to the database.',
       });
     }
-    if (prof[0].role_id === 3 || prof[0].role_id === '3') {
+    if (newProfile[0].role_id === 3 || newProfile[0].role_id === '3') {
       const instructorWelcomeMessage = {
         dynamic_template_data: {
-          name: prof[0].name,
+          name: newProfile[0].name,
         },
-        to: prof[0].email,
+        to: newProfile[0].email,
         from: 'someone@somewhere.com', // verified sender in SendGrid account. Try to put this in env - hardcoded here because it wasn't working there.
         template_id: 'd-a4de80911362438bb35d481efa068398',
       };
       const instructorList = {
         list_ids: ['e7b598d9-23ca-48df-a62b-53470b5d1d86'],
-        email: prof[0].email,
-        name: prof[0].name,
+        email: newProfile[0].email,
+        name: newProfile[0].name,
       };
       sendEmail(instructorWelcomeMessage);
       addToList(instructorList);
       res.status(200).json({
         message: 'instructor profile created',
-        profile: prof[0],
+        profile: newProfile[0],
       });
-    } else if (prof[0].role_id === 4 || prof[0].role_id === '4') {
+    } else if (newProfile[0].role_id === 4 || newProfile[0].role_id === '4') {
       const parentWelcomeMessage = {
         dynamic_template_data: {
-          name: prof[0].name,
+          name: newProfile[0].name,
         },
-        to: prof[0].email,
+        to: newProfile[0].email,
         from: 'someone@somewhere.com',
         template_id: 'd-19b895416ae74cea97e285c4401fcc1f',
       };
       const parentList = {
         list: 'e7b598d9-23ca-48df-a62b-53470b5d1d86',
-        email: prof[0].email,
-        name: prof[0].name,
+        email: newProfile[0].email,
+        name: newProfile[0].name,
       };
       sendEmail(parentWelcomeMessage);
       addToList(parentList);
       res.status(200).json({
         message: 'parent profile created',
-        profile: prof[0],
+        profile: newProfile[0],
       });
-    } else if (prof[0].role_id === 5 || prof[0].role_id === '5') {
+    } else if (newProfile[0].role_id === 5 || newProfile[0].role_id === '5') {
       const studentWelcomeMessage = {
         dynamic_template_data: {
-          name: prof[0].name,
+          name: newProfile[0].name,
         },
-        to: prof[0].email,
+        to: newProfile[0].email,
         from: 'someone@somewhere.com',
         template_id: 'd-a6dacc6241f9484a96554a13bbdcd971',
       };
       const studentList = {
         list: '4dd72555-266f-4f8e-b595-ecc1f7ff8f28',
-        email: prof[0].email,
-        name: prof[0].name,
+        email: newProfile[0].email,
+        name: newProfile[0].name,
       };
       sendEmail(studentWelcomeMessage);
       addToList(studentList);
       res.status(200).json({
         message: 'parent profile created',
-        profile: prof[0],
+        profile: newProfile[0],
       });
     } else {
       res.status(200).json({
         message: 'profile created',
-        profile: prof[0],
+        profile: newProfile[0],
       });
     }
   }

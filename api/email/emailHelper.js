@@ -5,9 +5,6 @@ const sendEmail = (data) => {
   sgMail
     .send(data)
     .then((response) => {
-      // note: the following 2 console logs are SendGrid out of the box. Keep them if you like them. We found the stringify response to be more descriptive.
-      // console.log(response[0].statusCode);
-      // console.log(response[0].headers);
       console.log(JSON.stringify(response));
     })
     .catch((error) => {
