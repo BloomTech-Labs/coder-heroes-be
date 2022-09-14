@@ -72,18 +72,17 @@ avatarUr(not required): string,
 }
 ```
 
-| Method   | URL                       | Description                                                                       |
-| -------- | ------------------------- | --------------------------------------------------------------------------------- |
-| [GET]    | /children                  | Returns an array containing all existing children.|
-| [POST]   | /children                       | Requires a username, name, and age. Returns the name, profile_id, and parent_id.|
-| [GET]    | /children/:child_id | Returns the child with the given 'id'.|
-| [PUT]    | /children/:child_id             | Returns the updated child object|
-| [DELETE] | /children/:child_id             | Returns the name of the child deleted|
-| [GET]    | /children/:child_id/enrollments | Returns an array filled with event objects with the specified `id`.               |
-| [POST]   | /children/:child_id/enrollments | Returns the event object with the specified `id`. Enrolls a student.              |
-| [PUT]    | /children/enrollments/    | Returns the event object with the specified `id`. Updates a student's enrollments. <b>(Not Implemented)</b>|
-| [DELETE] | /children/enrollments/:id | Returns the event object with the specified `id`. Unenrolls student from course. <b>(Not Implemented)</b>|
-
+| Method   | URL                             | Description                                                                                                 |
+| -------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [GET]    | /children                       | Returns an array containing all existing children.                                                          |
+| [POST]   | /children                       | Requires a username, name, and age. Returns the name, profile_id, and parent_id.                            |
+| [GET]    | /children/:child_id             | Returns the child with the given 'id'.                                                                      |
+| [PUT]    | /children/:child_id             | Returns the updated child object                                                                            |
+| [DELETE] | /children/:child_id             | Returns the name of the child deleted                                                                       |
+| [GET]    | /children/:child_id/enrollments | Returns an array filled with event objects with the specified `id`.                                         |
+| [POST]   | /children/:child_id/enrollments | Returns the event object with the specified `id`. Enrolls a student.                                        |
+| [PUT]    | /children/enrollments/          | Returns the event object with the specified `id`. Updates a student's enrollments. <b>(Not Implemented)</b> |
+| [DELETE] | /children/enrollments/:id       | Returns the event object with the specified `id`. Unenrolls student from course. <b>(Not Implemented)</b>   |
 
 <h1>Instructors</h1>
 
@@ -149,7 +148,7 @@ avatarUr(not required): string,
 | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /course            | Returns an array containing all course objects                                                                                         |
 | [GET]    | /course/:course_id | Returns the course object with the specified `course_id`.                                                                              |
-| [POST]   | /course            | --needs to be fleshed out-- |
+| [POST]   | /course            | --needs to be fleshed out--                                                                                                            |
 | [PUT]    | /course/:course_id | Updates and returns the updated course object with the specified `course_id`.                                                          |
 | [DELETE] | /course/:course_id | Deletes the course object with the specified `course_id` and returns a message containing the deleted course_id on successful deletion |
 
@@ -182,8 +181,8 @@ avatarUr(not required): string,
 }
 ```
 
-| Method   | URL                 | Description                                                                                                                      |
-| -------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Method   | URL                           | Description                                                                                                                      |
+| -------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | [GET]    | /conversation_id/             | Returns an array filled with inbox event objects.                                                                                |
 | [GET]    | /conversation_id/:profile_id/ | Retrieves an inbox with the specified inbox_id <b>BUG(?): incorrectly labeled as profile_id in codebase rather than inbox_id</b> |
 | [POST]   | /conversation_id/             | Creates an inbox and returns the newly created inbox.                                                                            |
@@ -302,3 +301,47 @@ Visual Database Schema: https://dbdesigner.page.link/WTZRbVeTR7EzLvs86 <b>\*Curr
 [Loom Video PT4](https://www.loom.com/share/7da5fc043d3149afb05876c28df9bd3d)
 
 <br />
+
+<h2>Email Service</h2>
+In api/email, the emailHelper.js file contains the following functions: sendEmail and addToList. SendEmail sends an API request to SendGrid to send a templated email to the email address its given. The other function: addToList adds the email and name to a specified SendGrid contact list (they're added to all no matter what, then also to the specified list id). Any function that wants to use sendEmail and addToList will need to import it into their file (see profileRouter.js). Parameters can be passed into it, like the toEmail, name, template_id or list_ids (which is an array so it could have more than 1 list_ids there). The parameters to use are created in the file that's calling the sendEmail function.
+
+SendGrid's npm package info and how to set up the API key (also listed below): https://www.npmjs.com/package/@sendgrid/mail. The npm package is @sendgrid/mail. Very lightweight, highly supported, and heavily downloaded. (SendGrid also supports Java)
+
+Loom walkthrough on backend: https://www.loom.com/share/a7d867ee6f9f4bca9a4a3e911bca3de4
+Loom how to see if it's working: https://www.loom.com/share/7acaa082c8454ac4bf17e0670aec18d7
+
+To set up SendGrid at https://sendgrid.com/:
+
+- Create an account with SendGrid
+- Create an API (replace YOUR_API_KEY with the API you receive from SendGrid into the below terminal command)
+- In your terminal, do these commands:
+  echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
+  echo "sendgrid.env" >> .gitignore
+  source ./sendgrid.env
+
+SendGrid will look at its own .env file for the API key. Unclear as to whether it's possible to put other environment variables there - it's been inconsistent in testing. (Send new keys via the first and third commands listed above. The second one only adds sendgrid.env to .gitignore so you don't share secrets.) When accessing SendGrid's .env file, use process.env.SENDGRID_API_KEY, just as if you had put the key in the .env file.
+
+Templates exist on SendGrid's site, under "Dynamic Templates." When requesting an email be sent, you'll use the template_id as one of the parameters you pass on to sendEmail. If you want a starting spot for what your emails could say (pending stakeholder approval), here's some copy: https://docs.google.com/document/d/1WZQ6Njj0Xt_eXLAEWm0nYA7eqACByFinpyrh7EjcU8U/edit?usp=sharing
+
+Dynamic template data: the template will be looking for something from the json request that matches the field you put in the template. For example, "name": "Some Name" coming from your email request will match {{ name }} in the template. Double curly braces make that connection.
+
+Potential templates to be created plus an idea for what the template_id will look like (could update this list as the templates are created on SendGrid - the template_id is generated by SendGrid when you create a Dynamic Template):
+
+EmailType = {
+WELCOME_EMAIL_PARENT: 'd-026a2f461bdd480098be08a2cb949eea', (All 3 welcome emails go out automatically upon post from the profileRouter. Change template id based on role_id.)
+WELCOME_EMAIL_INSTRUCTOR: 'd-a4de80911362438bb35d481efa068398',
+WELCOME_EMAIL_STUDENT: 'd-026a2f461bdd480098be08a2cb949eea',
+INSTRUCTOR_SUBMITTED_APPLICATION: 'd-026a2f461bdd480098be08bxhsyeyyy', (Goes out when an instructor submits an application and lets them know about the next step in the approval process.)
+INSTRUCTOR_APPLICATION_REVIEW: 'd-026a2f461bdd480098be08bxhsyeyyy', email to admin or staff that an application is ready to be approved or denied
+CHANGE_PASSWORD: 'd-026a2f4hsyw20098be08a2cb949eea',
+PURCHASED_COURSE_PARENT: 'd-026a2f461bdd480098be08bxhsyeyyy', (Upon enrollment of a child student, to include the start date, time, and Zoom link)
+PURCHASED_COURSE_STUDENT: 'd-026a2f461bdd480098be08bxhsyeyyy', (Upon enrollment of a child student, email sent to student to include the start date, time, and Zoom link)
+INSTRUCTOR_IS_APPROVED: 'd-026a2f461bdd480098be08bxhsyeyyy', (Congrats, you've been approved, with link to create a course)
+INSTRUCTOR_IS_REJECTED: 'd-026a2f461bdd480098be08bxhsyeyyy', (Sorry, friend! We'll keep your info on file for future needs)
+STUDENT_CLASS_REMINDER: 'd-026a2f461bdd480098be08bxhsyeyyy', (Could be 2 emails to land 1 hour, or 5 minutes before class starts, with the class start time and Zoom link)
+PARENT_CLASS_REMINDER: 'd-026a2f461bdd480098be08bxhsyeyyy', (Same as above with different wording)
+};
+
+AddToList: First up , add list(s) to the SendGrid account. In addition to the default "all" list, we added instructors, parents, and students. From a marketing perspective, these are the major groups, each requiring a different kind of information, and will potentially need different mass email types.
+
+As part of the request in emailHelper.js, you'll send the id(s) of the contact list (list_ids, an array) you want to add the email to, plus any additional data you want to add to the request, like the email address (as 'email') and name (as 'first_name'). If you use custom fields, make sure the fields are already set up in SendGrid or SG won't know where to map them.
