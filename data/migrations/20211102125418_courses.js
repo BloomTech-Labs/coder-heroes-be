@@ -40,6 +40,7 @@ exports.up = (knex) => {
       table.integer('number_of_sessions').notNullable();
       table.string('difficulty').notNullable();
       table.string('session_type').notNullable();
+      table.string('syllabus_link').notNullable();
     })
     .createTable('instructors_program_types', (table) => {
       //programs that instructors have been approved to teach

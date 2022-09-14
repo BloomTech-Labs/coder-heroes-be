@@ -18,6 +18,7 @@ exports.seed = function (knex) {
       number_of_sessions: 4,
       difficulty: 'Easy',
       session_type: 'Group',
+      syllabus_link: 'https://docs.google.com'
     },
     {
       course_name: 'Mindful Design',
@@ -37,6 +38,7 @@ exports.seed = function (knex) {
       number_of_sessions: 8,
       difficulty: 'Medium',
       session_type: '1-on-1',
+      syllabus_link: 'https://docs.google.com'
     },
   ]);
 };
