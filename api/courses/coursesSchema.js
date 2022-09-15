@@ -70,8 +70,7 @@ const courseSchema = yup.object().shape({
   syllabus_link: yup
     .string()
     .url('syllabus link must be a valid URL')
-    .trim('whitespace alone is not accepted')
-    .required('please include a link to the syllabus'),
+    .trim('whitespace alone is not accepted'),
 });
 
 module.exports = {
