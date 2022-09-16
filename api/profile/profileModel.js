@@ -9,9 +9,7 @@ const findBy = (filter) => {
 };
 
 const findById = async (id) => {
-  return await db('profiles')
-    .where('profiles.profile_id', id)
-    .first()
+  return await db('profiles').where('profiles.profile_id', id).first();
 };
 
 const create = async (profile) => {
@@ -66,7 +64,7 @@ const findByRoleId = async (role_id) => {
 };
 
 const findByProfileId = async (profile_id) => {
-  return await db('profiles').where("profile_id", profile_id);
+  return await db('profiles').where('profile_id', profile_id);
 };
 
 const findByProfileAndRoleId = async (profile_id, role_id) => {

@@ -19,7 +19,7 @@ const getParentChildren = async (profile_id) => {
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .leftJoin('profiles', 'profiles.profile_id', 'children.profile_id')
     .where('parents.parent_id', profile_id);
-    // TO-DO check if child object is connected to correct parent id
+  // TO-DO check if child object is connected to correct parent id
 };
 
 const getChildSchedules = (profile_id) => {

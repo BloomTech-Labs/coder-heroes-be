@@ -34,7 +34,6 @@ router.get('/', authRequired, function (req, res) {
   // TO-DO: Implement Auth0 to check logged in (middleware) then use req.profile from what is received back
   // const { role_id, profile_id } = req.profile;
 
-
   User.findUserData(role_id, profile_id)
     .then((user) => {
       res.status(200).json(user);

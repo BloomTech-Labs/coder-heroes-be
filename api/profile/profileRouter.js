@@ -153,7 +153,7 @@ router.get(
   authRequired,
   checkProfileExist,
   function (req, res) {
-    console.log(req.profile)
+    console.log(req.profile);
     res.status(200).json(req.profile);
   }
 );
@@ -200,7 +200,7 @@ router.post('/', checkProfileObject, async (req, res) => {
   // TO-DO: Implement Auth0 - check DB if specific Auth0 ID already exists
   // changed verification from findById(okta_id) to findBy(email)
   try {
-    await Profiles.findBy({email: profile.email}).then(async (pf) => {
+    await Profiles.findBy({ email: profile.email }).then(async (pf) => {
       if (!pf[0]) {
         await Profiles.create(profile).then((profile) =>
           res
@@ -268,7 +268,7 @@ router.put(
       })
       .catch((err) => {
         res.status(500).json({
-          message: `Could not update profile '${ profile_id }'`,
+          message: `Could not update profile '${profile_id}'`,
           error: err.message,
         });
       });
@@ -306,21 +306,26 @@ router.put(
  */
 
 // TO-DO: Implement Auth0 delete profile based on /:id params
-router.delete('/:profile_id', authRequired, ownerAuthorization('user'), (req, res) => {
-  const { profile_id } = req.params;
-  try {
-    Profiles.remove({ profile_id }).then(() => {
-      res.status(200).json({
-        message: `Profile '${profile_id}' was deleted.`,
-        profile: req.user,
+router.delete(
+  '/:profile_id',
+  authRequired,
+  ownerAuthorization('user'),
+  (req, res) => {
+    const { profile_id } = req.params;
+    try {
+      Profiles.remove({ profile_id }).then(() => {
+        res.status(200).json({
+          message: `Profile '${profile_id}' was deleted.`,
+          profile: req.user,
+        });
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete profile with ID: ${profile_id}`,
-      error: err.message,
-    });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete profile with ID: ${profile_id}`,
+        error: err.message,
+      });
+    }
   }
-});
+);
 
 module.exports = router;
