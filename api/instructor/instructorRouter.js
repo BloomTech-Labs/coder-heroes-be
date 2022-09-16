@@ -3,7 +3,6 @@ const authRequired = require('../middleware/authRequired');
 const Instructors = require('./instructorModel');
 const router = express.Router();
 const Profiles = require('../profile/profileModel');
-const oktaClient = require('../../lib/oktaClient');
 const {
   getInstructorId,
   checkInstructorExist,
@@ -20,25 +19,27 @@ router.post('/register', (req, res) => {
       login: req.body.email,
     },
   }; // now sending to Okta
-  oktaClient
-    .createUser(newInstructor)
-    .then((instructor) => {
-      return Profiles.create({
-        email: instructor.profile.email,
-        name: instructor.profile.firstName + ' ' + instructor.profile.lastName,
-        okta_id: instructor.id,
-        role_id: 3,
-        pending: true,
-      }).then(() => instructor);
-    })
-    .then((instructor) => {
-      res.status(201);
-      res.send(instructor);
-    })
-    .catch((err) => {
-      res.status(400);
-      res.send(err);
-    });
+
+  // TO-DO: Implement Auth0 -> create new user
+  // oktaClient
+  //   .createUser(newInstructor)
+  //   .then((instructor) => {
+  //     return Profiles.create({
+  //       email: instructor.profile.email,
+  //       name: instructor.profile.firstName + ' ' + instructor.profile.lastName,
+  //       okta_id: instructor.id,
+  //       role_id: 3,
+  //       pending: true,
+  //     }).then(() => instructor);
+  //   })
+  //   .then((instructor) => {
+  //     res.status(201);
+  //     res.send(instructor);
+  //   })
+  //   .catch((err) => {
+  //     res.status(400);
+  //     res.send(err);
+  //   });
 });
 
 router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
