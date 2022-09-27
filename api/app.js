@@ -78,6 +78,13 @@ app.use('/data', dsRouter);
 app.use(['/payments', '/payment'], stripeRouter);
 app.use(['/calendar-events'], calendarEventsRouter);
 app.use('/getting_started', gettingStartedRouter);
+
+app.use('*', errorhandler);
+//eslint-disable-next-line
+function errorhandler(err, req, res, next) {
+  res.status(err.status || 500).json(err.message);
+}
+
 // catch 404 and forward to error handler
 app.use(function (err, req, res, next) {
   next(createError(404));
