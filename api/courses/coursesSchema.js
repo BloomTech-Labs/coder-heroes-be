@@ -67,6 +67,10 @@ const courseSchema = yup.object().shape({
     .number()
     .typeError('number of sessions must be a number')
     .required('number of sessions is required'),
+  syllabus_link: yup
+    .string()
+    .url('syllabus link must be a valid URL')
+    .trim('whitespace alone is not accepted'),
 });
 
 module.exports = {
