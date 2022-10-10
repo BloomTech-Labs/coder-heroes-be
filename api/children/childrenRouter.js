@@ -116,10 +116,4 @@ router.post(
   }
 );
 
-router.use('*', errorhandler);
-//eslint-disable-next-line
-function errorhandler(err, req, res, next) {
-  res.status(err.status || 500).json(err.message);
-}
-
 module.exports = router;
