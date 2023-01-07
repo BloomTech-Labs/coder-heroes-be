@@ -1,6 +1,6 @@
 const express = require('express');
 const Programs = require('./programTypesModel');
-const authRequired = require('../middleware/authRequired');
+
 // const {
 //   roleAuthentication,
 //   roles,
@@ -58,7 +58,7 @@ const {
  *       $ref: '#/components/responses/UnauthorizedError'
  */
 
-router.get('/', authRequired, async function (req, res, next) {
+router.get('/', async function (req, res, next) {
   try {
     const programs = await Programs.getAll();
     res.status(200).json(programs);
@@ -111,7 +111,7 @@ router.get('/', authRequired, async function (req, res, next) {
  *       description: 'Program with id {program_id} not found.'
  */
 
-router.get('/:id', authRequired, checkProgramExists, async function (req, res) {
+router.get('/:id', checkProgramExists, async function (req, res) {
   res.status(200).json(req.programFromDB);
 });
 
@@ -152,7 +152,6 @@ router.get('/:id', authRequired, checkProgramExists, async function (req, res) {
 router.post(
   '/',
   validateProgramObject,
-  authRequired,
   checkIfProgramIsUnique,
   async (req, res, next) => {
     try {
@@ -213,7 +212,6 @@ router.post(
 
 router.put(
   '/:id',
-  authRequired,
   checkProgramExists,
   validateProgramObject,
   async (req, res, next) => {
@@ -256,20 +254,15 @@ router.put(
  *                  example: Codersitters has been deleted successfully
  */
 
-router.delete(
-  '/:id',
-  authRequired,
-  checkProgramExists,
-  async (req, res, next) => {
-    const id = Number(req.params.id);
-    try {
-      const deletionMessage = await Programs.remove(id);
-      res.status(200).json(deletionMessage);
-    } catch (error) {
-      next(error);
-    }
+router.delete('/:id', checkProgramExists, async (req, res, next) => {
+  const id = Number(req.params.id);
+  try {
+    const deletionMessage = await Programs.remove(id);
+    res.status(200).json(deletionMessage);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 router.use('*', errorhandler);
 //eslint-disable-next-line

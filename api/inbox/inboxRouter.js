@@ -1,9 +1,8 @@
 const express = require('express');
 const Inboxes = require('./inboxModel');
 const router = express.Router();
-const authRequired = require('../middleware/authRequired');
 
-router.get('/', authRequired, function (req, res) {
+router.get('/', function (req, res) {
   Inboxes.getConversations()
     .then((conversation) => {
       res.status(200).json(conversation);
@@ -14,7 +13,7 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/:conversation_id', authRequired, function (req, res) {
+router.get('/:conversation_id', function (req, res) {
   Inboxes.findByConversationId(req.params.conversation_id)
     .then((conversation) => {
       if (conversation.length) {
@@ -45,7 +44,7 @@ router.post('/', async (req, res) => {
     });
 });
 
-router.post('/messages', authRequired, async (req, res) => {
+router.post('/messages', async (req, res) => {
   Inboxes.addMessage(req.body)
     .then((message) => {
       if (!req.body) {
@@ -63,7 +62,7 @@ router.post('/messages', authRequired, async (req, res) => {
     });
 });
 
-router.put('/:messages_id', authRequired, (req, res) => {
+router.put('/:messages_id', (req, res) => {
   if (!req.body.title) {
     res.status(200).json({ message: 'title is required' });
   } else if (!req.body.message) {
@@ -98,7 +97,7 @@ router.put('/:messages_id', authRequired, (req, res) => {
   }
 });
 
-router.delete('/:conversation_id', authRequired, (req, res) => {
+router.delete('/:conversation_id', (req, res) => {
   Inboxes.removeConversation(req.params.conversation_id)
     .then((conversation) => {
       if (conversation) {

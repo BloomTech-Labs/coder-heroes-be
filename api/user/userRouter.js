@@ -1,5 +1,5 @@
 const express = require('express');
-const authRequired = require('../middleware/authRequired');
+
 const Profiles = require('../profile/profileModel');
 const User = require('./userModel');
 const router = express.Router();
@@ -37,7 +37,7 @@ router.post('/register', (req, res) => {
     });
 });
 
-router.get('/', authRequired, function (req, res) {
+router.get('/', function (req, res) {
   const { role_id, profile_id } = req.profile;
   User.findUserData(role_id, profile_id)
     .then((user) => {
@@ -49,7 +49,7 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/schedules', authRequired, function (req, res) {
+router.get('/schedules', function (req, res) {
   const { profile_id } = req.profile;
   User.getSchedule(profile_id)
     .then((schedule) => {
@@ -61,7 +61,7 @@ router.get('/schedules', authRequired, function (req, res) {
     });
 });
 
-router.put('/', authRequired, function (req, res) {
+router.put('/', function (req, res) {
   const { profile_id } = req.profile;
   User.updateUserData(profile_id, req.body)
     .then((user) => {

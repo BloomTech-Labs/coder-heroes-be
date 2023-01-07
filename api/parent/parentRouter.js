@@ -1,5 +1,5 @@
 const express = require('express');
-const authRequired = require('../middleware/authRequired');
+
 const {
   roleAuthenticationParent,
 } = require('../middleware/roleAuthentication.js');
@@ -13,7 +13,6 @@ const router = express.Router();
 
 router.post(
   '/',
-  authRequired,
   roleAuthenticationParent,
   checkChildObject,
   async function (req, res, next) {
@@ -29,7 +28,6 @@ router.post(
 
 router.put(
   '/:child_id',
-  authRequired,
   roleAuthenticationParent,
   checkChildExist,
   async function (req, res, next) {
@@ -45,7 +43,6 @@ router.put(
 
 router.delete(
   '/:child_id',
-  authRequired,
   roleAuthenticationParent,
   checkChildExist,
   async function (req, res, next) {
@@ -59,7 +56,7 @@ router.delete(
   }
 );
 
-router.get('/:profile_id/children', authRequired, function (req, res) {
+router.get('/:profile_id/children', function (req, res) {
   const { profile_id } = req.params;
 
   Parents.getParentChildren(profile_id)
@@ -75,7 +72,7 @@ router.get('/:profile_id/children', authRequired, function (req, res) {
     });
 });
 
-router.get('/:profile_id/schedules', authRequired, function (req, res) {
+router.get('/:profile_id/schedules', function (req, res) {
   const { profile_id } = req.params;
   Parents.getChildSchedules(profile_id)
     .then((schedules) => {

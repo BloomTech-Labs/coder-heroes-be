@@ -1,5 +1,5 @@
 const express = require('express');
-const authRequired = require('../middleware/authRequired');
+
 const Instructors = require('./instructorModel');
 const router = express.Router();
 const Profiles = require('../profile/profileModel');
@@ -41,7 +41,7 @@ router.post('/register', (req, res) => {
     });
 });
 
-router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
+router.get('/courses', getInstructorId, (req, res, next) => {
   Instructors.findInstructorCourses(req.instructor_id)
     .then((courses) => {
       if (courses) {
@@ -53,18 +53,13 @@ router.get('/courses', authRequired, getInstructorId, (req, res, next) => {
     .catch(next);
 });
 
-router.get(
-  '/:instructor_id',
-  authRequired,
-  checkInstructorExist,
-  (req, res) => {
-    if (req.instructor) {
-      res.status(200).json(req.instructor);
-    } else {
-      res.status(404).json({ error: 'Instructor not found.' });
-    }
+router.get('/:instructor_id', checkInstructorExist, (req, res) => {
+  if (req.instructor) {
+    res.status(200).json(req.instructor);
+  } else {
+    res.status(404).json({ error: 'Instructor not found.' });
   }
-);
+});
 
 router.use('*', errorhandler);
 //eslint-disable-next-line

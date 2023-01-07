@@ -1,5 +1,5 @@
 const express = require('express');
-const authRequired = require('../middleware/authRequired');
+
 const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Profiles = require('./profileModel');
 const router = express.Router();
@@ -10,7 +10,7 @@ const {
   checkProfileExist,
 } = require('./profileMiddleware');
 
-router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
+router.get('/role/:role_id', checkRoleExist, function (req, res) {
   const role_id = req.params.role_id;
   Profiles.findByRoleId(role_id)
     .then((roleList) => {
@@ -24,7 +24,6 @@ router.get('/role/:role_id', authRequired, checkRoleExist, function (req, res) {
 
 router.get(
   '/users/:profile_id',
-  authRequired,
   checkProfileExist,
   async function (req, res, next) {
     const profile_id = req.params.profile_id;
@@ -99,7 +98,7 @@ router.get(
  *      403:
  *        $ref: '#/components/responses/UnauthorizedError'
  */
-router.get('/', authRequired, function (req, res) {
+router.get('/', function (req, res) {
   Profiles.findAll()
     .then((profiles) => {
       res.status(200).json(profiles);
@@ -146,14 +145,9 @@ router.get('/', authRequired, function (req, res) {
  *        description: 'Profile not found'
  */
 
-router.get(
-  '/:okta_id',
-  authRequired,
-  checkProfileExists(true),
-  function (req, res) {
-    res.status(200).json(req.user);
-  }
-);
+router.get('/:okta_id', checkProfileExists(true), function (req, res) {
+  res.status(200).json(req.user);
+});
 
 /*p*
  * @swagger
@@ -246,7 +240,6 @@ router.post('/', checkProfileObject, async (req, res) => {
  */
 router.put(
   '/',
-  authRequired,
   checkProfileObject,
   checkProfileExists(false),
   ownerAuthorization('user'),
@@ -299,7 +292,6 @@ router.put(
  */
 router.delete(
   '/:okta_id',
-  authRequired,
   checkProfileExists(true),
   ownerAuthorization('user'),
   (req, res) => {
