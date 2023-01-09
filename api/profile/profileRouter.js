@@ -1,12 +1,11 @@
 const express = require('express');
-
+const authRequired = require('../middleware/authRequired');
 const ownerAuthorization = require('../middleware/ownerAuthorization');
 const Profiles = require('./profileModel');
 const router = express.Router();
 const {
   checkProfileObject,
   checkRoleExist,
-  checkProfileExists,
   checkProfileExist,
 } = require('./profileMiddleware');
 
@@ -27,7 +26,7 @@ router.get(
   checkProfileExist,
   async function (req, res, next) {
     const profile_id = req.params.profile_id;
-    const foundProfile = await Profiles.findByProfileId(profile_id);
+    const foundProfile = await Profiles.findById(profile_id);
     if (!foundProfile) {
       next({
         status: 404,
@@ -98,7 +97,9 @@ router.get(
  *      403:
  *        $ref: '#/components/responses/UnauthorizedError'
  */
-router.get('/', function (req, res) {
+
+//TO-DO: Implement Auth0 - secure endpoint
+router.get('/', authRequired, function (req, res) {
   Profiles.findAll()
     .then((profiles) => {
       res.status(200).json(profiles);
@@ -145,9 +146,16 @@ router.get('/', function (req, res) {
  *        description: 'Profile not found'
  */
 
-router.get('/:okta_id', checkProfileExists(true), function (req, res) {
-  res.status(200).json(req.user);
-});
+// TO-DO: Implement Auth0 - returns profile from specified (okta) id
+router.get(
+  '/:profile_id',
+  authRequired,
+  checkProfileExist,
+  function (req, res) {
+    console.log(req.profile);
+    res.status(200).json(req.profile);
+  }
+);
 
 /*p*
  * @swagger
@@ -187,9 +195,12 @@ router.get('/:okta_id', checkProfileExists(true), function (req, res) {
  */
 router.post('/', checkProfileObject, async (req, res) => {
   const profile = req.body;
+
+  // TO-DO: Implement Auth0 - check DB if specific Auth0 ID already exists
+  // changed verification from findById(okta_id) to findBy(email)
   try {
-    await Profiles.findById(profile.okta_id).then(async (pf) => {
-      if (pf == undefined) {
+    await Profiles.findBy({ email: profile.email }).then(async (pf) => {
+      if (!pf[0]) {
         await Profiles.create(profile).then((profile) =>
           res
             .status(200)
@@ -239,14 +250,16 @@ router.post('/', checkProfileObject, async (req, res) => {
  *                  $ref: '#/components/schemas/Profile'
  */
 router.put(
-  '/',
+  '/:profile_id',
+  authRequired,
   checkProfileObject,
-  checkProfileExists(false),
+  checkProfileExist,
   ownerAuthorization('user'),
   (req, res) => {
-    const profile = req.body;
-    const okta = req.user.okta_id;
-    Profiles.update(okta, profile)
+    const changes = req.body;
+    const { profile_id } = req.params;
+    // TO-DO: Implement Auth0 - updates specific profile off Auth0 ID
+    Profiles.update({ profile_id }, changes)
       .then((updated) => {
         res
           .status(200)
@@ -254,7 +267,7 @@ router.put(
       })
       .catch((err) => {
         res.status(500).json({
-          message: `Could not update profile '${okta}'`,
+          message: `Could not update profile '${profile_id}'`,
           error: err.message,
         });
       });
@@ -290,22 +303,24 @@ router.put(
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
+
+// TO-DO: Implement Auth0 delete profile based on /:id params
 router.delete(
-  '/:okta_id',
-  checkProfileExists(true),
+  '/:profile_id',
+  authRequired,
   ownerAuthorization('user'),
   (req, res) => {
-    const okta = req.params.okta_id;
+    const { profile_id } = req.params;
     try {
-      Profiles.remove(okta).then(() => {
+      Profiles.remove({ profile_id }).then(() => {
         res.status(200).json({
-          message: `Profile '${okta}' was deleted.`,
+          message: `Profile '${profile_id}' was deleted.`,
           profile: req.user,
         });
       });
     } catch (err) {
       res.status(500).json({
-        message: `Could not delete profile with ID: ${okta}`,
+        message: `Could not delete profile with ID: ${profile_id}`,
         error: err.message,
       });
     }
