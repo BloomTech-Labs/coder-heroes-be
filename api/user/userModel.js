@@ -42,13 +42,14 @@ const getInbox = (okta) => {
     .where({ okta });
 };
 
-const getSchedule = (okta) => {
+const getSchedule = (id) => {
   return db('profiles')
     .leftJoin('parents', 'profiles.profile_id', 'parents.profile_id')
     .leftJoin('children', 'parents.parent_id', 'children.parent_id')
     .leftJoin('enrollments', 'children.child_id', 'enrollments.child_id')
     .leftJoin('courses', 'enrollments.course_id', 'courses.course_id')
-    .where('profiles.profile_id', okta);
+    .where('profiles.profile_id', id);
+  // TO-DO: used okta as form of specifying where
 };
 
 const updateUserData = (profile_id, updated_profile) => {

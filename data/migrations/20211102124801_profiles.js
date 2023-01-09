@@ -43,6 +43,7 @@ exports.up = (knex) => {
         .references('profile_id')
         .inTable('profiles')
         .onDelete('CASCADE');
+      // TO-DO username create to be unique
       table.string('username').notNullable();
       table.integer('age').notNullable();
       table

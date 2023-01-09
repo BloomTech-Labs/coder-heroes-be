@@ -25,7 +25,6 @@ const addChild = async (
     .insert({
       email: null,
       name,
-      okta_id: null,
       role_id: 5,
       avatarUrl,
     })

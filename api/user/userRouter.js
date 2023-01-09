@@ -3,30 +3,23 @@ const authRequired = require('../middleware/authRequired');
 const Profiles = require('../profile/profileModel');
 const User = require('./userModel');
 const router = express.Router();
-const oktaClient = require('../../lib/oktaClient');
 
 /* Create a new User (register). */
 router.post('/register', (req, res) => {
   if (!req.body) return res.sendStatus(400);
-  const newUser = {
-    profile: {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      login: req.body.email,
-    },
+  const { role_id, email, firstName, lastName } = req.body;
+  const user = {
+    role_id,
+    email,
+    name: firstName + ' ' + lastName,
+    pending: false,
   };
-  oktaClient
-    .createUser(newUser)
-    .then((user) => {
-      return Profiles.create({
-        email: user.profile.email,
-        name: user.profile.firstName + ' ' + user.profile.lastName,
-        okta_id: user.id,
-        role_id: req.body.role_id,
-        pending: false,
-      }).then(() => user);
-    })
+
+  // TO-DO: Middleware to check req.body
+  // TO-DO: Middleware to check if it already exists in db
+
+  // TO-DO: Implement Auth0 -> new user
+  Profiles.create(user)
     .then((user) => {
       res.status(201);
       res.send(user);
@@ -38,7 +31,9 @@ router.post('/register', (req, res) => {
 });
 
 router.get('/', authRequired, function (req, res) {
-  const { role_id, profile_id } = req.profile;
+  // TO-DO: Implement Auth0 to check logged in (middleware) then use req.profile from what is received back
+  // const { role_id, profile_id } = req.profile;
+
   User.findUserData(role_id, profile_id)
     .then((user) => {
       res.status(200).json(user);

@@ -9,7 +9,8 @@ exports.up = (knex) => {
       table.increments('profile_id');
       table.string('email');
       table.string('name');
-      table.string('okta_id').unique();
+      // TO-DO: implement Auth0 unique ID
+      // table.string('okta_id').unique();
       table
         .integer('role_id')
         .notNullable()

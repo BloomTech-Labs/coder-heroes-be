@@ -8,27 +8,20 @@ const findBy = (filter) => {
   return db('profiles').where(filter);
 };
 
-const findById = async (okta_id) => {
-  return await db('profiles')
-    .where('profiles.okta_id', okta_id)
-    .first()
-    .select('*');
+const findById = async (id) => {
+  return await db('profiles').where('profiles.profile_id', id).first();
 };
 
 const create = async (profile) => {
   return await db('profiles').insert(profile).returning('*');
 };
 
-const update = (okta_id, profile) => {
-  return db('profiles')
-    .where({ okta_id: okta_id })
-    .first()
-    .update(profile)
-    .returning('*');
+const update = (filter, profile) => {
+  return db('profiles').where(filter).first().update(profile).returning('*');
 };
 
-const remove = async (okta_id) => {
-  return await db('profiles').where('profiles.okta_id', '=', okta_id).del();
+const remove = async (id) => {
+  return await db('profiles').where(id).del();
 };
 
 const findOrCreateProfile = async (profileObj) => {
@@ -71,7 +64,7 @@ const findByRoleId = async (role_id) => {
 };
 
 const findByProfileId = async (profile_id) => {
-  return await db('profiles').where('profiles.profile_id', profile_id);
+  return await db('profiles').where('profile_id', profile_id);
 };
 
 const findByProfileAndRoleId = async (profile_id, role_id) => {

@@ -30,6 +30,8 @@ router.post(
   checkChildObject,
   async function (req, res, next) {
     const { profile_id } = req.profile;
+    if (!profile_id)
+      return next({ status: 401, message: 'profile_id required' });
     try {
       let child = await Children.addChild(profile_id, req.body);
       res.status(201).json(child);
