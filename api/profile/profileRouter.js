@@ -9,7 +9,7 @@ const {
   checkProfileExist,
 } = require('./profileMiddleware');
 
-router.get('/role/:role_id', checkRoleExist, function (req, res) {
+router.get('/:role_id', authRequired, checkRoleExist, function (req, res) {
   const role_id = req.params.role_id;
   Profiles.findByRoleId(role_id)
     .then((roleList) => {
@@ -23,6 +23,7 @@ router.get('/role/:role_id', checkRoleExist, function (req, res) {
 
 router.get(
   '/users/:profile_id',
+  authRequired,
   checkProfileExist,
   async function (req, res, next) {
     const profile_id = req.params.profile_id;
@@ -193,7 +194,7 @@ router.get(
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.post('/', checkProfileObject, async (req, res) => {
+router.post('/', authRequired, checkProfileObject, async (req, res) => {
   const profile = req.body;
 
   // TO-DO: Implement Auth0 - check DB if specific Auth0 ID already exists

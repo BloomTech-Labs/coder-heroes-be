@@ -44,7 +44,7 @@ router.get('/', authRequired, function (req, res) {
     });
 });
 
-router.get('/schedules', function (req, res) {
+router.get('/schedules', authRequired, function (req, res) {
   const { profile_id } = req.profile;
   User.getSchedule(profile_id)
     .then((schedule) => {
@@ -56,7 +56,7 @@ router.get('/schedules', function (req, res) {
     });
 });
 
-router.put('/', function (req, res) {
+router.put('/', authRequired, function (req, res) {
   const { profile_id } = req.profile;
   User.updateUserData(profile_id, req.body)
     .then((user) => {

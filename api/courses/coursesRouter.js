@@ -1,5 +1,5 @@
 const express = require('express');
-
+const authRequired = require('../middleware/authRequired');
 // const ownerAuthorization = require('../middleware/ownerAuthorization'); needs to be refactored
 const {
   roleAuthenticationInstructor,
@@ -157,7 +157,7 @@ const {
  *       $ref: '#/components/responses/UnauthorizedError'
  */
 
-router.get('/', function (req, res, next) {
+router.get('/', authRequired, function (req, res, next) {
   Courses.getAllCourses()
     .then((scheduleList) => {
       res.status(200).json(scheduleList);
@@ -225,11 +225,11 @@ router.get('/', function (req, res, next) {
  *       description: 'Course Instance with id {course_id} does not exist'
  */
 
-router.get('/:course_id', checkCourseExists, (req, res) => {
+router.get('/:course_id', authRequired, checkCourseExists, (req, res) => {
   res.status(200).json(req.course);
 });
 
-router.get('/students/:course_id', function (req, res, next) {
+router.get('/students/:course_id', authRequired, function (req, res, next) {
   Courses.getStudentsById()
     .then((students) => {
       res.status(200).json(students);
@@ -306,6 +306,7 @@ router.get('/students/:course_id', function (req, res, next) {
 
 router.post(
   '/',
+  authRequired,
   roleAuthenticationInstructor,
   validateCourseObject,
   checkInstructorExists,
@@ -401,6 +402,7 @@ router.post(
 
 router.put(
   '/:course_id',
+  authRequired,
   validateCourseObject,
   checkInstructorExists,
   checkCourseExists,
@@ -450,17 +452,22 @@ router.put(
  *                  example: Course instances with id:'${course_id}' was deleted
  */
 
-router.delete('/:course_id', checkCourseExists, (req, res, next) => {
-  const course_id = parseInt(req.params.course_id);
-  try {
-    Courses.removeCourse(course_id).then(() => {
-      res.status(200).json({
-        message: `Course instance with id:'${course_id}' was deleted.`,
+router.delete(
+  '/:course_id',
+  authRequired,
+  checkCourseExists,
+  (req, res, next) => {
+    const course_id = parseInt(req.params.course_id);
+    try {
+      Courses.removeCourse(course_id).then(() => {
+        res.status(200).json({
+          message: `Course instance with id:'${course_id}' was deleted.`,
+        });
       });
-    });
-  } catch (err) {
-    next(err);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 module.exports = router;
