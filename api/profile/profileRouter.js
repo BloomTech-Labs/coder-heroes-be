@@ -9,17 +9,22 @@ const {
   checkProfileExist,
 } = require('./profileMiddleware');
 
-router.get('/:role_id', authRequired, checkRoleExist, function (req, res) {
-  const role_id = req.params.role_id;
-  Profiles.findByRoleId(role_id)
-    .then((roleList) => {
-      res.status(200).json(roleList);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ message: err.message });
-    });
-});
+router.get(
+  '/:role/:role_id',
+  authRequired,
+  checkRoleExist,
+  function (req, res) {
+    const role_id = req.params.role_id;
+    Profiles.findByRoleId(role_id)
+      .then((roleList) => {
+        res.status(200).json(roleList);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+      });
+  }
+);
 
 router.get(
   '/users/:profile_id',
