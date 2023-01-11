@@ -2,9 +2,11 @@ const Profiles = require('./profileModel');
 
 const checkProfileObject = (req, res, next) => {
   const { email, name, role_id, avatarUrl } = req.body;
-  if (!role_id) return next({ status: 400, message: 'role_id is required' });
-  if (!email) return next({ status: 400, message: 'email is required' });
-  if (!name) return next({ status: 400, message: 'name is required' });
+  console.log(req.body);
+  console.log("I'm in the obj middleware");
+  // if (!role_id) return next({ status: 400, message: 'role_id is required' });
+  // if (!email) return next({ status: 400, message: 'email is required' });
+  // if (!name) return next({ status: 400, message: 'name is required' });
   if (
     typeof role_id !== 'number' ||
     typeof email !== 'string' ||
@@ -15,6 +17,7 @@ const checkProfileObject = (req, res, next) => {
       message:
         'variables in the request body must all be of type string except role_id must be of type number',
     });
+  console.log('I made it to the other side!');
   if (email.length > 255 || name.length > 255)
     return next({
       status: 400,

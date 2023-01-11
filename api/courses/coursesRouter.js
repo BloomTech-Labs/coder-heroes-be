@@ -402,9 +402,9 @@ router.post(
 
 router.put(
   '/:course_id',
+  authRequired,
   validateCourseObject,
   checkInstructorExists,
-  authRequired,
   checkCourseExists,
   (req, res, next) => {
     const course_id = parseInt(req.params.course_id);

@@ -151,8 +151,8 @@ router.get('/:id', authRequired, checkProgramExists, async function (req, res) {
 
 router.post(
   '/',
-  validateProgramObject,
   authRequired,
+  validateProgramObject,
   checkIfProgramIsUnique,
   async (req, res, next) => {
     try {
