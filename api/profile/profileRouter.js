@@ -201,7 +201,7 @@ router.get(
  */
 router.post('/', authRequired, checkProfileObject, async (req, res) => {
   const profile = req.body;
-
+  console.log("I'm back to the router!");
   // TO-DO: Implement Auth0 - check DB if specific Auth0 ID already exists
   // changed verification from findById(okta_id) to findBy(email)
   try {

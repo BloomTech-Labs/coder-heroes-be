@@ -8,6 +8,7 @@ const authRequired = async (req, res, next) => {
   try {
     // Verify that the token is valid
     const profile = Profiles.findOrCreateProfile;
+    console.log("I'm in authRequired");
 
     if (profile) {
       req.profile = profile;
